@@ -1,6 +1,4 @@
-using Godot;
 using System;
+using Godot;
 
-public partial class Player : Node3D
-{
-}
+public partial class Player : Node3D { }
