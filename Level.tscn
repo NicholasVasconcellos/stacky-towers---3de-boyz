@@ -1,7 +1,36 @@
-[gd_scene load_steps=2 format=3 uid="uid://pkinvscjucx"]
+[gd_scene load_steps=6 format=3 uid="uid://pkinvscjucx"]
 
 [ext_resource type="PackedScene" uid="uid://bmv5nwfpl1s4u" path="res://Floor.tscn" id="1_bexhn"]
+[ext_resource type="PackedScene" uid="uid://cab20pilfo1af" path="res://Block.tscn" id="2_t7iv1"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_2nifc"]
+sky_horizon_color = Color(0.66224277, 0.6717428, 0.6867428, 1)
+ground_horizon_color = Color(0.66224277, 0.6717428, 0.6867428, 1)
+
+[sub_resource type="Sky" id="Sky_wkftn"]
+sky_material = SubResource("ProceduralSkyMaterial_2nifc")
+
+[sub_resource type="Environment" id="Environment_q4iis"]
+background_mode = 2
+sky = SubResource("Sky_wkftn")
+tonemap_mode = 2
+glow_enabled = true
 
 [node name="Level" type="Node3D"]
 
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_q4iis")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(-0.8660254, -0.43301278, 0.25, 0, 0.49999997, 0.86602545, -0.50000006, 0.75, -0.43301266, 0, 0, 0)
+shadow_enabled = true
+directional_shadow_max_distance = 1.0
+
 [node name="Floor" parent="." instance=ExtResource("1_bexhn")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.3264923, 0, 0.07536316)
+
+[node name="Block" parent="." instance=ExtResource("2_t7iv1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.9608179, 0.27718052, 0, -0.27718052, 0.9608179, 0, 3.241309, 4.698804)
