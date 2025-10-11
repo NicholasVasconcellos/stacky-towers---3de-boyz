@@ -27,10 +27,13 @@ shadow_enabled = true
 directional_shadow_max_distance = 1.0
 
 [node name="Floor" parent="." instance=ExtResource("1_bexhn")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.3264923, 0, 0.07536316)
 
 [node name="Block" parent="." instance=ExtResource("2_t7iv1")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.335, 0)
+spin = 0.0
+expansionRate = 1.53
+minSize = 0.855
 
 [node name="Camera3D" type="Camera3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 0.9608179, 0.27718052, 0, -0.27718052, 0.9608179, 0, 3.241309, 4.698804)
+transform = Transform3D(0.62932146, -0.28166696, 0.7243054, 0, 0.93200785, 0.36243808, -0.7771451, -0.22809005, 0.5865326, 7.9292192, 5.302698, 6.420963)
+current = true
