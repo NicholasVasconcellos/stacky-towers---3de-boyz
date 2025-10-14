@@ -1,7 +1,7 @@
 [gd_scene load_steps=6 format=3 uid="uid://pkinvscjucx"]
 
 [ext_resource type="PackedScene" uid="uid://bmv5nwfpl1s4u" path="res://Floor.tscn" id="1_bexhn"]
-[ext_resource type="PackedScene" uid="uid://cab20pilfo1af" path="res://Block.tscn" id="2_t7iv1"]
+[ext_resource type="PackedScene" uid="uid://ddfeug7d5du1f" path="res://Player.tscn" id="2_t7iv1"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_2nifc"]
 sky_horizon_color = Color(0.66224277, 0.6717428, 0.6867428, 1)
@@ -28,12 +28,9 @@ directional_shadow_max_distance = 1.0
 
 [node name="Floor" parent="." instance=ExtResource("1_bexhn")]
 
-[node name="Block" parent="." instance=ExtResource("2_t7iv1")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.335, 0)
-spin = 0.0
-expansionRate = 1.53
-minSize = 0.855
-
 [node name="Camera3D" type="Camera3D" parent="."]
-transform = Transform3D(0.62932146, -0.28166696, 0.7243054, 0, 0.93200785, 0.36243808, -0.7771451, -0.22809005, 0.5865326, 7.9292192, 5.302698, 6.420963)
+transform = Transform3D(1, 0, 0, 0, 0.8473537, 0.53102887, 0, -0.53102887, 0.8473537, 7.9292192, 6.9176903, 11.209716)
 current = true
+
+[node name="Player" parent="." instance=ExtResource("2_t7iv1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.978, 1.5, 0)
