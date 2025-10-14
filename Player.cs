@@ -1,44 +1,57 @@
-using Godot;
 using System;
+using Godot;
 
 public partial class Player : CharacterBody3D
 {
-	[Export] public float Speed = 5.0f;
-	[Export] public float JumpVelocity = 4.5f;
+    [Export]
+    public float Speed = 5.0f;
 
-	public override void _PhysicsProcess(double delta)
-	{
-		Vector3 velocity = Velocity;
+    [Export]
+    public float JumpVelocity = 4.5f;
 
-		// Add the gravity.
-		if (!IsOnFloor())
-		{
-			// Decrement Velocity by a * dT
-			velocity += GetGravity() * (float)delta;
-		}
+    public override void _PhysicsProcess(double delta)
+    {
+        Vector3 velocity = Velocity;
 
-		// Handle Jump.
-		if (Input.IsActionJustPressed("ui_accept") && IsOnFloor())
-		{
-			velocity.Y = JumpVelocity;
-		}
+        // Add the gravity.
+        if (!IsOnFloor())
+        {
+            // Decrement Velocity by a * dT
+            velocity += GetGravity() * (float)delta;
+        }
 
-		// Get the input direction and handle the movement/deceleration.
-		// As good practice, you should replace UI actions with custom gameplay actions.
-		Vector2 inputDir = Input.GetVector("ui_left", "ui_right", "ui_up", "ui_down");
-		Vector3 direction = (Transform.Basis * new Vector3(inputDir.X, 0, inputDir.Y)).Normalized();
-		if (direction != Vector3.Zero)
-		{
-			velocity.X = direction.X * Speed;
-			velocity.Z = direction.Z * Speed;
-		}
-		else
-		{
-			velocity.X = Mathf.MoveToward(Velocity.X, 0, Speed);
-			velocity.Z = Mathf.MoveToward(Velocity.Z, 0, Speed);
-		}
+        // Handle Jump.
+        if (Input.IsActionJustPressed("ui_accept") && IsOnFloor())
+        {
+            velocity.Y = JumpVelocity;
+        }
 
-		Velocity = velocity;
-		MoveAndSlide();
-	}
+        // Get 2d Input Vector
+        Vector2 inputVector = Input.GetVector(
+            "move left",
+            "move right",
+            "move forward",
+            "move back"
+        );
+
+        // Transform.Basis rotates the input to match player rotation.
+        Vector3 moveDirection = (
+            Transform.Basis * new Vector3(inputVector.X, 0, inputVector.Y)
+        ).Normalized();
+
+        if (moveDirection != Vector3.Zero)
+        {
+            velocity.X = moveDirection.X * Speed;
+            velocity.Z = moveDirection.Z * Speed;
+        }
+        else
+        {
+            // Smooth Stopping
+            velocity.X = Mathf.MoveToward(Velocity.X, 0, Speed);
+            velocity.Z = Mathf.MoveToward(Velocity.Z, 0, Speed);
+        }
+
+        Velocity = velocity;
+        MoveAndSlide();
+    }
 }
