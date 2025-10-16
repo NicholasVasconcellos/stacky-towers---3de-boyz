@@ -44,10 +44,10 @@ public partial class Player : CharacterBody3D
 
         // Get 2d Input Vector
         Vector2 inputVector = Input.GetVector(
-            "Move Left",
-            "Move Right",
+            "Move Back",
             "Move Forward",
-            "Move Back"
+            "Move Left",
+            "Move Right"
         );
         GD.Print("input:", inputVector);
 
@@ -61,11 +61,8 @@ public partial class Player : CharacterBody3D
             velocity.X = moveDirection.X * Speed;
             velocity.Z = moveDirection.Z * Speed;
 
-            // Rotate character to move direction (currently broken)
-            float targetYaw = Mathf.Atan2(-moveDirection.X, -moveDirection.Z);
-            float currentYaw = Rotation.Y;
-            float newYaw = Mathf.LerpAngle(currentYaw, targetYaw, (float)(TurnSpeed * delta));
-            //Rotation = new Vector3(Rotation.X, newYaw, Rotation.Z);
+            // use this to change the angle of the skin once it's been imported
+            Vector2 targetAngle = new Vector2(inputVector.X, inputVector.Y);
         }
         else
         {

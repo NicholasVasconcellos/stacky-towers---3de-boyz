@@ -17,7 +17,7 @@ CameraPath = NodePath("CameraController")
 mesh = SubResource("CapsuleMesh_xhfnw")
 
 [node name="DirectionIndicator" type="MeshInstance3D" parent="MeshInstance3D"]
-transform = Transform3D(-1.0053619e-08, 0.2299874, 0.0024085196, 0, 0.0024085196, -0.2299874, -0.23, -1.0053068e-08, -1.05279736e-10, -0.5235733, 0.38972688, -0.10186428)
+transform = Transform3D(-1.0053619e-08, 0.2299874, 0.0024085196, 0, 0.0024085196, -0.2299874, -0.23, -1.0053068e-08, -1.05279736e-10, 0.6409402, 0.3224361, 0.034556568)
 mesh = SubResource("CylinderMesh_xhfnw")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
