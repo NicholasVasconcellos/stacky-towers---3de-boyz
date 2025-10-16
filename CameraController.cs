@@ -1,4 +1,5 @@
 using System;
+using System.Runtime.CompilerServices;
 using Godot;
 
 public partial class CameraController : Node3D
@@ -14,6 +15,12 @@ public partial class CameraController : Node3D
 
     [Export]
     public float minPitch = -30f;
+
+    [Export]
+    public double hAcceleration = 2.0;
+
+    [Export]
+    public double vAcceleration = 2.0;
 
     // Called when the node enters the scene tree for the first time.
     public override void _Ready() { }
@@ -43,5 +50,15 @@ public partial class CameraController : Node3D
             // Update Object Rotation
             RotationDegrees = new Vector3(0, hRotation, vRotation);
         }
+    }
+
+    //for doing joystick rotation
+    private void RotateFromVector(Vector2 V)
+    {
+        if (V.Length() == 0)
+        {
+            return;
+        }
+        Rotation = new Vector3(Rotation.X, Rotation.Y + V.X, Rotation.Z);
     }
 }
