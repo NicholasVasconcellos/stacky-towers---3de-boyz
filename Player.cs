@@ -28,10 +28,10 @@ public partial class Player : CharacterBody3D
 
         // Get 2d Input Vector
         Vector2 inputVector = Input.GetVector(
-            "move left",
-            "move right",
-            "move forward",
-            "move back"
+            "Move Left",
+            "Move Right",
+            "Move Forward",
+            "Move Back"
         );
 
         // Transform.Basis rotates the input to match player rotation.
