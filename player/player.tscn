@@ -1,0 +1,17 @@
+[gd_scene load_steps=5 format=3 uid="uid://bpckgljdvolef"]
+
+[ext_resource type="Script" uid="uid://dgq0ti26amgq4" path="res://player/player.cs" id="1_g1dw6"]
+[ext_resource type="PackedScene" uid="uid://cy36aygvs66pn" path="res://player/gdquest_gobot/gobot_skin.tscn" id="2_g1dw6"]
+[ext_resource type="PackedScene" uid="uid://db0wllwb4agw" path="res://camera/CameraController.tscn" id="3_yw30f"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_kpjcp"]
+
+[node name="Player" type="CharacterBody3D"]
+script = ExtResource("1_g1dw6")
+
+[node name="GobotSkin" parent="." instance=ExtResource("2_g1dw6")]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("CapsuleShape3D_kpjcp")
+
+[node name="CameraController" parent="." instance=ExtResource("3_yw30f")]

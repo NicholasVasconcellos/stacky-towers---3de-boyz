@@ -1,0 +1,10 @@
+[gd_scene load_steps=2 format=3 uid="uid://db0wllwb4agw"]
+
+[ext_resource type="Script" uid="uid://vcfni24j32dp" path="res://camera/CameraController.cs" id="1_vn4gy"]
+
+[node name="CameraController" type="Node3D"]
+script = ExtResource("1_vn4gy")
+
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(-4.371139e-08, 0.6691306, -0.7431448, 0, 0.7431448, 0.6691306, 1, 2.9248628e-08, -3.2483893e-08, -4, 3, 0)
+current = true
