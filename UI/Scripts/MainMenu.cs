@@ -1,0 +1,31 @@
+using Godot;
+
+namespace StackyTowers3DEBoyz.UI.Scripts;
+
+public partial class MainMenu : Control
+{
+	// Called when the node enters the scene tree for the first time.
+	public override void _Ready()
+	{
+	}
+
+	// Called every frame. 'delta' is the elapsed time since the previous frame.
+	public override void _Process(double delta)
+	{
+	}
+
+	public void OnStartPressed()
+	{
+		GetTree().ChangeSceneToFile("res://Level.tscn");
+	}
+	
+	public void OnSettingsPressed()
+	{
+		GD.Print("Settings pressed");
+	}
+
+	public void OnExitPressed()
+	{
+		GetTree().Quit();
+	}
+}
