@@ -1,9 +1,11 @@
-[gd_scene load_steps=53 format=3 uid="uid://cy36aygvs66pn"]
+[gd_scene load_steps=55 format=3 uid="uid://cy36aygvs66pn"]
 
-[ext_resource type="Texture2D" uid="uid://dq675fmt1rg8c" path="res://player/gdquest_gobot/textures/open_eye.png" id="2_x71kh"]
-[ext_resource type="PackedScene" uid="uid://kod0awm1ha4o" path="res://player/gdquest_gobot/model/gobot.glb" id="4_uwidm"]
-[ext_resource type="Material" uid="uid://div0enqs04w5j" path="res://player/gdquest_gobot/materials/eye_mat.tres" id="5_jrosn"]
-[ext_resource type="AnimationLibrary" uid="uid://k45w5evgjbtp" path="res://player/gdquest_gobot/model/custom/custom_lib.res" id="6_v0der"]
+[ext_resource type="PackedScene" uid="uid://kod0awm1ha4o" path="res://addons/gdquest_gobot/model/gobot.glb" id="1_qg1mb"]
+[ext_resource type="Script" uid="uid://02pjlm1ilk3w" path="res://addons/gdquest_gobot/gobot_skin.gd" id="1_rwke8"]
+[ext_resource type="Texture2D" uid="uid://cfdf62ci74tew" path="res://addons/gdquest_gobot/textures/closed_eyes.png" id="3_atmtp"]
+[ext_resource type="Texture2D" uid="uid://dq675fmt1rg8c" path="res://addons/gdquest_gobot/textures/open_eye.png" id="3_aysq5"]
+[ext_resource type="Material" uid="uid://div0enqs04w5j" path="res://addons/gdquest_gobot/materials/eye_mat.tres" id="4_p2r8e"]
+[ext_resource type="AnimationLibrary" uid="uid://k45w5evgjbtp" path="res://addons/gdquest_gobot/model/custom/custom_lib.res" id="6_vjupt"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_t4001"]
 render_priority = 1
@@ -14,7 +16,7 @@ emission = Color(0.972549, 0.27451, 0, 1)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_f5nav"]
 resource_local_to_scene = true
-albedo_texture = ExtResource("2_x71kh")
+albedo_texture = ExtResource("3_aysq5")
 roughness = 0.6
 uv1_offset = Vector3(0.1, 0, 0)
 texture_repeat = false
@@ -1067,7 +1069,7 @@ tracks/0/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 1,
-"values": [ExtResource("2_x71kh")]
+"values": [ExtResource("3_aysq5")]
 }
 tracks/1/type = "value"
 tracks/1/imported = false
@@ -1079,7 +1081,7 @@ tracks/1/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 1,
-"values": [ExtResource("2_x71kh")]
+"values": [ExtResource("3_aysq5")]
 }
 tracks/2/type = "value"
 tracks/2/imported = false
@@ -2091,23 +2093,30 @@ nodes/StateMachine/node = SubResource("AnimationNodeStateMachine_fdt88")
 nodes/StateMachine/position = Vector2(-32, 0)
 node_connections = [&"output", 0, &"HurtShot", &"FlipShot", 0, &"StateMachine", &"FlipShot", 1, &"Flip", &"HurtShot", 0, &"FlipShot", &"HurtShot", 1, &"Animation"]
 
-[node name="GobotSkin" type="Node3D"]
+[node name="GobotSkin" type="Node3D" node_paths=PackedStringArray("gobot_model")]
+script = ExtResource("1_rwke8")
+gobot_model = NodePath("gobot/Armature/Skeleton3D/Gobot")
+blink = false
+_left_eye_mat_override = "surface_material_override/1"
+_right_eye_mat_override = "surface_material_override/2"
+_open_eye = ExtResource("3_aysq5")
+_close_eye = ExtResource("3_atmtp")
 
-[node name="gobot" parent="." instance=ExtResource("4_uwidm")]
+[node name="gobot" parent="." instance=ExtResource("1_qg1mb")]
 
 [node name="Skeleton3D" parent="gobot/Armature" index="0"]
 bones/0/position = Vector3(0.125361, 0.0989139, 0.0728901)
 bones/0/rotation = Quaternion(0.77254915, 0.10769103, -0.13622104, 0.61074907)
 bones/1/position = Vector3(-0.109875, 0.0989111, -0.0510765)
 bones/1/rotation = Quaternion(0.6793683, -0.31008515, 0.39223418, 0.5370832)
-bones/2/position = Vector3(0, 0.36696965, 0)
-bones/2/rotation = Quaternion(0.069755726, 0.0045554354, -0.0003185472, 0.9975537)
-bones/3/rotation = Quaternion(1, -2.4116497e-11, -7.568995e-08, -2.4888835e-09)
-bones/4/rotation = Quaternion(-0.3556847, -0.16303588, -0.033368975, 0.91967076)
-bones/5/rotation = Quaternion(0.15978295, 1.1198342e-06, -5.453958e-06, 0.9871522)
-bones/6/rotation = Quaternion(-0.17129782, 0.5410378, 0.16826057, 0.8059923)
-bones/7/rotation = Quaternion(0.38222587, -1.0445845e-06, 1.3073979e-05, 0.92406905)
-bones/8/rotation = Quaternion(-0.5993881, -0.29121497, -0.7030561, 0.24827403)
+bones/2/position = Vector3(0, 0.371494, 0)
+bones/2/rotation = Quaternion(0.06974533, -0.01784491, 0.0012478406, 0.99740446)
+bones/3/rotation = Quaternion(1, -2.31697e-10, -7.82757e-08, 7.44694e-09)
+bones/4/rotation = Quaternion(-0.28586608, -0.18791008, -0.027233507, 0.9392704)
+bones/5/rotation = Quaternion(0.054452818, 1.1400003e-06, -1.8558407e-06, 0.9985164)
+bones/6/rotation = Quaternion(-0.16596508, 0.5214922, 0.14515604, 0.8242762)
+bones/7/rotation = Quaternion(0.33948478, -1.0808392e-06, 1.1602492e-05, 0.94061154)
+bones/8/rotation = Quaternion(-0.62023777, -0.28362587, -0.68473274, 0.25690985)
 bones/9/rotation = Quaternion(2.1693694e-07, 5.3554083e-07, -0.3950289, 0.91866875)
 bones/10/rotation = Quaternion(-0.28973204, -0.6374582, -0.21743803, 0.6800171)
 bones/11/rotation = Quaternion(0.48790604, -0.017439902, 0.008545421, 0.87268007)
@@ -2115,7 +2124,7 @@ bones/12/rotation = Quaternion(-0.3712239, -0.0019769692, 0.005853659, 0.9285228
 bones/13/rotation = Quaternion(-0.5023331, 1.5004906e-05, -2.8505408e-05, 0.86467415)
 bones/14/rotation = Quaternion(-0.3712239, -0.0019769794, 0.0058536893, 0.9285228)
 bones/15/rotation = Quaternion(-0.5023331, 1.4999904e-05, -2.8506805e-05, 0.86467415)
-bones/16/rotation = Quaternion(-0.711696, 0.244014, 0.589103, 0.29479402)
+bones/16/rotation = Quaternion(-0.693678, 0.25276, 0.610217, 0.28733)
 bones/17/rotation = Quaternion(2.2720293e-07, -5.847489e-07, 0.3950289, 0.91866875)
 bones/18/rotation = Quaternion(-0.28973204, 0.6374582, 0.21743803, 0.6800171)
 bones/19/rotation = Quaternion(0.48790604, 0.017439902, -0.008545411, 0.87268007)
@@ -2129,12 +2138,12 @@ bones/24/rotation = Quaternion(-0.06975651, 4.5896506e-08, 3.0345004e-09, 0.9975
 [node name="Gobot" parent="gobot/Armature/Skeleton3D" index="0"]
 material_overlay = SubResource("StandardMaterial3D_t4001")
 surface_material_override/1 = SubResource("StandardMaterial3D_f5nav")
-surface_material_override/2 = ExtResource("5_jrosn")
+surface_material_override/2 = ExtResource("4_p2r8e")
 
 [node name="AnimationPlayer" parent="gobot" index="1"]
 libraries = {
 &"": SubResource("AnimationLibrary_03he3"),
-&"custom_lib": ExtResource("6_v0der")
+&"custom_lib": ExtResource("6_vjupt")
 }
 
 [node name="BlinkTimer" type="Timer" parent="."]

@@ -2,21 +2,21 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://yj5yx07nva6l"
-path.s3tc="res://.godot/imported/hurt_eyes.png-5a2318d97d21b83f8280aab4d044d830.s3tc.ctex"
+uid="uid://bt5o0sr6peltq"
+path="res://.godot/imported/gobot_gobot_diffuse.png-480b3c5a031a8e6b4f9ff3bcd6cf3e81.ctex"
 metadata={
-"imported_formats": ["s3tc_bptc"],
-"vram_texture": true
+"vram_texture": false
 }
+generator_parameters={}
 
 [deps]
 
-source_file="res://player/gdquest_gobot/textures/hurt_eyes.png"
-dest_files=["res://.godot/imported/hurt_eyes.png-5a2318d97d21b83f8280aab4d044d830.s3tc.ctex"]
+source_file="res://addons/gdquest_gobot/model/gobot_gobot_diffuse.png"
+dest_files=["res://.godot/imported/gobot_gobot_diffuse.png-480b3c5a031a8e6b4f9ff3bcd6cf3e81.ctex"]
 
 [params]
 
-compress/mode=2
+compress/mode=3
 compress/high_quality=false
 compress/lossy_quality=0.7
 compress/uastc_level=0
