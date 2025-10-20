@@ -1,7 +1,9 @@
-[gd_scene load_steps=6 format=3 uid="uid://pkinvscjucx"]
+[gd_scene load_steps=8 format=3 uid="uid://pkinvscjucx"]
 
 [ext_resource type="PackedScene" uid="uid://bmv5nwfpl1s4u" path="res://Floor.tscn" id="1_bexhn"]
+[ext_resource type="Script" uid="uid://dv51a2fm88hi6" path="res://Level.cs" id="1_wkftn"]
 [ext_resource type="PackedScene" uid="uid://ddfeug7d5du1f" path="res://Player.tscn" id="2_t7iv1"]
+[ext_resource type="PackedScene" uid="uid://dd46wybb4mvlg" path="res://UI/Scenes/PauseMenu.tscn" id="4_q4iis"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_2nifc"]
 sky_horizon_color = Color(0.66224277, 0.6717428, 0.6867428, 1)
@@ -16,7 +18,9 @@ sky = SubResource("Sky_wkftn")
 tonemap_mode = 2
 glow_enabled = true
 
-[node name="Level" type="Node3D"]
+[node name="Level" type="Node3D" node_paths=PackedStringArray("PauseMenu")]
+script = ExtResource("1_wkftn")
+PauseMenu = NodePath("PauseMenu")
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_q4iis")
@@ -33,3 +37,6 @@ transform = Transform3D(0.12, 0, 0, 0, 0.12, 0, 0, 0, 0.12, 0, 0, 0)
 
 [node name="Player" parent="Entities" groups=["Player"] instance=ExtResource("2_t7iv1")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, 0)
+
+[node name="PauseMenu" parent="." instance=ExtResource("4_q4iis")]
+visible = false
