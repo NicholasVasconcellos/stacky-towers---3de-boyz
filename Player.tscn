@@ -1,6 +1,7 @@
-[gd_scene load_steps=6 format=3 uid="uid://ddfeug7d5du1f"]
+[gd_scene load_steps=7 format=3 uid="uid://ddfeug7d5du1f"]
 
 [ext_resource type="Script" uid="uid://dvrskk01phk14" path="res://Player.cs" id="1_xhfnw"]
+[ext_resource type="PackedScene" uid="uid://cy36aygvs66pn" path="res://addons/gdquest_gobot/gobot_skin.tscn" id="2_kne1u"]
 [ext_resource type="PackedScene" uid="uid://bq4oofsrmpwgy" path="res://CameraController.tscn" id="2_kpjcp"]
 
 [sub_resource type="CapsuleMesh" id="CapsuleMesh_xhfnw"]
@@ -8,12 +9,17 @@
 [sub_resource type="CylinderMesh" id="CylinderMesh_xhfnw"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_kpjcp"]
+radius = 0.42138672
+height = 1.2866211
 
 [node name="Player" type="CharacterBody3D"]
 script = ExtResource("1_xhfnw")
 CameraPath = NodePath("CameraController")
 
+[node name="GobotSkin" parent="." instance=ExtResource("2_kne1u")]
+
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+visible = false
 mesh = SubResource("CapsuleMesh_xhfnw")
 
 [node name="DirectionIndicator" type="MeshInstance3D" parent="MeshInstance3D"]
@@ -21,6 +27,7 @@ transform = Transform3D(-1.0053619e-08, 0.2299874, 0.0024085196, 0, 0.0024085196
 mesh = SubResource("CylinderMesh_xhfnw")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.64331055, 0)
 shape = SubResource("CapsuleShape3D_kpjcp")
 
 [node name="CameraController" parent="." instance=ExtResource("2_kpjcp")]
