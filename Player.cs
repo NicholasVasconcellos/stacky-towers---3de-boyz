@@ -194,5 +194,13 @@ public partial class Player : CharacterBody3D
 
         // Remove the grabbed Block
         grabbedBlock = null;
+
+        // Remove the Temp Collision Shape
+        // Remove the temporary collision shape
+        if (heldBlockCollision != null)
+        {
+            heldBlockCollision.QueueFree();
+            heldBlockCollision = null;
+        }
     }
 }
