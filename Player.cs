@@ -20,9 +20,22 @@ public partial class Player : CharacterBody3D
     public NodePath CameraPath;
     private Node3D Camera;
 
+    /*Grabbing Functionality*/
+    // Valid Grab Area (volume)
+    private Area3D grabRange;
+
+    // Ref to Grabbed Block Object
+    private RigidBody3D grabbedBlock;
+
+    // Block Position Relative to player
+    private Vector3 holdOffset;
+
     public override void _Ready()
     {
         Camera = GetNode<Node3D>(CameraPath);
+
+        // Initialize the grab area
+        grabRange = GetNode<Area3D>("GrabRange");
     }
 
     public override void _PhysicsProcess(double delta)
@@ -73,5 +86,76 @@ public partial class Player : CharacterBody3D
 
         Velocity = velocity;
         MoveAndSlide();
+    }
+
+    public override void _Process(double delta)
+    {
+        // Handle Grab Button
+        if (Input.IsActionJustPressed("grab"))
+        {
+            if (grabbedBlock == null)
+            {
+                Grab();
+            }
+            else
+            {
+                Release();
+            }
+        }
+
+        // If Holding a block, update it's position
+        if (grabbedBlock != null)
+        {
+            grabbedBlock.GlobalPosition = GlobalPosition + holdOffset;
+        }
+    }
+
+    private void Grab()
+    {
+        // Double Check not already holding
+        if (grabbedBlock != null)
+        {
+            return;
+        }
+
+        // TODO: Play Grab Animation
+
+        // Check all Block Objects in the Grab Range
+        var objects = grabRange.GetOverlappingBodies();
+
+        // for each Node in the range
+        foreach (var body in objects)
+        {
+            // if it is a block, and a rigid body (then cast it to a rigid body variable rb)
+            if (body.IsInGroup("block") && body is RigidBody3D rb)
+            {
+                // Set Internal variable to that rigid Body
+                grabbedBlock = rb;
+
+                // Turn off gravity and momementum
+                rb.Freeze = true;
+                break;
+            }
+        }
+    }
+
+    private void Release()
+    {
+        // Double Check not already released
+        if (grabbedBlock == null)
+        {
+            return;
+        }
+
+        //TODO Play Release Animation
+
+        // cast to Rigid Body 3d and turn off freeze
+        if (grabbedBlock is RigidBody3D rb)
+        {
+            rb.Freeze = false;
+        }
+
+        // Remove the grabbed Block
+        grabbedBlock = null;
     }
 }
