@@ -28,7 +28,8 @@ public partial class Player : CharacterBody3D
     private RigidBody3D grabbedBlock;
 
     // Block Position Relative to player
-    private Vector3 holdOffset;
+    [Export]
+    public Vector3 holdOffset;
 
     public override void _Ready()
     {
@@ -99,7 +100,7 @@ public partial class Player : CharacterBody3D
             }
             else
             {
-                Release();
+                Place();
             }
         }
 
@@ -139,15 +140,18 @@ public partial class Player : CharacterBody3D
         }
     }
 
-    private void Release()
+    private void Place()
     {
-        // Double Check not already released
+        // Double Check not already Placed
         if (grabbedBlock == null)
         {
             return;
         }
 
-        //TODO Play Release Animation
+        //TODO Play Place Animation
+
+        // Place the Block in front of player
+        grabbedBlock.GlobalPosition = GlobalPosition + new Vector3(0, 1, 2);
 
         // cast to Rigid Body 3d and turn off freeze
         if (grabbedBlock is RigidBody3D rb)
