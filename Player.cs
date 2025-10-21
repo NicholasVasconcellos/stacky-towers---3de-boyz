@@ -91,7 +91,7 @@ public partial class Player : CharacterBody3D
     public override void _Process(double delta)
     {
         // Handle Grab Button
-        if (Input.IsActionJustPressed("grab"))
+        if (Input.IsActionJustPressed("Grab"))
         {
             if (grabbedBlock == null)
             {
