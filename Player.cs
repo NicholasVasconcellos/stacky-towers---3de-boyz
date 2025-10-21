@@ -1,5 +1,6 @@
 using System;
 using Godot;
+using Godot.NativeInterop;
 
 public partial class Player : CharacterBody3D
 {
@@ -37,7 +38,8 @@ public partial class Player : CharacterBody3D
 
     private Node3D prevParent;
 
-    // Block Position Relative to player
+    // Collision shape equal to the held block
+    private CollisionShape3D heldBlockCollision;
 
     public override void _Ready()
     {
@@ -147,6 +149,19 @@ public partial class Player : CharacterBody3D
                 // Set the Position with the offset
                 rb.Position = holdOffset;
 
+                // Make Block Non Colliding
+                rb.CollisionLayer = 0;
+                rb.CollisionMask = 0;
+
+                // Create new Collision Shape the same size as the block
+                heldBlockCollision = new CollisionShape3D();
+                // Set Shape
+                heldBlockCollision.Shape = rb.GetNode<CollisionShape3D>("CollisionShape3D").Shape;
+                // Add as child
+                AddChild(heldBlockCollision);
+                // Set Relative Position
+                heldBlockCollision.Position = holdOffset;
+
                 break;
             }
         }
@@ -173,6 +188,9 @@ public partial class Player : CharacterBody3D
         {
             rb.Freeze = false;
         }
+
+        grabbedBlock.CollisionLayer = 2;
+        grabbedBlock.CollisionMask = 3;
 
         // Remove the grabbed Block
         grabbedBlock = null;
