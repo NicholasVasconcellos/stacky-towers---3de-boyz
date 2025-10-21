@@ -141,6 +141,10 @@ public partial class Player : CharacterBody3D
 
                 // Turn off gravity and momementum
                 rb.Freeze = true;
+
+                // Make the Freeze mode kinematic
+                // Collide but don't Push Other Blocks
+                rb.FreezeMode = RigidBody3D.FreezeModeEnum.Kinematic;
                 break;
             }
         }
