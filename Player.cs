@@ -127,7 +127,7 @@ public partial class Player : CharacterBody3D
         foreach (var body in objects)
         {
             // if it is a block, and a rigid body (then cast it to a rigid body variable rb)
-            if (body.IsInGroup("block") && body is RigidBody3D rb)
+            if (body.IsInGroup("Block") && body is RigidBody3D rb)
             {
                 // Set Internal variable to that rigid Body
                 grabbedBlock = rb;

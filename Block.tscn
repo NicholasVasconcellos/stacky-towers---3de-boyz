@@ -7,7 +7,7 @@ albedo_color = Color(0.8956227, 0.30090225, 0.25784513, 1)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_ab6iy"]
 
-[node name="Block" type="RigidBody3D"]
+[node name="Block" type="RigidBody3D" groups=["Block"]]
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
 mesh = SubResource("BoxMesh_hfsdp")
