@@ -29,6 +29,9 @@ public partial class Player : CharacterBody3D
     public NodePath CameraPath;
     private Node3D Camera;
 
+    public int PlayerDeviceId { get; private set; }
+    public Color PlayerColor { get; private set; }
+
     /*Grabbing Functionality*/
     // Valid Grab Area (volume)
     private Area3D grabRange;
@@ -43,6 +46,13 @@ public partial class Player : CharacterBody3D
 
     // Temporary Collision Shape
     private CollisionShape3D tempCollider;
+
+    //for use with game manager
+    public void Initialize(int deviceId, Color color)
+    {
+        this.PlayerDeviceId = deviceId;
+        this.PlayerColor = color;
+    }
 
     public override void _Ready()
     {
@@ -63,12 +73,6 @@ public partial class Player : CharacterBody3D
             velocity += GetGravity() * (float)delta;
         }
 
-        // Handle Jump.
-        if (Input.IsActionJustPressed("ui_accept") && IsOnFloor())
-        {
-            velocity.Y = JumpVelocity;
-        }
-
         // Get 2d Input Vector
         Vector2 inputVector = Input.GetVector(
             "Move Back",
@@ -76,7 +80,6 @@ public partial class Player : CharacterBody3D
             "Move Left",
             "Move Right"
         );
-        GD.Print("input:", inputVector);
 
         // Create direction vector and rotate by camera's Y rotation
         Vector3 moveDirection = new Vector3(inputVector.X, 0, inputVector.Y);
@@ -96,6 +99,23 @@ public partial class Player : CharacterBody3D
             // Smooth Stopping
             velocity.X = Mathf.MoveToward(Velocity.X, 0, Speed);
             velocity.Z = Mathf.MoveToward(Velocity.Z, 0, Speed);
+        }
+
+        Velocity = velocity;
+        MoveAndSlide();
+    }
+
+    public override void _UnhandledInput(InputEvent @event)
+    {
+        Vector3 velocity = Velocity;
+        if (@event.Device != PlayerDeviceId)
+        {
+            return; //Not this player's input
+        }
+        // Handle Jump.
+        if (Input.IsActionJustPressed("ui_accept") && IsOnFloor())
+        {
+            velocity.Y = JumpVelocity;
         }
 
         Velocity = velocity;

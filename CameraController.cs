@@ -22,16 +22,36 @@ public partial class CameraController : Node3D
     [Export]
     public double vAcceleration = 2.0;
 
+    private int playerDeviceId;
+    private Player player;
+
     // Called when the node enters the scene tree for the first time.
-    public override void _Ready() { }
+    public override void _Ready()
+    {
+        player = Owner as Player;
+
+        if (player == null)
+        {
+            GD.PrintErr("Camera controller cannot find player ");
+            return;
+        }
+
+        // Now you have the ID!
+        playerDeviceId = player.PlayerDeviceId;
+    }
 
     // Called every frame. 'delta' is the elapsed time since the previous frame.
     public override void _Process(double delta) { }
 
     // Called on Every Input
-    public override void _Input(InputEvent @event)
+    public override void _UnhandledInput(InputEvent @event)
     {
-        base._Input(@event);
+        if (@event.Device != playerDeviceId)
+        {
+            return; // If yes, stop. This isn't my business.
+        }
+
+        base._UnhandledInput(@event);
 
         if (@event is InputEventMouseMotion motion)
         {

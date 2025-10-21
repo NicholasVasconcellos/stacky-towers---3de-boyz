@@ -4,18 +4,25 @@ namespace StackyTowers3DEBoyz.UI.Scripts;
 
 public partial class MainMenu : Control
 {
-	public void OnStartPressed()
-	{
-		GetTree().ChangeSceneToFile("res://Level.tscn");
-	}
-	
-	public void OnSettingsPressed()
-	{
-		GetTree().ChangeSceneToFile("res://UI/Scenes/OptionsMenuFromMainMenu.tscn");
-	}
+    private GameManager gameManager;
 
-	public void OnExitPressed()
-	{
-		GetTree().Quit();
-	}
+    public override void _Ready()
+    {
+        gameManager = GetNode<GameManager>("/root/GameManager");
+    }
+
+    public void OnStartPressed()
+    {
+        gameManager.StartGame();
+    }
+
+    public void OnSettingsPressed()
+    {
+        GetTree().ChangeSceneToFile("res://UI/Scenes/OptionsMenuFromMainMenu.tscn");
+    }
+
+    public void OnExitPressed()
+    {
+        GetTree().Quit();
+    }
 }
