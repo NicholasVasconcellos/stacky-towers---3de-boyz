@@ -38,8 +38,11 @@ public partial class Player : CharacterBody3D
 
     private Node3D prevParent;
 
-    // Collision shape equal to the held block
-    private CollisionShape3D heldBlockCollision;
+    // Reference to Block's Collision Shape
+    private CollisionShape3D blockCollider;
+
+    // Temporary Collision Shape
+    private CollisionShape3D tempCollider;
 
     public override void _Ready()
     {
@@ -143,24 +146,24 @@ public partial class Player : CharacterBody3D
                 // Turn off gravity and momementum
                 rb.Freeze = true;
 
+                // Disable Block Collision
+                blockCollider = rb.GetNode<CollisionShape3D>("CollisionShape3D");
+                blockCollider.Disabled = true;
+
                 // Make Block a child of player
                 rb.Reparent(this);
 
                 // Set the Position with the offset
                 rb.Position = holdOffset;
 
-                // Make Block Non Colliding
-                rb.CollisionLayer = 0;
-                rb.CollisionMask = 0;
-
                 // Create new Collision Shape the same size as the block
-                heldBlockCollision = new CollisionShape3D();
+                tempCollider = new CollisionShape3D();
                 // Set Shape
-                heldBlockCollision.Shape = rb.GetNode<CollisionShape3D>("CollisionShape3D").Shape;
+                tempCollider.Shape = rb.GetNode<CollisionShape3D>("CollisionShape3D").Shape;
                 // Add as child
-                AddChild(heldBlockCollision);
+                AddChild(tempCollider);
                 // Set Relative Position
-                heldBlockCollision.Position = holdOffset;
+                tempCollider.Position = holdOffset;
 
                 break;
             }
@@ -175,10 +178,20 @@ public partial class Player : CharacterBody3D
             return;
         }
 
-        //TODO Play Place Animation
+        //TODO Play Placing Animation
+
+        // Remove the Temp Collision Shape
+        if (tempCollider != null)
+        {
+            tempCollider.QueueFree();
+            tempCollider = null;
+        }
 
         // Set to original parent
         grabbedBlock.Reparent(prevParent);
+
+        // Reset the Block's Collider
+        blockCollider.Disabled = false;
 
         // Place the Block in front of player
         grabbedBlock.GlobalPosition = GlobalPosition + PlacementOffset;
@@ -189,18 +202,7 @@ public partial class Player : CharacterBody3D
             rb.Freeze = false;
         }
 
-        grabbedBlock.CollisionLayer = 2;
-        grabbedBlock.CollisionMask = 3;
-
         // Remove the grabbed Block
         grabbedBlock = null;
-
-        // Remove the Temp Collision Shape
-        // Remove the temporary collision shape
-        if (heldBlockCollision != null)
-        {
-            heldBlockCollision.QueueFree();
-            heldBlockCollision = null;
-        }
     }
 }
