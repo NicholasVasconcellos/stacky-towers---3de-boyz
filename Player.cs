@@ -35,6 +35,8 @@ public partial class Player : CharacterBody3D
     // Ref to Grabbed Block Object
     private RigidBody3D grabbedBlock;
 
+    private Node3D prevParent;
+
     // Block Position Relative to player
 
     public override void _Ready()
@@ -109,12 +111,6 @@ public partial class Player : CharacterBody3D
                 Place();
             }
         }
-
-        // If Holding a block, update it's position
-        if (grabbedBlock != null)
-        {
-            grabbedBlock.GlobalPosition = GlobalPosition + holdOffset;
-        }
     }
 
     private void Grab()
@@ -139,12 +135,18 @@ public partial class Player : CharacterBody3D
                 // Set Internal variable to that rigid Body
                 grabbedBlock = rb;
 
+                // Store the previous parent of the block
+                prevParent = rb.GetParent<Node3D>();
+
                 // Turn off gravity and momementum
                 rb.Freeze = true;
 
-                // Make the Freeze mode kinematic
-                // Collide but don't Push Other Blocks
-                rb.FreezeMode = RigidBody3D.FreezeModeEnum.Kinematic;
+                // Make Block a child of player
+                rb.Reparent(this);
+
+                // Set the Position with the offset
+                rb.Position = holdOffset;
+
                 break;
             }
         }
@@ -159,6 +161,9 @@ public partial class Player : CharacterBody3D
         }
 
         //TODO Play Place Animation
+
+        // Set to original parent
+        grabbedBlock.Reparent(prevParent);
 
         // Place the Block in front of player
         grabbedBlock.GlobalPosition = GlobalPosition + PlacementOffset;
