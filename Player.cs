@@ -16,6 +16,14 @@ public partial class Player : CharacterBody3D
     [Export]
     public float JumpVelocity = 4.5f;
 
+    // Position of Held Block
+
+    [Export]
+    public Vector3 holdOffset = new Vector3(0, 2.5f, 0);
+
+    [Export]
+    public Vector3 PlacementOffset = new Vector3(0, 1, 2);
+
     [Export]
     public NodePath CameraPath;
     private Node3D Camera;
@@ -28,8 +36,6 @@ public partial class Player : CharacterBody3D
     private RigidBody3D grabbedBlock;
 
     // Block Position Relative to player
-    [Export]
-    public Vector3 holdOffset;
 
     public override void _Ready()
     {
@@ -151,7 +157,7 @@ public partial class Player : CharacterBody3D
         //TODO Play Place Animation
 
         // Place the Block in front of player
-        grabbedBlock.GlobalPosition = GlobalPosition + new Vector3(0, 1, 2);
+        grabbedBlock.GlobalPosition = GlobalPosition + PlacementOffset;
 
         // cast to Rigid Body 3d and turn off freeze
         if (grabbedBlock is RigidBody3D rb)

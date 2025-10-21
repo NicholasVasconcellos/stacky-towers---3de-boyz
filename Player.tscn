@@ -27,8 +27,8 @@ orientation = 1
 
 [node name="Player" type="CharacterBody3D"]
 script = ExtResource("1_xhfnw")
+JumpVelocity = 7.0
 CameraPath = NodePath("CameraController")
-holdOffset = Vector3(0, 2.5, 0)
 
 [node name="GobotSkin" parent="." instance=ExtResource("2_kne1u")]
 
