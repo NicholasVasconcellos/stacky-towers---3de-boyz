@@ -1,6 +1,6 @@
 [gd_scene load_steps=6 format=3 uid="uid://dd46wybb4mvlg"]
 
-[ext_resource type="Script" uid="uid://b4s1vt8nxk8ro" path="res://UI/Scenes/PauseMenu.cs" id="1_mmpgd"]
+[ext_resource type="Script" uid="uid://b4s1vt8nxk8ro" path="res://UI/Scripts/PauseMenu.cs" id="1_mmpgd"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_8yl0k"]
 bg_color = Color(1, 1, 1, 1)

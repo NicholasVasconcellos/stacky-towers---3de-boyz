@@ -1,6 +1,6 @@
-[gd_scene load_steps=7 format=3 uid="uid://pine7cpl3irh"]
+[gd_scene load_steps=7 format=3 uid="uid://dhrjojsnsx0eu"]
 
-[ext_resource type="Script" uid="uid://l2fgoixnbv0w" path="res://UI/Scripts/OptionsMenu.cs" id="1_qodup"]
+[ext_resource type="Script" uid="uid://1sjwwqkm61bd" path="res://UI/Scripts/OptionsMenuFromMainMenu.cs" id="1_oup28"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_8yl0k"]
 bg_color = Color(1, 1, 1, 1)
@@ -44,7 +44,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-script = ExtResource("1_qodup")
+script = ExtResource("1_oup28")
 
 [node name="BackButton" type="Button" parent="."]
 layout_mode = 1

@@ -11,7 +11,7 @@ public partial class MainMenu : Control
 	
 	public void OnSettingsPressed()
 	{
-		GD.Print("Settings pressed");
+		GetTree().ChangeSceneToFile("res://UI/Scenes/OptionsMenuFromMainMenu.tscn");
 	}
 
 	public void OnExitPressed()
