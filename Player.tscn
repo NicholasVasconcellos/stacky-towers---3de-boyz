@@ -50,7 +50,7 @@ mesh = SubResource("BoxMesh_kne1u")
 skeleton = NodePath("../..")
 
 [node name="PlacementPreview" type="MeshInstance3D" parent="GrabFeatures"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 2)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.1, 2)
 material_override = SubResource("StandardMaterial3D_kne1u")
 mesh = SubResource("QuadMesh_e80uo")
 skeleton = NodePath("../..")
@@ -61,4 +61,3 @@ visible = false
 mesh = SubResource("BoxMesh_kne1u")
 
 [node name="Node" type="Node" parent="."]
-skeleton = NodePath("../..")
