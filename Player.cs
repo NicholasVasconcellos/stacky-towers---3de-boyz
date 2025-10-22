@@ -47,6 +47,8 @@ public partial class Player : CharacterBody3D
     // Temporary Collision Shape
     private CollisionShape3D tempCollider;
 
+    private Node3D characterModel;
+
     //for use with game manager
     public void Initialize(int deviceId, Color color)
     {
@@ -60,6 +62,8 @@ public partial class Player : CharacterBody3D
 
         // Initialize the grab area
         grabRange = GetNode<Area3D>("GrabRange");
+        // Initialize the reference to the Character Model
+        characterModel = GetNode<Node3D>("GobotSkin");
     }
 
     public override void _PhysicsProcess(double delta)
@@ -88,13 +92,21 @@ public partial class Player : CharacterBody3D
 
         if (moveDirection != Vector3.Zero)
         {
+            // Add Velocity
             velocity.X = moveDirection.X * Speed;
             velocity.Z = moveDirection.Z * Speed;
 
-            // use this to change the angle of the skin once it's been imported
+            // Rotate the Model
+            // calc rotation angle
+            // Set Rotation of the Char Model
+            float currAngle = characterModel.Rotation.Y;
 
-            float angle = MathF.Atan2(inputVector.X, inputVector.Y);
-            Rotation = new Vector3(Rotation.X, angle, Rotation.Z);
+            // Target Angle
+            float targetAngle = MathF.Atan2(moveDirection.X, moveDirection.Z);
+
+            // Rotate Towards Angle
+
+            characterModel.Rotation = new Vector3(Rotation.X, targetAngle, Rotation.Z);
         }
         else
         {
