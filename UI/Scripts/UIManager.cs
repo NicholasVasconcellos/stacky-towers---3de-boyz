@@ -11,8 +11,6 @@ public partial class UIManager : CanvasLayer
 		_pauseMenu = GetNode<Control>("PauseMenu");
 		_optionsMenu = GetNode<Control>("OptionsMenu");
 		
-		
-		
 		_pauseMenu.ProcessMode = ProcessModeEnum.Always;
 		_optionsMenu.ProcessMode = ProcessModeEnum.Always;
 		ProcessMode =  ProcessModeEnum.Always;

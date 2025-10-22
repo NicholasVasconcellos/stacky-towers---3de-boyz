@@ -3,10 +3,6 @@ using Godot;
 
 public partial class Level : Node3D
 {
-    // Make sure to assign the PauseMenu node in the Godot Inspector
-    [Export]
-    private Control PauseMenu;
-
     //in the editor, drag the player scene into there
     [Export]
     private PackedScene PlayerScene;
@@ -22,16 +18,6 @@ public partial class Level : Node3D
     {
         GD.Print("Level _Ready() called.");
         // Set "Process Mode" to "Always" so it can still function when GetTree().Paused is true.
-
-        if (PauseMenu != null)
-        {
-            PauseMenu.ProcessMode = ProcessModeEnum.Always;
-            PauseMenu.Hide();
-        }
-        else
-        {
-            GD.PrintErr("PauseMenu is not assigned in the Level scene!");
-        }
 
         //get an instance of the game manager
         gameManager = GetNode<GameManager>("/root/GameManager");
@@ -93,27 +79,5 @@ public partial class Level : Node3D
             SplitScreenContainer.AddChild(viewportContainer);
             GD.Print($"--- Loop finished for Device {config.DeviceId} ---");
         }
-    }
-
-    /// <summary>
-    /// Toggles the game's official pause state and shows/hides the pause menu.
-    /// </summary>
-    public void TogglePause()
-    {
-        bool isCurrentlyPaused = GetTree().Paused;
-
-        if (isCurrentlyPaused)
-        {
-            GetTree().Paused = false;
-            PauseMenu.Hide();
-        }
-        else
-        {
-            GetTree().Paused = true;
-            PauseMenu.Show();
-        }
-
-        // Note: Engine.TimeScale is not needed here, as GetTree().Paused
-        // handles freezing all nodes whose Process Mode is set to 'Inherit' (the default).
     }
 }
