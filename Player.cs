@@ -94,7 +94,7 @@ public partial class Player : CharacterBody3D
             // use this to change the angle of the skin once it's been imported
 
             float angle = MathF.Atan2(inputVector.X, inputVector.Y);
-            Rotate(Vector3.Up, angle);
+            Rotation = new Vector3(Rotation.X, angle, Rotation.Z);
         }
         else
         {

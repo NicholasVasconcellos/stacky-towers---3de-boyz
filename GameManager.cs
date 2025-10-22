@@ -41,14 +41,14 @@ public partial class GameManager : Node
         );
 
         //remove these to make it 1 player
-        PlayerConfigs.Add(new PlayerConfig { DeviceId = 1, PlayerColor = Colors.Blue });
-        PlayerConfigs.Add(
-            new PlayerConfig
-            {
-                DeviceId = 0, // assign this during player setup
-                PlayerColor = Colors.Red,
-            }
-        );
+        // PlayerConfigs.Add(new PlayerConfig { DeviceId = 1, PlayerColor = Colors.Blue });
+        // PlayerConfigs.Add(
+        //     new PlayerConfig
+        //     {
+        //         DeviceId = 0, // assign this during player setup
+        //         PlayerColor = Colors.Red,
+        //     }
+        // );
     }
 
     // Once a proper player setup screen is made, use this function
