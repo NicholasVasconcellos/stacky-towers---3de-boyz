@@ -1,8 +1,8 @@
 [gd_scene load_steps=9 format=3 uid="uid://ddfeug7d5du1f"]
 
-[ext_resource type="Script" uid="uid://dvrskk01phk14" path="res://Player.cs" id="1_xhfnw"]
+[ext_resource type="Script" uid="uid://dvrskk01phk14" path="res://Scripts/Player.cs" id="1_xhfnw"]
 [ext_resource type="PackedScene" uid="uid://cy36aygvs66pn" path="res://addons/gdquest_gobot/gobot_skin.tscn" id="2_kne1u"]
-[ext_resource type="PackedScene" uid="uid://bq4oofsrmpwgy" path="res://CameraController.tscn" id="2_kpjcp"]
+[ext_resource type="PackedScene" uid="uid://bq4oofsrmpwgy" path="res://Scenes/CameraController.tscn" id="2_kpjcp"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_kpjcp"]
 radius = 0.42138672
