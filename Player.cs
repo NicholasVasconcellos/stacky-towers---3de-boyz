@@ -92,7 +92,9 @@ public partial class Player : CharacterBody3D
             velocity.Z = moveDirection.Z * Speed;
 
             // use this to change the angle of the skin once it's been imported
-            Vector2 targetAngle = new Vector2(inputVector.X, inputVector.Y);
+
+            float angle = MathF.Atan2(inputVector.X, inputVector.Y);
+            Rotate(Vector3.Up, angle);
         }
         else
         {
