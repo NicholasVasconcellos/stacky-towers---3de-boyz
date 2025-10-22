@@ -11,9 +11,9 @@ size = Vector3(2, 2, 2)
 
 [node name="Block" type="RigidBody3D" groups=["Block"]]
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+[node name="BlockMesh" type="MeshInstance3D" parent="."]
 mesh = SubResource("BoxMesh_hfsdp")
 surface_material_override/0 = SubResource("StandardMaterial3D_2wby2")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+[node name="BlockCollider" type="CollisionShape3D" parent="."]
 shape = SubResource("BoxShape3D_ab6iy")
