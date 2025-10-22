@@ -47,9 +47,7 @@ public partial class Player : CharacterBody3D
     // Temporary Collision Shape
     private CollisionShape3D tempCollider;
 
-    private Node3D characterModel;
-
-    private Node3D grabFeatures;
+    private GobotSkin characterModel;
 
     //for use with game manager
     public void Initialize(int deviceId, Color color)
@@ -62,14 +60,10 @@ public partial class Player : CharacterBody3D
     {
         Camera = GetNode<Node3D>(CameraPath);
 
-        // Initialize grab Features
-        grabFeatures = GetNode<Node3D>("GrabFeatures");
-
         // Initialize the grab area
-        grabRange = GetNode<Area3D>("GrabFeatures/GrabRange");
-
+        grabRange = GetNode<Area3D>("GrabRange");
         // Initialize the reference to the Character Model
-        characterModel = GetNode<Node3D>("GobotSkin");
+        characterModel = GetNode<GobotSkin>("GobotSkin");
     }
 
     public override void _PhysicsProcess(double delta)
@@ -106,6 +100,7 @@ public partial class Player : CharacterBody3D
             // calc rotation angle
             // Set Rotation of the Char Model
             float currAngle = characterModel.Rotation.Y;
+            characterModel?.Run();
 
             // Target Angle
             float targetAngle = MathF.Atan2(moveDirection.X, moveDirection.Z);
@@ -113,16 +108,14 @@ public partial class Player : CharacterBody3D
             // Rotate Towards Angle
             float nextAngle = Mathf.LerpAngle(currAngle, targetAngle, TurnSpeed * (float)delta);
 
-            // Rotate Mesh
             characterModel.Rotation = new Vector3(Rotation.X, nextAngle, Rotation.Z);
-            // Rotate Grab Features
-            grabFeatures.Rotation = new Vector3(Rotation.X, nextAngle, Rotation.Z);
         }
         else
         {
             // Smooth Stopping
             velocity.X = Mathf.MoveToward(Velocity.X, 0, Speed);
             velocity.Z = Mathf.MoveToward(Velocity.Z, 0, Speed);
+            characterModel?.Idle();
         }
 
         Velocity = velocity;
@@ -191,7 +184,7 @@ public partial class Player : CharacterBody3D
                 rb.Freeze = true;
 
                 // Disable Block Collision
-                blockCollider = rb.GetNode<CollisionShape3D>("BlockCollider");
+                blockCollider = rb.GetNode<CollisionShape3D>("CollisionShape3D");
                 blockCollider.Disabled = true;
 
                 // Make Block a child of player
@@ -203,7 +196,7 @@ public partial class Player : CharacterBody3D
                 // Create new Collision Shape the same size as the block
                 tempCollider = new CollisionShape3D();
                 // Set Shape
-                tempCollider.Shape = rb.GetNode<CollisionShape3D>("BlockCollider").Shape;
+                tempCollider.Shape = rb.GetNode<CollisionShape3D>("CollisionShape3D").Shape;
                 // Add as child
                 AddChild(tempCollider);
                 // Set Relative Position
@@ -237,9 +230,8 @@ public partial class Player : CharacterBody3D
         // Reset the Block's Collider
         blockCollider.Disabled = false;
 
-        // Place the Block in front of player, at offset, rotated to match the char model
-        grabbedBlock.GlobalPosition =
-            GlobalPosition + PlacementOffset.Rotated(Vector3.Up, characterModel.Rotation.Y);
+        // Place the Block in front of player
+        grabbedBlock.GlobalPosition = GlobalPosition + PlacementOffset;
 
         // cast to Rigid Body 3d and turn off freeze
         if (grabbedBlock is RigidBody3D rb)
