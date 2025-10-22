@@ -49,6 +49,11 @@ public partial class Player : CharacterBody3D
 
     private GobotSkin characterModel;
 
+    private Node3D grabFeatures;
+
+    // Store the current input direction for this player
+    private Vector2 inputDirection = Vector2.Zero;
+
     //for use with game manager
     public void Initialize(int deviceId, Color color)
     {
@@ -60,8 +65,10 @@ public partial class Player : CharacterBody3D
     {
         Camera = GetNode<Node3D>(CameraPath);
 
+        // Initialize grab Features
+        grabFeatures = GetNode<Node3D>("GrabFeatures");
         // Initialize the grab area
-        grabRange = GetNode<Area3D>("GrabRange");
+        grabRange = GetNode<Area3D>("GrabFeatures/GrabRange");
         // Initialize the reference to the Character Model
         characterModel = GetNode<GobotSkin>("GobotSkin");
     }
@@ -77,13 +84,8 @@ public partial class Player : CharacterBody3D
             velocity += GetGravity() * (float)delta;
         }
 
-        // Get 2d Input Vector
-        Vector2 inputVector = Input.GetVector(
-            "Move Back",
-            "Move Forward",
-            "Move Left",
-            "Move Right"
-        );
+        // Use the stored input direction (updated in _UnhandledInput per device)
+        Vector2 inputVector = inputDirection;
 
         // Create direction vector and rotate by camera's Y rotation
         Vector3 moveDirection = new Vector3(inputVector.X, 0, inputVector.Y);
@@ -107,8 +109,9 @@ public partial class Player : CharacterBody3D
 
             // Rotate Towards Angle
             float nextAngle = Mathf.LerpAngle(currAngle, targetAngle, TurnSpeed * (float)delta);
-
             characterModel.Rotation = new Vector3(Rotation.X, nextAngle, Rotation.Z);
+            // Rotate Grab Features
+            grabFeatures.Rotation = new Vector3(Rotation.X, nextAngle, Rotation.Z);
         }
         else
         {
@@ -129,19 +132,17 @@ public partial class Player : CharacterBody3D
         {
             return; //Not this player's input
         }
+
+        // Update movement direction based on this player's input
+        inputDirection = Input.GetVector("Move Back", "Move Forward", "Move Left", "Move Right");
+
         // Handle Jump.
         if (Input.IsActionJustPressed("ui_accept") && IsOnFloor())
         {
             velocity.Y = JumpVelocity;
         }
 
-        Velocity = velocity;
-        MoveAndSlide();
-    }
-
-    public override void _Process(double delta)
-    {
-        // Handle Grab Button
+        // Handle Grab Button (device-specific)
         if (Input.IsActionJustPressed("Grab"))
         {
             if (grabbedBlock == null)
@@ -153,6 +154,14 @@ public partial class Player : CharacterBody3D
                 Place();
             }
         }
+
+        Velocity = velocity;
+        MoveAndSlide();
+    }
+
+    public override void _Process(double delta)
+    {
+        // Movement and grab are now in _UnhandledInput for per-player input
     }
 
     private void Grab()
@@ -184,7 +193,7 @@ public partial class Player : CharacterBody3D
                 rb.Freeze = true;
 
                 // Disable Block Collision
-                blockCollider = rb.GetNode<CollisionShape3D>("CollisionShape3D");
+                blockCollider = rb.GetNode<CollisionShape3D>("BlockCollider");
                 blockCollider.Disabled = true;
 
                 // Make Block a child of player
@@ -196,7 +205,7 @@ public partial class Player : CharacterBody3D
                 // Create new Collision Shape the same size as the block
                 tempCollider = new CollisionShape3D();
                 // Set Shape
-                tempCollider.Shape = rb.GetNode<CollisionShape3D>("CollisionShape3D").Shape;
+                tempCollider.Shape = rb.GetNode<CollisionShape3D>("BlockCollider").Shape;
                 // Add as child
                 AddChild(tempCollider);
                 // Set Relative Position
@@ -231,7 +240,8 @@ public partial class Player : CharacterBody3D
         blockCollider.Disabled = false;
 
         // Place the Block in front of player
-        grabbedBlock.GlobalPosition = GlobalPosition + PlacementOffset;
+        grabbedBlock.GlobalPosition =
+            GlobalPosition + PlacementOffset.Rotated(Vector3.Up, characterModel.Rotation.Y);
 
         // cast to Rigid Body 3d and turn off freeze
         if (grabbedBlock is RigidBody3D rb)
