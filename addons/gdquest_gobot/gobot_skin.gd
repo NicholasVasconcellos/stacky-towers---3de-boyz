@@ -1,17 +1,6 @@
 extends Node3D
-
-## Emitted when Gobot's feet hit the ground will running.
-@warning_ignore("unused_signal")
-signal foot_step
 ## Gobot's MeshInstance3D model.
 @export var gobot_model: MeshInstance3D
-## Determines whether blinking is enabled or disabled.
-@export var blink = true:
-	set = _set_blink
-@export var _left_eye_mat_override: String
-@export var _right_eye_mat_override: String
-@export var _open_eye: CompressedTexture2D
-@export var _close_eye: CompressedTexture2D
 
 @onready var _animation_tree: AnimationTree = %AnimationTree
 @onready var _state_machine: AnimationNodeStateMachinePlayback = _animation_tree.get(
@@ -19,42 +8,6 @@ signal foot_step
 )
 
 @onready var _flip_shot_path: String = "parameters/FlipShot/request"
-@onready var _hurt_shot_path: String = "parameters/HurtShot/request"
-
-@onready var _blink_timer = %BlinkTimer
-@onready var _closed_eyes_timer = %ClosedEyesTimer
-
-@onready var _left_eye_mat: StandardMaterial3D = gobot_model.get(_left_eye_mat_override)
-@onready var _right_eye_mat: StandardMaterial3D = gobot_model.get(_right_eye_mat_override)
-
-
-func _ready() -> void:
-	_blink_timer.timeout.connect(
-		func() -> void:
-			_left_eye_mat.albedo_texture = _close_eye
-			_right_eye_mat.albedo_texture = _close_eye
-			_closed_eyes_timer.start(0.2)
-	)
-
-	_closed_eyes_timer.timeout.connect(
-		func() -> void:
-			_left_eye_mat.albedo_texture = _open_eye
-			_right_eye_mat.albedo_texture = _open_eye
-			_blink_timer.start(randf_range(1.0, 8.0))
-	)
-
-
-func _set_blink(state: bool) -> void:
-	if _blink_timer == null or blink == state:
-		return
-
-	blink = state
-	if blink:
-		_blink_timer.start(0.2)
-	else:
-		_blink_timer.stop()
-		_closed_eyes_timer.stop()
-
 
 ## Sets the model to a neutral, action-free state.
 func idle() -> void:
@@ -95,12 +48,3 @@ func flip() -> void:
 ## Makes a victory sign.
 func victory_sign() -> void:
 	_state_machine.travel("VictorySign")
-
-
-## Plays a one-shot hurt animation.
-## This animation plays in parallel with other states.
-func hurt() -> void:
-	_animation_tree.set(_hurt_shot_path, AnimationNodeOneShot.ONE_SHOT_REQUEST_FIRE)
-	var tween := create_tween().set_ease(Tween.EASE_OUT)
-	tween.tween_property(self, "scale", Vector3(1.2, 0.8, 1.2), 0.1)
-	tween.tween_property(self, "scale", Vector3.ONE, 0.2)
