@@ -6,6 +6,7 @@ public partial class UIManager : CanvasLayer
 	private Control _pauseMenu;
 	private Control _optionsMenu;
 	private TimerLabel _timerLabel;
+	private CenterContainer _towerHeightContainer;
 
 	private bool _isGameOver = false;
 	
@@ -14,6 +15,7 @@ public partial class UIManager : CanvasLayer
 		_pauseMenu = GetNode<Control>("PauseMenu");
 		_optionsMenu = GetNode<Control>("OptionsMenu");
 		_timerLabel = GetNode<TimerLabel>("TimerLabel");
+		_towerHeightContainer = GetNode<CenterContainer>("TowerHeightContainer");
 		
 		_pauseMenu.ProcessMode = ProcessModeEnum.Always;
 		_optionsMenu.ProcessMode = ProcessModeEnum.Always;
@@ -67,11 +69,13 @@ public partial class UIManager : CanvasLayer
 		{
 			GetTree().Paused = false;
 			_pauseMenu.Hide();
+			_towerHeightContainer.Visible = true;
 		}
 		else
 		{
 			GetTree().Paused = true;
 			_pauseMenu.Show();
+			_towerHeightContainer.Visible = false;
 		}
 	}
 

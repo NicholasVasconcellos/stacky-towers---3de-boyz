@@ -61,7 +61,7 @@ public partial class GameManager : Node
     public void StartGame()
     {
         CurrentState = GameState.InGame;
-        GetTree().ChangeSceneToFile("res://Level.tscn");
+        GetTree().ChangeSceneToFile("res://Scenes/Level.tscn");
     }
 
     //consider moving pause to gamemanger
