@@ -4,15 +4,16 @@ importer="texture"
 type="CompressedTexture2D"
 uid="uid://bkau5m34kd6ff"
 path.s3tc="res://.godot/imported/Ground_Texture.png-7bc1ebaa9b5241ffc48ab98524bd2a84.s3tc.ctex"
+path.etc2="res://.godot/imported/Ground_Texture.png-7bc1ebaa9b5241ffc48ab98524bd2a84.etc2.ctex"
 metadata={
-"imported_formats": ["s3tc_bptc"],
+"imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
 }
 
 [deps]
 
 source_file="res://Sprites/Ground_Texture.png"
-dest_files=["res://.godot/imported/Ground_Texture.png-7bc1ebaa9b5241ffc48ab98524bd2a84.s3tc.ctex"]
+dest_files=["res://.godot/imported/Ground_Texture.png-7bc1ebaa9b5241ffc48ab98524bd2a84.s3tc.ctex", "res://.godot/imported/Ground_Texture.png-7bc1ebaa9b5241ffc48ab98524bd2a84.etc2.ctex"]
 
 [params]
 
