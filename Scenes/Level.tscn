@@ -47,6 +47,10 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.5265026, 2.7382922, 0)
 [node name="Block3" parent="Entities" instance=ExtResource("4_m3clv")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.4749641, 5.616619, -3.3230357)
 
+[node name="BlockSpawner" type="Node3D" parent="Entities"]
+script = ExtResource("6_tj5wv")
+BlockScene = ExtResource("4_m3clv")
+
 [node name="SplitScreenViews" type="CanvasLayer" parent="."]
 
 [node name="GridContainer" type="GridContainer" parent="SplitScreenViews"]
@@ -57,7 +61,3 @@ grow_horizontal = 2
 grow_vertical = 2
 
 [node name="UIManager" parent="." instance=ExtResource("4_wkftn")]
-
-[node name="BlockSpawner" type="Node3D" parent="."]
-script = ExtResource("6_tj5wv")
-BlockScene = ExtResource("4_m3clv")
