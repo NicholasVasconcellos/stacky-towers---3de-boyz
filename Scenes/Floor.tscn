@@ -1,11 +1,11 @@
 [gd_scene load_steps=5 format=3 uid="uid://bmv5nwfpl1s4u"]
 
-[ext_resource type="Texture2D" uid="uid://dbav3djvkib3m" path="res://icon.svg" id="1_wm4b4"]
+[ext_resource type="Texture2D" uid="uid://bkau5m34kd6ff" path="res://Sprites/Ground_Texture.png" id="1_4xl7o"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_qbq3j"]
-albedo_texture = ExtResource("1_wm4b4")
-uv1_scale = Vector3(10.55, 10.55, 10.55)
-uv1_offset = Vector3(0.14, 0, 0)
+albedo_texture = ExtResource("1_4xl7o")
+uv1_scale = Vector3(37.6, 37.6, 37.6)
+texture_filter = 0
 
 [sub_resource type="BoxMesh" id="BoxMesh_spmh5"]
 material = SubResource("StandardMaterial3D_qbq3j")
