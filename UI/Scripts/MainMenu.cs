@@ -4,16 +4,16 @@ namespace StackyTowers3DEBoyz.UI.Scripts;
 
 public partial class MainMenu : Control
 {
-    private GameManager gameManager;
+    // private GameManager gameManager;
 
     public override void _Ready()
     {
-        gameManager = GetNode<GameManager>("/root/GameManager");
+        // gameManager = GetNode<GameManager>("/root/GameManager");
     }
 
     public void OnStartPressed()
     {
-        gameManager.StartGame();
+        GetTree().ChangeSceneToFile("res://UI/Scenes/PlayerSetupScreen.tscn");
     }
 
     public void OnSettingsPressed()

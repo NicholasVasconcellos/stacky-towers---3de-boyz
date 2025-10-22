@@ -1,0 +1,33 @@
+[gd_scene load_steps=4 format=3 uid="uid://bxbrv5i2c6l5x"]
+
+[ext_resource type="Texture2D" uid="uid://dbav3djvkib3m" path="res://icon.svg" id="1_j2447"]
+[ext_resource type="Script" uid="uid://dy303lrj8yueu" path="res://UI/Scripts/PlayerCard.cs" id="1_jt5fp"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_jt5fp"]
+font_size = 24
+
+[node name="PlayerCard" type="PanelContainer"]
+custom_minimum_size = Vector2(200, 300)
+offset_right = 40.0
+offset_bottom = 40.0
+script = ExtResource("1_jt5fp")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 2
+
+[node name="Title" type="Label" parent="VBoxContainer"]
+layout_mode = 2
+text = "PLAYER X"
+label_settings = SubResource("LabelSettings_jt5fp")
+horizontal_alignment = 1
+
+[node name="Icon" type="TextureRect" parent="VBoxContainer"]
+custom_minimum_size = Vector2(0, 180)
+layout_mode = 2
+texture = ExtResource("1_j2447")
+stretch_mode = 5
+
+[node name="Status" type="Label" parent="VBoxContainer"]
+layout_mode = 2
+text = "..."
+horizontal_alignment = 1

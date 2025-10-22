@@ -63,7 +63,12 @@ public partial class Level : Node3D
             Player playerInstance = PlayerScene.Instantiate<Player>();
 
             // Initialize Player
-            playerInstance.Initialize(config.DeviceId, config.PlayerColor);
+            playerInstance.Initialize(
+                config.DeviceId,
+                config.PlayerColor,
+                xOffset: config.DeviceId * 4,
+                zOffset: 0
+            );
 
             // add player to viewport and add viewport to container
             subViewport.AddChild(playerInstance);
