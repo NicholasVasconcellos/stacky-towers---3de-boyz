@@ -105,8 +105,9 @@ public partial class Player : CharacterBody3D
             float targetAngle = MathF.Atan2(moveDirection.X, moveDirection.Z);
 
             // Rotate Towards Angle
+            float nextAngle = Mathf.LerpAngle(currAngle, targetAngle, TurnSpeed * (float)delta);
 
-            characterModel.Rotation = new Vector3(Rotation.X, targetAngle, Rotation.Z);
+            characterModel.Rotation = new Vector3(Rotation.X, nextAngle, Rotation.Z);
         }
         else
         {
