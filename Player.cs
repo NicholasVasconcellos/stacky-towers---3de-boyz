@@ -140,6 +140,7 @@ public partial class Player : CharacterBody3D
         // Handle Jump.
         if (Input.IsActionJustPressed("ui_accept") && IsOnFloor())
         {
+            characterModel?.Jump();
             velocity.Y = JumpVelocity;
         }
 
