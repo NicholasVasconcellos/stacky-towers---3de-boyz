@@ -50,6 +50,9 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.4749641, 5.616619, -3.32303
 [node name="BlockSpawner" type="Node3D" parent="Entities"]
 script = ExtResource("6_tj5wv")
 BlockScene = ExtResource("4_m3clv")
+BlocksPerSecond = 0.1
+SpawnRange = Vector3(20, 0, 20)
+SpawnCenter = Vector3(0, 100, 0)
 
 [node name="SplitScreenViews" type="CanvasLayer" parent="."]
 
