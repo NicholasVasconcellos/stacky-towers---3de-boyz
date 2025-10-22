@@ -55,10 +55,11 @@ public partial class Player : CharacterBody3D
     private Vector2 inputDirection = Vector2.Zero;
 
     //for use with game manager
-    public void Initialize(int deviceId, Color color)
+    public void Initialize(int deviceId, Color color, int xOffset, int zOffset)
     {
         this.PlayerDeviceId = deviceId;
         this.PlayerColor = color;
+        this.Position = new Vector3(this.Position.X + xOffset, 0, this.Position.Z + zOffset);
     }
 
     public override void _Ready()
