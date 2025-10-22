@@ -1,9 +1,14 @@
-[gd_scene load_steps=4 format=3 uid="uid://bmv5nwfpl1s4u"]
+[gd_scene load_steps=5 format=3 uid="uid://bmv5nwfpl1s4u"]
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_spmh5"]
-albedo_color = Color(0.120891325, 0.1374568, 0.19415966, 1)
+[ext_resource type="Texture2D" uid="uid://dbav3djvkib3m" path="res://icon.svg" id="1_wm4b4"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_qbq3j"]
+albedo_texture = ExtResource("1_wm4b4")
+uv1_scale = Vector3(10.55, 10.55, 10.55)
+uv1_offset = Vector3(0.14, 0, 0)
 
 [sub_resource type="BoxMesh" id="BoxMesh_spmh5"]
+material = SubResource("StandardMaterial3D_qbq3j")
 size = Vector3(100, 1, 100)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_wm4b4"]
@@ -14,7 +19,6 @@ size = Vector3(100, 1, 100)
 [node name="StaticBody3D" type="StaticBody3D" parent="."]
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="StaticBody3D"]
-material_override = SubResource("StandardMaterial3D_spmh5")
 mesh = SubResource("BoxMesh_spmh5")
 skeleton = NodePath("../..")
 
