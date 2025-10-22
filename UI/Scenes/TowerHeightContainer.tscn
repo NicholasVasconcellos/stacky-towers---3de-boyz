@@ -1,0 +1,76 @@
+[gd_scene load_steps=3 format=3 uid="uid://c21osrsmcgvye"]
+
+[ext_resource type="Texture2D" uid="uid://dbav3djvkib3m" path="res://icon.svg" id="1_m4xtt"]
+[ext_resource type="PackedScene" uid="uid://dvkcsc2bnggbk" path="res://UI/Scenes/HeightTick.tscn" id="2_6rb6s"]
+
+[node name="TowerHeightContainer" type="CenterContainer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="AxisZone" type="Control" parent="."]
+custom_minimum_size = Vector2(100, 800)
+layout_mode = 2
+mouse_filter = 2
+
+[node name="AxisBar" type="ColorRect" parent="AxisZone"]
+layout_mode = 0
+offset_left = 45.0
+offset_right = 55.0
+offset_bottom = 800.0
+mouse_filter = 2
+color = Color(0.5176471, 0.5176471, 0.5176471, 0.6784314)
+
+[node name="Player1Marker" type="TextureRect" parent="AxisZone"]
+layout_mode = 0
+offset_left = 10.0
+offset_top = 750.0
+offset_right = 138.0
+offset_bottom = 878.0
+scale = Vector2(0.25, 0.25)
+mouse_filter = 2
+texture = ExtResource("1_m4xtt")
+
+[node name="Player2Marker" type="TextureRect" parent="AxisZone"]
+modulate = Color(0.85852695, 0, 0.16708198, 1)
+layout_mode = 0
+offset_left = 60.0
+offset_top = 750.0
+offset_right = 188.0
+offset_bottom = 878.0
+scale = Vector2(0.25, 0.25)
+mouse_filter = 2
+texture = ExtResource("1_m4xtt")
+
+[node name="HeightTick_50m" parent="AxisZone" instance=ExtResource("2_6rb6s")]
+layout_mode = 0
+offset_left = 50.0
+offset_top = 600.0
+offset_right = 90.0
+offset_bottom = 640.0
+TickText = "50m"
+
+[node name="HeightTick_100m" parent="AxisZone" instance=ExtResource("2_6rb6s")]
+layout_mode = 0
+offset_left = 50.0
+offset_top = 400.0
+offset_right = 90.0
+offset_bottom = 440.0
+TickText = "100m"
+
+[node name="HeightTick_150m" parent="AxisZone" instance=ExtResource("2_6rb6s")]
+layout_mode = 0
+offset_left = 50.0
+offset_top = 200.0
+offset_right = 90.0
+offset_bottom = 240.0
+TickText = "150m"
+
+[node name="HeightTick_200m" parent="AxisZone" instance=ExtResource("2_6rb6s")]
+layout_mode = 0
+offset_left = 50.0
+offset_right = 90.0
+TickText = "200m"
