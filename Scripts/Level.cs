@@ -75,6 +75,7 @@ public partial class Level : Node3D
                 config.DeviceId,
                 config.PlayerColor,
                 xOffset: config.DeviceId * 4,
+                // Add Height so Player doesn't fall below ground
                 zOffset: 3
             );
 
