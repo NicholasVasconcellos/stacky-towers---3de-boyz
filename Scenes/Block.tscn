@@ -10,6 +10,8 @@ albedo_color = Color(0.8956227, 0.30090225, 0.25784513, 1)
 size = Vector3(2, 2, 2)
 
 [node name="Block" type="RigidBody3D" groups=["Block"]]
+collision_layer = 2
+collision_mask = 2
 
 [node name="BlockMesh" type="MeshInstance3D" parent="."]
 mesh = SubResource("BoxMesh_hfsdp")

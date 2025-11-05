@@ -22,6 +22,7 @@ size = Vector2(2, 2)
 orientation = 1
 
 [node name="Player" type="CharacterBody3D"]
+collision_mask = 3
 script = ExtResource("1_xhfnw")
 TurnSpeed = 17.0
 JumpVelocity = 7.0
