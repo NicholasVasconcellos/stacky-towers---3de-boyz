@@ -62,17 +62,21 @@ public partial class Level : Node3D
             }
             Player playerInstance = PlayerScene.Instantiate<Player>();
 
+            // Log Collision Layer and Mask
+            GD.Print($"Player {config.DeviceId} - CollisionLayer: {playerInstance.CollisionLayer}");
+            GD.Print($"Player {config.DeviceId} - CollisionMask: {playerInstance.CollisionMask}");
+
+            // Add player to viewport and add viewport to container
+            subViewport.AddChild(playerInstance);
+            viewportContainer.AddChild(subViewport);
+
             // Initialize Player
             playerInstance.Initialize(
                 config.DeviceId,
                 config.PlayerColor,
                 xOffset: config.DeviceId * 4,
-                zOffset: 0
+                zOffset: 3
             );
-
-            // add player to viewport and add viewport to container
-            subViewport.AddChild(playerInstance);
-            viewportContainer.AddChild(subViewport);
 
             if (SplitScreenContainer == null)
             {
