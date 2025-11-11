@@ -15,7 +15,7 @@ public partial class Player : CharacterBody3D
     public float TurnSpeed = 2.0f;
 
     [Export]
-    public float JumpVelocity = 4.5f;
+    public float JumpVelocity = 6.0f;
 
     // Position of Held Block
 
@@ -143,6 +143,11 @@ public partial class Player : CharacterBody3D
             characterModel?.Jump();
             velocity.Y = JumpVelocity;
         }
+        else if (Input.IsActionJustReleased("ui_accept") && velocity.Y > 0)
+        {
+            // Variable jump height
+            velocity.Y *= 0.2f;
+        }
 
         // Handle Grab Button (device-specific)
         if (Input.IsActionJustPressed("Grab"))
@@ -156,9 +161,7 @@ public partial class Player : CharacterBody3D
                 Place();
             }
         }
-
         Velocity = velocity;
-        MoveAndSlide();
     }
 
     public override void _Process(double delta)
