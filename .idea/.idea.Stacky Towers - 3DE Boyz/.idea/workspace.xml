@@ -5,15 +5,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="c2f424eb-9508-4bf4-9216-96c278956c76" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/Stacky Towers - 3DE Boyz - Linux.x86_64" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Stacky Towers - 3DE Boyz - Windows.exe" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/export_presets.cfg" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.Stacky Towers - 3DE Boyz/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Stacky Towers - 3DE Boyz/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/addons/gdquest_gobot/textures/closed_eyes.png.import" beforeDir="false" afterPath="$PROJECT_DIR$/addons/gdquest_gobot/textures/closed_eyes.png.import" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/addons/gdquest_gobot/textures/hurt_eyes.png.import" beforeDir="false" afterPath="$PROJECT_DIR$/addons/gdquest_gobot/textures/hurt_eyes.png.import" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/addons/gdquest_gobot/textures/open_eye.png.import" beforeDir="false" afterPath="$PROJECT_DIR$/addons/gdquest_gobot/textures/open_eye.png.import" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/icon.svg.import" beforeDir="false" afterPath="$PROJECT_DIR$/icon.svg.import" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/project.godot" beforeDir="false" afterPath="$PROJECT_DIR$/project.godot" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/UI/Scenes/UIManager.tscn" beforeDir="false" afterPath="$PROJECT_DIR$/UI/Scenes/UIManager.tscn" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/UI/Scripts/UIManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/UI/Scripts/UIManager.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -32,6 +26,7 @@
     <setting file="file://$PROJECT_DIR$/UI/Scripts/PlayerSetupScreen.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/UI/Scripts/TimerLabel.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/UI/Scripts/UIManager.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/UI/Scripts/WinScreen.cs" root0="FORCE_HIGHLIGHTING" />
   </component>
   <component name="MetaFilesCheckinStateConfiguration" checkMetaFiles="true" />
   <component name="ProjectColorInfo">{
@@ -120,6 +115,7 @@
       <workItem from="1760770623546" duration="212000" />
       <workItem from="1760856863710" duration="1428000" />
       <workItem from="1760941817805" duration="10206000" />
+      <workItem from="1762853307191" duration="2456000" />
     </task>
     <servers />
   </component>

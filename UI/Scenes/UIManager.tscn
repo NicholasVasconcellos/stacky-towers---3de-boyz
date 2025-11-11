@@ -1,9 +1,10 @@
-[gd_scene load_steps=7 format=3 uid="uid://cla2u363q8sq5"]
+[gd_scene load_steps=8 format=3 uid="uid://cla2u363q8sq5"]
 
 [ext_resource type="Script" uid="uid://cite1iq0preh5" path="res://UI/Scripts/UIManager.cs" id="1_s14jw"]
 [ext_resource type="PackedScene" uid="uid://dd46wybb4mvlg" path="res://UI/Scenes/PauseMenu.tscn" id="2_eosfr"]
 [ext_resource type="PackedScene" uid="uid://pine7cpl3irh" path="res://UI/Scenes/OptionsMenu.tscn" id="3_v4jn0"]
 [ext_resource type="Script" uid="uid://8uuhy3oiviib" path="res://UI/Scripts/TimerLabel.cs" id="4_eosfr"]
+[ext_resource type="PackedScene" uid="uid://cxwnfftt3ubro" path="res://UI/Scenes/WinScreen.tscn" id="4_rawqy"]
 [ext_resource type="PackedScene" uid="uid://c21osrsmcgvye" path="res://UI/Scenes/TowerHeightContainer.tscn" id="5_v4jn0"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_s14jw"]
@@ -17,6 +18,8 @@ script = ExtResource("1_s14jw")
 [node name="PauseMenu" parent="." instance=ExtResource("2_eosfr")]
 
 [node name="OptionsMenu" parent="." instance=ExtResource("3_v4jn0")]
+
+[node name="WinScreen" parent="." instance=ExtResource("4_rawqy")]
 
 [node name="TimerLabel" type="Label" parent="."]
 anchors_preset = 5
