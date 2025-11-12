@@ -1,0 +1,49 @@
+[gd_scene load_steps=9 format=3 uid="uid://b3y4j5hcprcra"]
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_i4uei"]
+
+[sub_resource type="Gradient" id="Gradient_jvfo0"]
+offsets = PackedFloat32Array(0, 0.4056604, 0.8396226)
+colors = PackedColorArray(1, 1, 1, 1, 0.94509804, 0.6117647, 0, 1, 1, 0.22745098, 0.21176471, 0)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_jhf8d"]
+gradient = SubResource("Gradient_jvfo0")
+
+[sub_resource type="Curve" id="Curve_l46jp"]
+_data = [Vector2(0, 0.20224726), 0.0, 0.0, 0, 0, Vector2(0.5, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 3
+
+[sub_resource type="CurveTexture" id="CurveTexture_rmn8y"]
+curve = SubResource("Curve_l46jp")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_f0idu"]
+spread = 15.0
+initial_velocity_min = 5.0
+initial_velocity_max = 8.0
+gravity = Vector3(0, 0, 0)
+scale_curve = SubResource("CurveTexture_rmn8y")
+color_ramp = SubResource("GradientTexture1D_jhf8d")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ol1my"]
+transparency = 1
+shading_mode = 0
+vertex_color_use_as_albedo = true
+
+[sub_resource type="QuadMesh" id="QuadMesh_do1fi"]
+material = SubResource("StandardMaterial3D_ol1my")
+
+[node name="Jetpack" type="Node3D"]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+transform = Transform3D(0.3, 0, 0, 0, 0.5, 0, 0, 0, 0.2, 0, 0, 0)
+mesh = SubResource("CylinderMesh_i4uei")
+
+[node name="ThrusterParticles" type="GPUParticles3D" parent="."]
+transform = Transform3D(0.049198385, -0.998789, 3.7252903e-09, -0.99829346, -0.04917397, -0.031497907, 0.031459764, 0.0015496444, -0.99950385, 0, -0.507201, 0)
+amount = 50
+lifetime = 0.75
+process_material = SubResource("ParticleProcessMaterial_f0idu")
+draw_pass_1 = SubResource("QuadMesh_do1fi")
+
+[node name="ThrusterSound" type="AudioStreamPlayer3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, -0.9987518, -0.049948078, 0, 0.049948078, -0.9987518, 0, -0.49860603, 0)
