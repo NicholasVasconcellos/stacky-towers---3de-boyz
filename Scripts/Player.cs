@@ -33,6 +33,9 @@ public partial class Player : CharacterBody3D
     public Color PlayerColor { get; private set; }
 
     /*Grabbing Functionality*/
+    // Placement Preview Location
+    private Node3D placementSnapPoint = null;
+
     // Valid Grab Area (volume)
     private Area3D grabRange;
 
