@@ -1,0 +1,24 @@
+[gd_scene load_steps=5 format=3 uid="uid://diry42au7qyke"]
+
+[ext_resource type="Script" uid="uid://soeqb02bj6rx" path="res://Scenes/GoalZone.cs" id="1_5jjlu"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_5jjlu"]
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_5jjlu"]
+material = SubResource("StandardMaterial3D_5jjlu")
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_ee251"]
+size = Vector3(2.295391, 0.5080347, 2.271102)
+
+[node name="GoalZone" type="Area3D"]
+script = ExtResource("1_5jjlu")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.184, 0)
+mesh = SubResource("PlaneMesh_5jjlu")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(0.87, 0, 0, 0, 0.87, 0, 0, 0, 0.87, 0.010516703, 0.03332585, 0.014077077)
+shape = SubResource("BoxShape3D_ee251")
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]
