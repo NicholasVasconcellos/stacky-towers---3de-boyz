@@ -1,4 +1,6 @@
-[gd_scene load_steps=4 format=3 uid="uid://bgcxuru7egs0k"]
+[gd_scene load_steps=5 format=3 uid="uid://bgcxuru7egs0k"]
+
+[ext_resource type="Script" uid="uid://cccemn41y18rm" path="res://Scripts/Block.cs" id="1_ovn4m"]
 
 [sub_resource type="BoxMesh" id="BoxMesh_hfsdp"]
 size = Vector3(2, 2, 2)
@@ -12,6 +14,7 @@ size = Vector3(2, 2, 2)
 [node name="Block" type="RigidBody3D" groups=["Block"]]
 collision_layer = 2
 collision_mask = 2
+script = ExtResource("1_ovn4m")
 
 [node name="BlockMesh" type="MeshInstance3D" parent="."]
 mesh = SubResource("BoxMesh_hfsdp")
