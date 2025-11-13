@@ -7,6 +7,8 @@ public partial class Block : RigidBody3D
     private MeshInstance3D defaultMesh;
     private MeshInstance3D highlightMesh;
 
+    private CollisionShape3D blockCollider;
+
     // Block Side lengh in meters
     [Export]
     private int lenght = 2;
@@ -19,8 +21,12 @@ public partial class Block : RigidBody3D
         defaultMesh = GetNode<MeshInstance3D>("Meshes/DefaultMesh");
         highlightMesh = GetNode<MeshInstance3D>("Meshes/HighlightMesh");
 
+        // SEt Visibility
         defaultMesh.Visible = true;
         highlightMesh.Visible = false;
+
+        // Set Collider Reference
+        blockCollider = GetNode<CollisionShape3D>("BlockCollider");
     }
 
     public override void _Process(double delta)
@@ -66,8 +72,14 @@ public partial class Block : RigidBody3D
 
     public void removeHighlight()
     {
+        GD.Print("I have been Called");
         // Change Skin to default
         defaultMesh.Visible = true;
         highlightMesh.Visible = false;
+    }
+
+    public CollisionShape3D getCollider()
+    {
+        return blockCollider;
     }
 }

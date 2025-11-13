@@ -59,7 +59,7 @@ public partial class Player : CharacterBody3D
     private Area3D grabRange;
 
     // Ref to Grabbed Block Object
-    private RigidBody3D grabbedBlock;
+    private Block grabbedBlock;
 
     private Node3D prevParent;
 
@@ -92,6 +92,7 @@ public partial class Player : CharacterBody3D
 
     public override void _Ready()
     {
+        GD.Print("Test Log Player");
         Camera = GetNode<Node3D>(CameraPath);
 
         // Initialize grab Features
@@ -246,54 +247,45 @@ public partial class Player : CharacterBody3D
 
     private void Grab()
     {
-        // Double Check not already holding
-        if (grabbedBlock != null)
+        // Double Check not already holding or No Block in Range
+        if (grabbedBlock != null || highlightedBlock == null)
         {
             return;
         }
 
-        // TODO: Play Grab Animation
+        // Set internal variable grabbedBlock to the highlighted block
+        grabbedBlock = highlightedBlock;
 
-        // Check all Block Objects in the Grab Range
-        var objects = grabRange.GetOverlappingBodies();
+        // Unhighlight the block, Free the Array, remove reference
+        highlightedBlock.removeHighlight();
+        blocksInRange.Clear();
+        highlightedBlock = null;
 
-        // for each Node in the range
-        foreach (var body in objects)
-        {
-            // if it is a block, and a rigid body (then cast it to a rigid body variable rb)
-            if (body.IsInGroup("Block") && body is RigidBody3D rb)
-            {
-                // Set Internal variable to that rigid Body
-                grabbedBlock = rb;
+        // Store the previous parent of the block
+        prevParent = grabbedBlock.GetParent<Node3D>();
 
-                // Store the previous parent of the block
-                prevParent = rb.GetParent<Node3D>();
+        // Turn off gravity and momementum
+        grabbedBlock.Freeze = true;
 
-                // Turn off gravity and momementum
-                rb.Freeze = true;
+        // Disable Block Collision
+        blockCollider = grabbedBlock.getCollider();
+        blockCollider.Disabled = true;
 
-                // Disable Block Collision
-                blockCollider = rb.GetNode<CollisionShape3D>("BlockCollider");
-                blockCollider.Disabled = true;
+        // Make Block a child of player
+        grabbedBlock.Reparent(this);
 
-                // Make Block a child of player
-                rb.Reparent(this);
+        // Set the Position with the offset
+        // Todo, move slowly
+        grabbedBlock.Position = holdOffset;
 
-                // Set the Position with the offset
-                rb.Position = holdOffset;
-
-                // Create new Collision Shape the same size as the block
-                tempCollider = new CollisionShape3D();
-                // Set Shape
-                tempCollider.Shape = rb.GetNode<CollisionShape3D>("BlockCollider").Shape;
-                // Add as child
-                AddChild(tempCollider);
-                // Set Relative Position
-                tempCollider.Position = holdOffset;
-
-                break;
-            }
-        }
+        // Create new Collision Shape the same size as the block
+        tempCollider = new CollisionShape3D();
+        // Set Shape
+        tempCollider.Shape = blockCollider.Shape;
+        // Add as child
+        AddChild(tempCollider);
+        // Set Relative Position
+        tempCollider.Position = holdOffset;
     }
 
     private void Place()
@@ -324,10 +316,7 @@ public partial class Player : CharacterBody3D
             GlobalPosition + PlacementOffset.Rotated(Vector3.Up, characterModel.Rotation.Y);
 
         // cast to Rigid Body 3d and turn off freeze
-        if (grabbedBlock is RigidBody3D rb)
-        {
-            rb.Freeze = false;
-        }
+        grabbedBlock.Freeze = false;
 
         // Remove the grabbed Block
         grabbedBlock = null;
@@ -335,6 +324,12 @@ public partial class Player : CharacterBody3D
 
     private void OnBlockEntered(Node3D body)
     {
+        // Ignore if Already Holding
+        if (grabbedBlock != null)
+        {
+            return;
+        }
+
         // New Block in Hitbox
         if (body is Block block)
         {
@@ -357,6 +352,12 @@ public partial class Player : CharacterBody3D
 
     private void OnBlockExited(Node3D body)
     {
+        // Ignore if Already Holding
+        if (grabbedBlock != null)
+        {
+            return;
+        }
+
         if (body is Block block)
         {
             // Remove it from array
