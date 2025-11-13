@@ -9,20 +9,20 @@ public partial class Player : CharacterBody3D
 
     [Export(PropertyHint.Range, "0, 50")]
     public float JetpackAcceleration { get; set; } = 15.0f;
-    
+
     [Export(PropertyHint.Range, "0, 100")]
     public double MaxJetpackFuel { get; set; } = 100.0;
-    
+
     [Export(PropertyHint.Range, "0, 50")]
     public double FuelBurnRate { get; set; } = 20.0; // Fuel per second
-    
+
     [Export(PropertyHint.Range, "0, 50")]
     public double FuelRegenRate { get; set; } = 10.0; // Fuel per second
 
     private double _currentFuel;
     private bool _jetpackInputHeld = false;
     private Jetpack _jetpack;
-    
+
     [Export]
     public float Speed = 5.0f;
 
@@ -106,6 +106,7 @@ public partial class Player : CharacterBody3D
         grabRange.BodyEntered += OnBlockEntered;
         grabRange.BodyExited += OnBlockExited;
 
+        // Jetpack Variables
         _jetpack = GetNode<Jetpack>("GobotSkin/JetpackMount/Jetpack");
         _currentFuel = MaxJetpackFuel;
     }
@@ -122,15 +123,15 @@ public partial class Player : CharacterBody3D
         }
 
         bool isJetpacking = _jetpackInputHeld && _currentFuel > 0;
-        
+
         if (isJetpacking)
         {
             // Apply upward thrust
             velocity.Y += JetpackAcceleration * (float)delta;
-            
+
             // Consume fuel
             _currentFuel -= FuelBurnRate * delta;
-            
+
             _jetpack.StartEffects();
         }
         else
@@ -174,7 +175,7 @@ public partial class Player : CharacterBody3D
             velocity.Z = Mathf.MoveToward(Velocity.Z, 0, Speed);
             characterModel?.Idle();
         }
-        
+
         // Only regenerate fuel if not jetpacking AND on the floor
         if (!isJetpacking && IsOnFloor() && _currentFuel < MaxJetpackFuel)
         {
@@ -184,7 +185,7 @@ public partial class Player : CharacterBody3D
 
         Velocity = velocity;
         MoveAndSlide();
-        
+
         EmitSignal(SignalName.FuelUpdated, _currentFuel, MaxJetpackFuel);
     }
 
@@ -219,7 +220,7 @@ public partial class Player : CharacterBody3D
             {
                 velocity.Y *= 0.2f;
             }
-            
+
             _jetpackInputHeld = false;
         }
 
@@ -358,6 +359,9 @@ public partial class Player : CharacterBody3D
     {
         if (body is Block block)
         {
+            // Remove it from array
+            blocksInRange.Remove(block);
+
             // If Exitign block was the highlighted block
             if (block == highlightedBlock)
             {

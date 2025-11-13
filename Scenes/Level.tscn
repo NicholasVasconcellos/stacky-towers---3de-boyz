@@ -6,7 +6,7 @@
 [ext_resource type="PackedScene" uid="uid://bgcxuru7egs0k" path="res://Scenes/Block.tscn" id="4_m3clv"]
 [ext_resource type="PackedScene" uid="uid://cla2u363q8sq5" path="res://UI/Scenes/UIManager.tscn" id="4_wkftn"]
 [ext_resource type="Script" uid="uid://nhvtsuc3c0jt" path="res://Scripts/BlockSpawner.cs" id="6_tj5wv"]
-[ext_resource type="PackedScene" uid="uid://diry42au7qyke" path="res://Scenes/GoalZone.tscn" id="7_ienac"]
+[ext_resource type="PackedScene" path="res://Scenes/GoalZone.tscn" id="7_ienac"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_2nifc"]
 sky_horizon_color = Color(0.66224277, 0.6717428, 0.6867428, 1)
@@ -51,7 +51,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.57486534, 4.8630157, -5.614
 [node name="BlockSpawner" type="Node3D" parent="Entities"]
 script = ExtResource("6_tj5wv")
 BlockScene = ExtResource("4_m3clv")
-BlocksPerSecond = 0.1
+BlocksPerSecond = 1.0
 SpawnRange = Vector3(20, 0, 20)
 SpawnCenter = Vector3(0, 100, 0)
 
