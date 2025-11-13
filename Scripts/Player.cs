@@ -44,6 +44,12 @@ public partial class Player : CharacterBody3D
 
     private Node3D prevParent;
 
+    // Ref to Currently Highlighted Block Object
+    private Block highlightedBlock = null;
+
+    // Array of Blocks in Range
+    private Godot.Collections.Array<Block> blocksInRange = new();
+
     // Reference to Block's Collision Shape
     private CollisionShape3D blockCollider;
 
@@ -73,8 +79,13 @@ public partial class Player : CharacterBody3D
         grabFeatures = GetNode<Node3D>("GrabFeatures");
         // Initialize the grab area
         grabRange = GetNode<Area3D>("GrabFeatures/GrabRange");
+
         // Initialize the reference to the Character Model
         characterModel = GetNode<GobotSkin>("GobotSkin");
+
+        // Signals for Grab Range
+        grabRange.BodyEntered += OnBlockEntered;
+        grabRange.BodyExited += OnBlockExited;
     }
 
     public override void _PhysicsProcess(double delta)
@@ -259,5 +270,82 @@ public partial class Player : CharacterBody3D
 
         // Remove the grabbed Block
         grabbedBlock = null;
+    }
+
+    private void OnBlockEntered(Node3D body)
+    {
+        // New Block in Hitbox
+        if (body is Block block)
+        {
+            // Add to Array
+            blocksInRange.Add(block);
+
+            // Only one block,
+            if (blocksInRange.Count == 1)
+            {
+                // set that as highlighted block
+                highlightedBlock = block;
+                // Highlight it
+                block.Highlight();
+            }
+
+            // More than one block, get the closest one
+            UpdateHighlight();
+        }
+    }
+
+    private void OnBlockExited(Node3D body)
+    {
+        if (body is Block block)
+        {
+            // If Exitign block was the highlighted block
+            if (block == highlightedBlock)
+            {
+                // Remove it
+                block.removeHighlight();
+                highlightedBlock = null;
+            }
+
+            // If Still Blocks in Range update highlight
+            if (blocksInRange.Count > 0)
+            {
+                UpdateHighlight();
+            }
+        }
+    }
+
+    private void UpdateHighlight()
+    {
+        // Remove Curr Highlight if any
+        if (highlightedBlock != null)
+        {
+            highlightedBlock.removeHighlight();
+            highlightedBlock = null;
+        }
+
+        float minSquareDist = float.MaxValue;
+        float currSquareDistance;
+
+        foreach (var block in blocksInRange)
+        {
+            // Skip if reference no longer there
+            if (!IsInstanceValid(block))
+            {
+                continue;
+            }
+
+            currSquareDistance = GlobalPosition.DistanceSquaredTo(block.GlobalPosition);
+            if (currSquareDistance < minSquareDist)
+            {
+                minSquareDist = currSquareDistance;
+                highlightedBlock = block;
+            }
+        }
+
+        // Highlight Closest Block
+        if (highlightedBlock != null)
+        {
+            highlightedBlock.Highlight();
+        }
     }
 }

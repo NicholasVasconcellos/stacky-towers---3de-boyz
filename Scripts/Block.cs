@@ -4,6 +4,8 @@ using Godot;
 public partial class Block : RigidBody3D
 {
     private Node3D snapPoints;
+    private MeshInstance3D defaultMesh;
+    private MeshInstance3D highlightMesh;
 
     // Block Side lengh in meters
     [Export]
@@ -14,6 +16,11 @@ public partial class Block : RigidBody3D
     {
         // Get Snap Points Container
         snapPoints = GetNode<Node3D>("SnapPoints");
+        defaultMesh = GetNode<MeshInstance3D>("DefaultMesh");
+        highlightMesh = GetNode<MeshInstance3D>("HighlightMesh");
+
+        defaultMesh.Visible = true;
+        highlightMesh.Visible = false;
     }
 
     public override void _Process(double delta)
@@ -48,5 +55,19 @@ public partial class Block : RigidBody3D
             // Add as Child
             snapPoints.AddChild(snapPoint);
         }
+    }
+
+    public void Highlight()
+    {
+        // Change Skin to be Highlighted Skin
+        defaultMesh.Visible = false;
+        highlightMesh.Visible = true;
+    }
+
+    public void removeHighlight()
+    {
+        // Change Skin to default
+        defaultMesh.Visible = true;
+        highlightMesh.Visible = false;
     }
 }
