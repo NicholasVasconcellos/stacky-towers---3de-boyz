@@ -47,6 +47,6 @@ mesh = SubResource("BoxMesh_hfsdp")
 skeleton = NodePath("../..")
 surface_material_override/0 = SubResource("StandardMaterial3D_2wby2")
 
-[node name="GrabPreviewMesh" type="MeshInstance3D" parent="Meshes"]
+[node name="HighlightMesh" type="MeshInstance3D" parent="Meshes"]
 visible = false
 mesh = SubResource("BoxMesh_rjsgv")

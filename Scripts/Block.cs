@@ -16,8 +16,8 @@ public partial class Block : RigidBody3D
     {
         // Get Snap Points Container
         snapPoints = GetNode<Node3D>("SnapPoints");
-        defaultMesh = GetNode<MeshInstance3D>("DefaultMesh");
-        highlightMesh = GetNode<MeshInstance3D>("HighlightMesh");
+        defaultMesh = GetNode<MeshInstance3D>("Meshes/DefaultMesh");
+        highlightMesh = GetNode<MeshInstance3D>("Meshes/HighlightMesh");
 
         defaultMesh.Visible = true;
         highlightMesh.Visible = false;
