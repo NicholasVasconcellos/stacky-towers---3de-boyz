@@ -46,7 +46,7 @@ public partial class BlockSpawner : Node3D
     private void SpawnBlock()
     {
         // Add an instance of BlockScene
-        var block = (Node3D)BlockScene.Instantiate();
+        var block = (Block)BlockScene.Instantiate();
 
         // Get Rand Float from 0 to 1
         // Mult by the range
