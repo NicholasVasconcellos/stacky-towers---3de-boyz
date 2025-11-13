@@ -1,8 +1,9 @@
-[gd_scene load_steps=9 format=3 uid="uid://ddfeug7d5du1f"]
+[gd_scene load_steps=10 format=3 uid="uid://ddfeug7d5du1f"]
 
 [ext_resource type="Script" uid="uid://dvrskk01phk14" path="res://Scripts/Player.cs" id="1_xhfnw"]
 [ext_resource type="PackedScene" uid="uid://cy36aygvs66pn" path="res://addons/gdquest_gobot/gobot_skin.tscn" id="2_kne1u"]
 [ext_resource type="PackedScene" uid="uid://bq4oofsrmpwgy" path="res://Scenes/CameraController.tscn" id="2_kpjcp"]
+[ext_resource type="PackedScene" uid="uid://b3y4j5hcprcra" path="res://Scenes/Jetpack.tscn" id="4_dewec"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_kpjcp"]
 radius = 0.42138672
@@ -29,6 +30,12 @@ JumpVelocity = 7.0
 CameraPath = NodePath("CameraController")
 
 [node name="GobotSkin" parent="." instance=ExtResource("2_kne1u")]
+
+[node name="JetpackMount" type="Node3D" parent="GobotSkin"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.80187666, -0.447)
+
+[node name="Jetpack" parent="GobotSkin/JetpackMount" instance=ExtResource("4_dewec")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.00030469894, 0.0004299581)
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.64331055, 0)

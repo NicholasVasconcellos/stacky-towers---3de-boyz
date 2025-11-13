@@ -5,18 +5,20 @@ public class PlayerConfig
 {
     public int DeviceId { get; set; } // Controller port for the player (0, 1, 2, 3)
     public Color PlayerColor { get; set; }
+    public int GoalHeight { get; set; } = 10; // Default goal height
 }
 
 public partial class GameManager : Node
 {
-    // Use to manage overall game state
+    public static GameManager Instance { get; private set; } // Use to manage overall game state
+
     public enum GameState
     {
         MainMenu,
         PlayerSetup,
         InGame,
         Paused,
-        ResultsScreen,
+        WinScreen,
     }
 
     // Set this whenever you change the state of the game
@@ -28,6 +30,7 @@ public partial class GameManager : Node
 
     public override void _Ready()
     {
+        Instance = this; // set for GoalZone usage when autoloaded
         GD.Print("GameManager ready running");
         // Initialize the list
         PlayerConfigs = new List<PlayerConfig>();
@@ -44,6 +47,8 @@ public partial class GameManager : Node
         PlayerConfigs.Add(new PlayerConfig { DeviceId = 1, PlayerColor = Colors.Blue });
     }
 
+    public override void _Process(double delta) { }
+
     // Once a proper player setup screen is made, use this function
     public void AddPlayer(int deviceId, Color color)
     {
@@ -56,6 +61,13 @@ public partial class GameManager : Node
         PlayerConfigs.Clear();
         CurrentState = GameState.MainMenu;
         GetTree().ChangeSceneToFile("res://scenes/main_menu.tscn");
+    }
+
+    public void GoToWinScreen()
+    {
+        PlayerConfigs.Clear();
+        CurrentState = GameState.WinScreen;
+        GetTree().ChangeSceneToFile("res://scenes/WinScreen.tscn");
     }
 
     public void StartGame()

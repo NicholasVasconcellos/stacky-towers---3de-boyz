@@ -4,6 +4,25 @@ using Godot.NativeInterop;
 
 public partial class Player : CharacterBody3D
 {
+    [Signal]
+    public delegate void FuelUpdatedEventHandler(double currentFuel, double maxFuel);
+
+    [Export(PropertyHint.Range, "0, 50")]
+    public float JetpackAcceleration { get; set; } = 15.0f;
+    
+    [Export(PropertyHint.Range, "0, 100")]
+    public double MaxJetpackFuel { get; set; } = 100.0;
+    
+    [Export(PropertyHint.Range, "0, 50")]
+    public double FuelBurnRate { get; set; } = 20.0; // Fuel per second
+    
+    [Export(PropertyHint.Range, "0, 50")]
+    public double FuelRegenRate { get; set; } = 10.0; // Fuel per second
+
+    private double _currentFuel;
+    private bool _jetpackInputHeld = false;
+    private Jetpack _jetpack;
+    
     [Export]
     public float Speed = 5.0f;
 
@@ -86,6 +105,9 @@ public partial class Player : CharacterBody3D
         // Signals for Grab Range
         grabRange.BodyEntered += OnBlockEntered;
         grabRange.BodyExited += OnBlockExited;
+
+        _jetpack = GetNode<Jetpack>("GobotSkin/JetpackMount/Jetpack");
+        _currentFuel = MaxJetpackFuel;
     }
 
     public override void _PhysicsProcess(double delta)
@@ -97,6 +119,23 @@ public partial class Player : CharacterBody3D
         {
             // Decrement Velocity by a * dT
             velocity += GetGravity() * (float)delta;
+        }
+
+        bool isJetpacking = _jetpackInputHeld && _currentFuel > 0;
+        
+        if (isJetpacking)
+        {
+            // Apply upward thrust
+            velocity.Y += JetpackAcceleration * (float)delta;
+            
+            // Consume fuel
+            _currentFuel -= FuelBurnRate * delta;
+            
+            _jetpack.StartEffects();
+        }
+        else
+        {
+            _jetpack.StopEffects();
         }
 
         // Use the stored input direction (updated in _UnhandledInput per device)
@@ -135,9 +174,18 @@ public partial class Player : CharacterBody3D
             velocity.Z = Mathf.MoveToward(Velocity.Z, 0, Speed);
             characterModel?.Idle();
         }
+        
+        // Only regenerate fuel if not jetpacking AND on the floor
+        if (!isJetpacking && IsOnFloor() && _currentFuel < MaxJetpackFuel)
+        {
+            _currentFuel += FuelRegenRate * delta;
+            _currentFuel = Math.Min(_currentFuel, MaxJetpackFuel);
+        }
 
         Velocity = velocity;
         MoveAndSlide();
+        
+        EmitSignal(SignalName.FuelUpdated, _currentFuel, MaxJetpackFuel);
     }
 
     public override void _UnhandledInput(InputEvent @event)
@@ -151,16 +199,28 @@ public partial class Player : CharacterBody3D
         // Update movement direction based on this player's input
         inputDirection = Input.GetVector("Move Back", "Move Forward", "Move Left", "Move Right");
 
-        // Handle Jump.
-        if (Input.IsActionJustPressed("ui_accept") && IsOnFloor())
+        // Handle jump button
+        if (Input.IsActionJustPressed("ui_accept"))
         {
-            characterModel?.Jump();
-            velocity.Y = JumpVelocity;
+            if (IsOnFloor())
+            {
+                characterModel?.Jump();
+                velocity.Y = JumpVelocity;
+            }
+            else
+            {
+                _jetpackInputHeld = true;
+            }
         }
-        else if (Input.IsActionJustReleased("ui_accept") && velocity.Y > 0)
+        else if (Input.IsActionJustReleased("ui_accept"))
         {
             // Variable jump height
-            velocity.Y *= 0.2f;
+            if (velocity.Y > 0 && !_jetpackInputHeld)
+            {
+                velocity.Y *= 0.2f;
+            }
+            
+            _jetpackInputHeld = false;
         }
 
         // Handle Grab Button (device-specific)

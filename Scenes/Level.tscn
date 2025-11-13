@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=3 uid="uid://pkinvscjucx"]
+[gd_scene load_steps=11 format=3 uid="uid://pkinvscjucx"]
 
 [ext_resource type="PackedScene" uid="uid://bmv5nwfpl1s4u" path="res://Scenes/Floor.tscn" id="1_bexhn"]
 [ext_resource type="Script" uid="uid://dv51a2fm88hi6" path="res://Scripts/Level.cs" id="1_wkftn"]
@@ -6,6 +6,7 @@
 [ext_resource type="PackedScene" uid="uid://bgcxuru7egs0k" path="res://Scenes/Block.tscn" id="4_m3clv"]
 [ext_resource type="PackedScene" uid="uid://cla2u363q8sq5" path="res://UI/Scenes/UIManager.tscn" id="4_wkftn"]
 [ext_resource type="Script" uid="uid://nhvtsuc3c0jt" path="res://Scripts/BlockSpawner.cs" id="6_tj5wv"]
+[ext_resource type="PackedScene" uid="uid://diry42au7qyke" path="res://Scenes/GoalZone.tscn" id="7_ienac"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_2nifc"]
 sky_horizon_color = Color(0.66224277, 0.6717428, 0.6867428, 1)
@@ -45,7 +46,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.4296942, 3.131247, 0)
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.5265026, 2.7382922, 0)
 
 [node name="Block3" parent="Entities" instance=ExtResource("4_m3clv")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.4749641, 5.616619, -3.3230357)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.57486534, 4.8630157, -5.614409)
 
 [node name="BlockSpawner" type="Node3D" parent="Entities"]
 script = ExtResource("6_tj5wv")
@@ -64,3 +65,7 @@ grow_horizontal = 2
 grow_vertical = 2
 
 [node name="UIManager" parent="." instance=ExtResource("4_wkftn")]
+
+[node name="GoalZone" parent="." instance=ExtResource("7_ienac")]
+transform = Transform3D(50, 0, 0, 0, 50, 0, 0, 0, 50, 1.2137802, 12.544445, 0)
+visible = false
