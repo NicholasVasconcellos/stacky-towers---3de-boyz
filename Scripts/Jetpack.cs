@@ -31,7 +31,7 @@ public partial class Jetpack : Node3D
 	}
 
 	/// <summary>
-	/// Turns of all jetpack visual and audio effects.
+	/// Turns off all jetpack visual and audio effects.
 	/// </summary>
 	public void StopEffects()
 	{

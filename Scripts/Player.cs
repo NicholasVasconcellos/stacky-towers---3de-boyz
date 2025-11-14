@@ -128,7 +128,7 @@ public partial class Player : CharacterBody3D
         if (isJetpacking)
         {
             // Apply upward thrust
-            velocity.Y += JetpackAcceleration * (float)delta;
+            velocity.Y = JumpVelocity * (float) 0.75;
 
             // Consume fuel
             _currentFuel -= FuelBurnRate * delta;
