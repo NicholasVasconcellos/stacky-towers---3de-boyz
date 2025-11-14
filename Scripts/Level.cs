@@ -37,8 +37,9 @@ public partial class Level : Node3D
         SplitScreenContainer.Columns = (players.Count > 1) ? 2 : 1;
         // Loop through all the playerconfigs and create each player + viewport
         // https://www.gdquest.com/library/split_screen_coop/
-        foreach (PlayerConfig config in players)
+        for (int i = 0; i < players.Count; i++)
         {
+            PlayerConfig config = players[i];
             GD.Print($"--- Loop start for Device {config.DeviceId} ---");
 
             // Create subviewport container for each player
@@ -61,6 +62,7 @@ public partial class Level : Node3D
                 return; // Stop the function
             }
             Player playerInstance = PlayerScene.Instantiate<Player>();
+            gameManager.AddPlayerInstanceToPlayerConfig(config.DeviceId, playerInstance);
 
             // Log Collision Layer and Mask
             GD.Print($"Player {config.DeviceId} - CollisionLayer: {playerInstance.CollisionLayer}");

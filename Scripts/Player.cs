@@ -83,16 +83,16 @@ public partial class Player : CharacterBody3D
     private Vector2 inputDirection = Vector2.Zero;
 
     //for use with game manager
-    public void Initialize(int deviceId, Color color, int xOffset, int zOffset)
+    public Player Initialize(int deviceId, Color color, int xOffset, int zOffset)
     {
-        this.PlayerDeviceId = deviceId;
-        this.PlayerColor = color;
-        this.Position = new Vector3(this.Position.X + xOffset, 0, this.Position.Z + zOffset);
+        PlayerDeviceId = deviceId;
+        PlayerColor = color;
+        Position = new Vector3(Position.X + xOffset, 0, Position.Z + zOffset);
+        return this;
     }
 
     public override void _Ready()
     {
-        GD.Print("Test Log Player");
         Camera = GetNode<Node3D>(CameraPath);
 
         // Initialize grab Features

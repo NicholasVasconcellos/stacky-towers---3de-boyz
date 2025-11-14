@@ -1,11 +1,18 @@
 using System.Collections.Generic;
 using Godot;
 
-public class PlayerConfig
+public partial struct PlayerConfig
 {
+    public PlayerConfig(int deviceId = -1, Color playerColor = default, Player player = null)
+    {
+        DeviceId = deviceId;
+        PlayerColor = playerColor == default ? Colors.White : playerColor;
+        PlayerInstance = player;
+    }
+
     public int DeviceId { get; set; } // Controller port for the player (0, 1, 2, 3)
     public Color PlayerColor { get; set; }
-    public int GoalHeight { get; set; } = 10; // Default goal height
+    public Player PlayerInstance { get; set; } = null;
 }
 
 public partial class GameManager : Node
@@ -35,25 +42,35 @@ public partial class GameManager : Node
         // Initialize the list
         PlayerConfigs = new List<PlayerConfig>();
 
-        PlayerConfigs.Add(
-            new PlayerConfig
-            {
-                DeviceId = 0, // assign this during player setup
-                PlayerColor = Colors.Red,
-            }
-        );
+        PlayerConfigs.Add(new PlayerConfig(0, Colors.Red));
 
         //remove these to make it 1 player
-        PlayerConfigs.Add(new PlayerConfig { DeviceId = 1, PlayerColor = Colors.Blue });
+        PlayerConfigs.Add(new PlayerConfig(1, Colors.Blue));
     }
 
     public override void _Process(double delta) { }
 
     // Once a proper player setup screen is made, use this function
-    public void AddPlayer(int deviceId, Color color)
+    public void AddPlayer(int deviceId, Color color, Player playerInstance = null)
     {
         // Add checks here to prevent > 4 players or duplicate device IDs
-        PlayerConfigs.Add(new PlayerConfig { DeviceId = deviceId, PlayerColor = color });
+        PlayerConfigs.Add(new PlayerConfig(deviceId, color, playerInstance));
+    }
+
+    public void AddPlayerInstanceToPlayerConfig(int deviceId, Player playerInstance)
+    {
+        for (int i = 0; i < PlayerConfigs.Count; i++)
+        {
+            if (PlayerConfigs[i].DeviceId == deviceId)
+            {
+                PlayerConfigs[i] = new PlayerConfig(
+                    deviceId,
+                    PlayerConfigs[i].PlayerColor,
+                    playerInstance
+                );
+                return;
+            }
+        }
     }
 
     public void GoToMainMenu()

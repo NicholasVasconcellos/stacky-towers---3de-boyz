@@ -1,5 +1,6 @@
-[gd_scene load_steps=3 format=3 uid="uid://c21osrsmcgvye"]
+[gd_scene load_steps=4 format=3 uid="uid://c21osrsmcgvye"]
 
+[ext_resource type="Script" uid="uid://86bocs5rkc80" path="res://UI/Scripts/TowerHeightContainer.cs" id="1_6rb6s"]
 [ext_resource type="Texture2D" uid="uid://dbav3djvkib3m" path="res://icon.svg" id="1_m4xtt"]
 [ext_resource type="PackedScene" uid="uid://dvkcsc2bnggbk" path="res://UI/Scenes/HeightTick.tscn" id="2_6rb6s"]
 
@@ -10,6 +11,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
+script = ExtResource("1_6rb6s")
 
 [node name="AxisZone" type="Control" parent="."]
 custom_minimum_size = Vector2(100, 800)
