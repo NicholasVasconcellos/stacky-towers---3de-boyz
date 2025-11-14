@@ -60,14 +60,15 @@ public partial class GameManager : Node
     {
         PlayerConfigs.Clear();
         CurrentState = GameState.MainMenu;
-        GetTree().ChangeSceneToFile("res://scenes/main_menu.tscn");
+        GetTree().ChangeSceneToFile("res://Scenes/main_menu.tscn");
     }
 
     public void GoToWinScreen()
     {
+        GD.Print("Go to win screen called");
         PlayerConfigs.Clear();
         CurrentState = GameState.WinScreen;
-        GetTree().ChangeSceneToFile("res://scenes/WinScreen.tscn");
+        GetTree().ChangeSceneToFile("res://UI/Scenes/WinScreen.tscn");
     }
 
     public void StartGame()
