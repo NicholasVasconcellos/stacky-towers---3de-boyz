@@ -11,7 +11,7 @@ public partial class GoalZone : Area3D
     public override void _Ready()
     {
         // Connect the body_entered signal to a method
-        this.Position = new Vector3(this.Position.X, GoalHeight, this.Position.Z);
+        Position = new Vector3(Position.X, GoalHeight, Position.Z);
     }
 
     private void _on_body_entered(Node3D body)
