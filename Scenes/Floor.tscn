@@ -17,8 +17,8 @@ size = Vector3(100, 1, 100)
 [node name="Floor" type="Node3D"]
 
 [node name="StaticBody3D" type="StaticBody3D" parent="."]
-collision_layer = 3
-collision_mask = 3
+collision_layer = 4
+collision_mask = 7
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="StaticBody3D"]
 mesh = SubResource("BoxMesh_spmh5")

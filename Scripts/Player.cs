@@ -275,8 +275,8 @@ public partial class Player : CharacterBody3D
         // Make Block a child of player
         grabbedBlock.Reparent(this);
 
-        // Set Layer to 3 while moving to grab position
-        grabbedBlock.CollisionLayer = 0b100;
+        // Set Layer to 4 while moving to grab position (invisible)
+        grabbedBlock.CollisionLayer = 0b1000;
         // Set Mask to None
         grabbedBlock.CollisionMask = 0b0;
 
@@ -292,7 +292,7 @@ public partial class Player : CharacterBody3D
         tween.TweenCallback(
             Callable.From(() =>
             {
-                // Set Layer to Player while block is held
+                // Set Layer to Player ONly while block is held
                 grabbedBlock.CollisionLayer = 0b1;
             })
         );
@@ -306,8 +306,8 @@ public partial class Player : CharacterBody3D
             return;
         }
 
-        // Place it in Layer 3 so it does't collide with player
-        grabbedBlock.CollisionLayer = 0b100;
+        // Place it in Layer 4 so it does't collide with player
+        grabbedBlock.CollisionLayer = 0b1000;
 
         // Place the Block in front of player
         Vector3 targetPosition =
@@ -333,7 +333,8 @@ public partial class Player : CharacterBody3D
 
                 // Reset Block Layer Settings
                 placedBlock.CollisionLayer = 0b10;
-                placedBlock.CollisionMask = 0b11;
+                // Player: No, Block: Yes, Floor: Yes
+                placedBlock.CollisionMask = 0b011;
 
                 // Un-Freeze Physics
                 placedBlock.Freeze = false;

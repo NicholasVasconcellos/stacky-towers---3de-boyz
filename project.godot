@@ -65,6 +65,8 @@ Grab={
 
 3d_physics/layer_1="Players"
 3d_physics/layer_2="Block"
+3d_physics/layer_3="Ground"
+3d_physics/layer_4="Falling Block"
 
 [rendering]
 

@@ -27,7 +27,7 @@ size = Vector3(2, 2, 2)
 
 [node name="Block" type="RigidBody3D" groups=["Block"]]
 collision_layer = 2
-collision_mask = 2
+collision_mask = 6
 script = ExtResource("1_ovn4m")
 
 [node name="BlockCollider" type="CollisionShape3D" parent="."]

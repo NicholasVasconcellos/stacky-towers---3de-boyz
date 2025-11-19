@@ -15,9 +15,14 @@ public partial class BlockSpawner : Node3D
     [Export]
     public Vector3 SpawnCenter = new Vector3(0, 10, 0);
 
+    [Export]
+    private int maxBlocks = 50;
+
     private Random random = new Random();
     private float timer = 0f;
     private float spawnInterval;
+
+    private int count;
 
     // Called when the node enters the scene tree for the first time.
     public override void _Ready()
@@ -35,9 +40,15 @@ public partial class BlockSpawner : Node3D
 
         timer += (float)delta;
 
+        if (count > maxBlocks)
+        {
+            return;
+        }
+
         if (timer >= spawnInterval)
         {
             SpawnBlock();
+            count++;
             // Reset timer
             timer = 0f;
         }
