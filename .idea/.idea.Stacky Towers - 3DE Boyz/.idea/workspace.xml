@@ -5,9 +5,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="c2f424eb-9508-4bf4-9216-96c278956c76" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/.idea.Stacky Towers - 3DE Boyz/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Stacky Towers - 3DE Boyz/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Scripts/GameManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Scripts/GameManager.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Scripts/GoalZone.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Scripts/GoalZone.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Scripts/Player.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Scripts/Player.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/UI/Scripts/UIManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/UI/Scripts/UIManager.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/UI/Scripts/WinScreen.cs" beforeDir="false" afterPath="$PROJECT_DIR$/UI/Scripts/WinScreen.cs" afterDir="false" />
     </list>

@@ -20,8 +20,6 @@ public partial class UIManager : CanvasLayer
 		_winScreen = GetNode<WinScreen>("WinScreen");
 		_towerHeightContainer = GetNode<CenterContainer>("TowerHeightContainer");
 		
-		GD.Print($"UIManager found WinScreen with ID: {_winScreen.GetInstanceId()}");
-
 		_pauseMenu.ProcessMode = ProcessModeEnum.Always;
 		_optionsMenu.ProcessMode = ProcessModeEnum.Always;
 		ProcessMode =  ProcessModeEnum.Always;

@@ -24,8 +24,6 @@ public partial class GoalZone : Area3D
         // Check if the body that entered is the Player
         if (body is Player playerNode)
         {
-            GD.Print($"Player Device ID: {playerNode.PlayerDeviceId}");
-            
             _hasTriggered = true;
             // Notify UIManager of win condition
             if (LevelUIManager != null)

@@ -84,7 +84,6 @@ public partial class GameManager : Node
 
     public void GoToWinScreen(string winnerName)
     {
-        GD.Print("Go to win screen called");
         WinnerText = winnerName;
         CurrentState = GameState.WinScreen;
         GetTree().ChangeSceneToFile("res://UI/Scenes/WinScreen.tscn");

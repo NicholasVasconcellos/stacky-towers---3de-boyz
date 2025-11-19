@@ -39,7 +39,6 @@ public partial class WinScreen : Control
 
 	private void OnPlayAgain_Pressed()
 	{
-		// GD.Print($"WinScreen ({GetInstanceId()}) - Button Clicked!");
 		GetTree().Paused = false;
 		GameManager.Instance.StartGame();
 	}
