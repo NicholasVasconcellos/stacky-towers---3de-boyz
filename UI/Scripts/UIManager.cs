@@ -9,6 +9,8 @@ public partial class UIManager : CanvasLayer
 	private TimerLabel _timerLabel;
 	private WinScreen _winScreen;
 	private CenterContainer _towerHeightContainer;
+	// [Export] private PackedScene _playerHudPrefab;
+	// [Export] private Control _hudContainer;
 
 	private bool _isGameOver = false;
 	
@@ -137,4 +139,15 @@ public partial class UIManager : CanvasLayer
 		_optionsMenu.Hide();
 		_pauseMenu.Show();
 	}
+	//
+	// public void CreateHUDForPlayer(Player player)
+	// {
+	// 	PlayerHUD newHud = _playerHudPrefab.Instantiate<PlayerHUD>();
+	// 	_hudContainer.AddChild(newHud);
+	//
+	// 	player.FuelUpdated += newHud.OnUpdateFuel;
+	// 	newHud.Modulate = player.PlayerColor;
+	// 	
+	// 	newHud.OnUpdateFuel(player.MaxJetpackFuel, player.MaxJetpackFuel);
+	// }
 }

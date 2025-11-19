@@ -21,10 +21,11 @@ sky = SubResource("Sky_wkftn")
 tonemap_mode = 2
 glow_enabled = true
 
-[node name="Level" type="Node3D" node_paths=PackedStringArray("SplitScreenContainer")]
+[node name="Level" type="Node3D" node_paths=PackedStringArray("SplitScreenContainer", "UIManager")]
 script = ExtResource("1_wkftn")
 PlayerScene = ExtResource("2_t7iv1")
 SplitScreenContainer = NodePath("SplitScreenViews/GridContainer")
+UIManager = NodePath("UIManager")
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_q4iis")

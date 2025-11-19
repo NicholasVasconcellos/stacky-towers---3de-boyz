@@ -22,7 +22,9 @@ public partial class Player : CharacterBody3D
     private double _currentFuel;
     private bool _jetpackInputHeld = false;
     private Jetpack _jetpack;
+    
     private bool _canMove = true;
+    private PlayerHUD _localHUD;
 
     [Export]
     public float Speed = 5.0f;
@@ -121,6 +123,10 @@ public partial class Player : CharacterBody3D
         // Jetpack Variables
         _jetpack = GetNode<Jetpack>("GobotSkin/JetpackMount/Jetpack");
         _currentFuel = MaxJetpackFuel;
+        
+        // HUD
+        _localHUD = GetNode<PlayerHUD>("CanvasLayer/PlayerHud");
+        _localHUD.OnUpdateFuel(_currentFuel, MaxJetpackFuel);
     }
 
     public override void _PhysicsProcess(double delta)
@@ -198,7 +204,7 @@ public partial class Player : CharacterBody3D
         Velocity = velocity;
         MoveAndSlide();
 
-        EmitSignal(SignalName.FuelUpdated, _currentFuel, MaxJetpackFuel);
+        _localHUD.OnUpdateFuel(_currentFuel, MaxJetpackFuel);
     }
 
     public override void _UnhandledInput(InputEvent @event)
