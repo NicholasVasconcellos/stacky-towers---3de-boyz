@@ -53,6 +53,14 @@ public partial class Player : CharacterBody3D
 
     /*Grabbing Functionality*/
     // Placement Preview Location
+
+    // Time for block to reach grab position
+    [Export]
+    private float grabTime = 0.2f;
+
+    // Time for block to reach placement Position
+    [Export]
+    private float placeTime = 0.2f;
     private Node3D placementSnapPoint = null;
 
     // Valid Grab Area (volume)
@@ -128,7 +136,7 @@ public partial class Player : CharacterBody3D
         if (isJetpacking)
         {
             // Apply upward thrust
-            velocity.Y = JumpVelocity * (float) 0.75;
+            velocity.Y = JumpVelocity * (float)0.75;
 
             // Consume fuel
             _currentFuel -= FuelBurnRate * delta;
@@ -264,28 +272,30 @@ public partial class Player : CharacterBody3D
         // Store the previous parent of the block
         prevParent = grabbedBlock.GetParent<Node3D>();
 
-        // Turn off gravity and momementum
-        grabbedBlock.Freeze = true;
-
-        // Disable Block Collision
-        blockCollider = grabbedBlock.getCollider();
-        blockCollider.Disabled = true;
-
         // Make Block a child of player
         grabbedBlock.Reparent(this);
 
-        // Set the Position with the offset
-        // Todo, move slowly
-        grabbedBlock.Position = holdOffset;
+        // Set Layer to 3 while moving to grab position
+        grabbedBlock.CollisionLayer = 0b100;
+        // Set Mask to None
+        grabbedBlock.CollisionMask = 0b0;
 
-        // Create new Collision Shape the same size as the block
-        tempCollider = new CollisionShape3D();
-        // Set Shape
-        tempCollider.Shape = blockCollider.Shape;
-        // Add as child
-        AddChild(tempCollider);
-        // Set Relative Position
-        tempCollider.Position = holdOffset;
+        // Disable physics of held block (make static)
+        grabbedBlock.Freeze = true;
+
+        Tween tween = CreateTween();
+        tween
+            .TweenProperty(grabbedBlock, "position", holdOffset, grabTime)
+            .SetTrans(Tween.TransitionType.Linear);
+
+        // Callback function when tween finishes
+        tween.TweenCallback(
+            Callable.From(() =>
+            {
+                // Set Layer to Player while block is held
+                grabbedBlock.CollisionLayer = 0b1;
+            })
+        );
     }
 
     private void Place()
@@ -296,30 +306,39 @@ public partial class Player : CharacterBody3D
             return;
         }
 
-        //TODO Play Placing Animation
-
-        // Remove the Temp Collision Shape
-        if (tempCollider != null)
-        {
-            tempCollider.QueueFree();
-            tempCollider = null;
-        }
-
-        // Set to original parent
-        grabbedBlock.Reparent(prevParent);
-
-        // Reset the Block's Collider
-        blockCollider.Disabled = false;
+        // Place it in Layer 3 so it does't collide with player
+        grabbedBlock.CollisionLayer = 0b100;
 
         // Place the Block in front of player
-        grabbedBlock.GlobalPosition =
+        Vector3 targetPosition =
             GlobalPosition + PlacementOffset.Rotated(Vector3.Up, characterModel.Rotation.Y);
 
-        // cast to Rigid Body 3d and turn off freeze
-        grabbedBlock.Freeze = false;
+        Block placedBlock = grabbedBlock;
 
-        // Remove the grabbed Block
+        // No Grabbed Block
         grabbedBlock = null;
+
+        // Gradually Move Block to Target Position
+        Tween tween = CreateTween();
+        tween
+            .TweenProperty(placedBlock, "global_position", targetPosition, placeTime)
+            .SetTrans(Tween.TransitionType.Linear);
+
+        // Callback function when tween finishes
+        tween.TweenCallback(
+            Callable.From(() =>
+            {
+                // Set to original parent
+                placedBlock.Reparent(prevParent);
+
+                // Reset Block Layer Settings
+                placedBlock.CollisionLayer = 0b10;
+                placedBlock.CollisionMask = 0b11;
+
+                // Un-Freeze Physics
+                placedBlock.Freeze = false;
+            })
+        );
     }
 
     private void OnBlockEntered(Node3D body)
