@@ -6,7 +6,7 @@ public partial class GoalZone : Area3D
     private GameManager gameManager;
 
     [Export]
-    public int GoalHeight = 25; // (Unused right now; could be used for variable goal height)
+    public int GoalHeight = 100;
 
     public override void _Ready()
     {
