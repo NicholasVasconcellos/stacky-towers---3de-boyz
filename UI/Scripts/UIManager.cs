@@ -97,33 +97,6 @@ public partial class UIManager : CanvasLayer
 		GetTree().Paused = true;
 	}
 
-	// To be deleted
-	
-	// private void OnWinScreenPlayAgain()
-	// {
-	// 	GD.Print("UIManager: Restarting Game...");
-	// 	
-	// 	GetTree().Paused = false;
-	// 	_isGameOver = false;
-	// 	
-	// 	_winScreen.Hide();
-	// 	_towerHeightContainer.Show();
-	// 	_timerLabel.Show();
-	// 	
-	// 	GetTree().ReloadCurrentScene();
-	// }
-	//
-	// private void OnWinScreenMainMenu()
-	// {
-	// 	GD.Print("UIManager: Going to Main Menu...");
-	// 	
-	// 	GetTree().Paused = false;
-	// 	_isGameOver = false;
-	// 	_winScreen.Hide();
-	// 	
-	// 	GetTree().ChangeSceneToFile("res://UI/Scenes/main_menu.tscn");
-	// }
-
 	/// <summary>
 	/// Toggles the game's official pause state and shows/hides the pause menu.
 	/// </summary>
