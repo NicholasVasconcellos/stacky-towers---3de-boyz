@@ -334,7 +334,7 @@ public partial class Player : CharacterBody3D
                 // Reset Block Layer Settings
                 placedBlock.CollisionLayer = 0b10;
                 // Player: No, Block: Yes, Floor: Yes
-                placedBlock.CollisionMask = 0b011;
+                placedBlock.CollisionMask = 0b110;
 
                 // Un-Freeze Physics
                 placedBlock.Freeze = false;
