@@ -11,6 +11,9 @@ public partial class Level : Node3D
     [Export]
     private GridContainer SplitScreenContainer;
 
+    [Export]
+    public CanvasLayer UIManagerLayer;
+
     private GameManager gameManager;
     private World3D mainWorld;
 
@@ -71,6 +74,11 @@ public partial class Level : Node3D
             // Add player to viewport and add viewport to container
             subViewport.AddChild(playerInstance);
             viewportContainer.AddChild(subViewport);
+
+            // Update UI with Goal Height
+            //var goalZone = GetNode<GoalZone>("GoalZone");
+            //var ui = GetNode<UIManager>("UIManager");
+            //ui.UpdateHeight(goalZone.ZoneHeight);
 
             // Initialize Player
             playerInstance.Initialize(

@@ -35,6 +35,8 @@ public partial class GameManager : Node
     //store all the player configs, private set so it can only be changed via GameManager
     public List<PlayerConfig> PlayerConfigs { get; private set; }
 
+    public string WinnerText { get; private set; } = "";
+
     public override void _Ready()
     {
         Instance = this; // set for GoalZone usage when autoloaded
@@ -77,13 +79,13 @@ public partial class GameManager : Node
     {
         PlayerConfigs.Clear();
         CurrentState = GameState.MainMenu;
-        GetTree().ChangeSceneToFile("res://Scenes/main_menu.tscn");
+        GetTree().ChangeSceneToFile("res://UI/Scenes/main_menu.tscn");
     }
 
-    public void GoToWinScreen()
+    public void GoToWinScreen(string winnerName)
     {
         GD.Print("Go to win screen called");
-        PlayerConfigs.Clear();
+        WinnerText = winnerName;
         CurrentState = GameState.WinScreen;
         GetTree().ChangeSceneToFile("res://UI/Scenes/WinScreen.tscn");
     }
@@ -91,6 +93,7 @@ public partial class GameManager : Node
     public void StartGame()
     {
         CurrentState = GameState.InGame;
+        GetTree().Paused = false;
         GetTree().ChangeSceneToFile("res://Scenes/Level.tscn");
     }
 

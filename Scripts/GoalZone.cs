@@ -22,7 +22,7 @@ public partial class GoalZone : Area3D
             GD.Print($"Player Device ID: {playerNode.PlayerDeviceId}");
             // Notify GameManager of win condition
             gameManager = GameManager.Instance;
-            gameManager.GoToWinScreen();
+            gameManager.GoToWinScreen($"Player {playerNode.PlayerDeviceId} Wins!");
         }
     }
 }

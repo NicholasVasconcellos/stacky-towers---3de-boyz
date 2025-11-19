@@ -5,8 +5,14 @@ using Godot;
 public partial class TowerHeightContainer : CenterContainer
 {
     private GameManager gameManager;
-    private float GoalHeight; // Default goal height
+
+    [Export]
+    private float GoalHeight = 25; // Default goal height
     private List<TextureRect> playerHeadIcons = new List<TextureRect>();
+
+    //https://docs.godotengine.org/en/stable/tutorials/scripting/c_sharp/c_sharp_signals.html
+    [Signal]
+    public delegate void GoalUpdatedEventHandler(int newScore);
 
     //make it so it spawns the appropriate number of head icon things based on number of players
     public override void _Ready()
@@ -17,9 +23,9 @@ public partial class TowerHeightContainer : CenterContainer
             GD.Print($"Player Device ID: {playerConfig.DeviceId}");
             //get head icon for each player
         });
+
         //will make work later
         //var goalZone = GetNode<GoalZone>("GoalZone");
-        GoalHeight = 25;
         // collect all Player{n}Marker TextureRect nodes and store them
         for (int i = 0; i < gameManager.PlayerConfigs.Count; i++)
         {
