@@ -36,7 +36,7 @@ alignment = 1
 [node name="WinnerText" type="Label" parent="CenterContainer/VBoxContainer"]
 layout_mode = 2
 theme_override_font_sizes/font_size = 48
-text = "PLAYER 1 WINS!"
+text = "[insert winner here]"
 horizontal_alignment = 1
 
 [node name="PlayAgainButton" parent="CenterContainer/VBoxContainer" instance=ExtResource("1_nkm4r")]

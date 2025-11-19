@@ -17,6 +17,7 @@ public partial class UIManager : CanvasLayer
 		_optionsMenu = GetNode<Control>("OptionsMenu");
 		_timerLabel = GetNode<TimerLabel>("TimerLabel");
 		_winScreen = GetNode<WinScreen>("WinScreen");
+		GD.Print($"UIManager found WinScreen with ID: {_winScreen.GetInstanceId()}");
 		_towerHeightContainer = GetNode<CenterContainer>("TowerHeightContainer");
 		
 		_pauseMenu.ProcessMode = ProcessModeEnum.Always;
@@ -68,19 +69,31 @@ public partial class UIManager : CanvasLayer
 		_winScreen.SetWinnerText("Player 1 Wins!");
 
 		_winScreen.Show();
+		
 	}
 
 	private void OnWinScreenPlayAgain()
 	{
-		// Reload the current level
+		GD.Print("UIManager: Restarting Game...");
+		
 		GetTree().Paused = false;
+		_isGameOver = false;
+		
+		_winScreen.Hide();
+		_towerHeightContainer.Show();
+		_timerLabel.Show();
+		
 		GetTree().ReloadCurrentScene();
 	}
 
 	private void OnWinScreenMainMenu()
 	{
-		// Load the main menu scene
+		GD.Print("UIManager: Going to Main Menu...");
+		
 		GetTree().Paused = false;
+		_isGameOver = false;
+		_winScreen.Hide();
+		
 		GetTree().ChangeSceneToFile("res://UI/Scenes/main_menu.tscn");
 	}
 

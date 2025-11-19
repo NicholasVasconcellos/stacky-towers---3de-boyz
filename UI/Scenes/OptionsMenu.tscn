@@ -57,10 +57,11 @@ color = Color(0, 0, 0, 0.5882353)
 
 [node name="BackButton" type="Button" parent="."]
 layout_mode = 1
-offset_left = 38.0
-offset_top = 33.0
-offset_right = 456.0
-offset_bottom = 176.0
+anchors_preset = -1
+anchor_left = 0.019791666
+anchor_top = 0.030555556
+anchor_right = 0.2375
+anchor_bottom = 0.16296296
 size_flags_vertical = 3
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_colors/font_focus_color = Color(0, 0, 0, 1)
@@ -73,20 +74,18 @@ theme_override_styles/hover = SubResource("StyleBoxFlat_cp3ta")
 theme_override_styles/focus = SubResource("StyleBoxEmpty_63cs0")
 text = "Back
 "
+metadata/_edit_use_anchors_ = true
 
 [node name="MarginContainer" type="MarginContainer" parent="."]
 layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -343.25
-offset_top = -151.0
-offset_right = 343.25
-offset_bottom = 151.0
+anchors_preset = -1
+anchor_left = 0.32122394
+anchor_top = 0.36018518
+anchor_right = 0.678776
+anchor_bottom = 0.6398148
 grow_horizontal = 2
 grow_vertical = 2
+metadata/_edit_use_anchors_ = true
 
 [node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
 layout_mode = 2
