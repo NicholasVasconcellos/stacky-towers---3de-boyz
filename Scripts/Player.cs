@@ -22,6 +22,7 @@ public partial class Player : CharacterBody3D
     private double _currentFuel;
     private bool _jetpackInputHeld = false;
     private Jetpack _jetpack;
+    private bool _canMove = true;
 
     [Export]
     public float Speed = 5.0f;
@@ -101,6 +102,8 @@ public partial class Player : CharacterBody3D
 
     public override void _Ready()
     {
+        AddToGroup("Players");
+        
         Camera = GetNode<Node3D>(CameraPath);
 
         // Initialize grab Features
@@ -131,7 +134,7 @@ public partial class Player : CharacterBody3D
             velocity += GetGravity() * (float)delta;
         }
 
-        bool isJetpacking = _jetpackInputHeld && _currentFuel > 0;
+        bool isJetpacking = _canMove && _jetpackInputHeld && _currentFuel > 0;
 
         if (isJetpacking)
         {
@@ -149,7 +152,7 @@ public partial class Player : CharacterBody3D
         }
 
         // Use the stored input direction (updated in _UnhandledInput per device)
-        Vector2 inputVector = inputDirection;
+        Vector2 inputVector = _canMove ? inputDirection : Vector2.Zero;
 
         // Create direction vector and rotate by camera's Y rotation
         Vector3 moveDirection = new Vector3(inputVector.X, 0, inputVector.Y);
@@ -200,6 +203,8 @@ public partial class Player : CharacterBody3D
 
     public override void _UnhandledInput(InputEvent @event)
     {
+        if (!_canMove) return;
+        
         Vector3 velocity = Velocity;
         if (@event.Device != PlayerDeviceId)
         {
@@ -431,6 +436,19 @@ public partial class Player : CharacterBody3D
         if (highlightedBlock != null)
         {
             highlightedBlock.Highlight();
+        }
+    }
+
+    public void SetInputEnabled(bool enabled)
+    {
+        _canMove = enabled;
+
+        if (!enabled)
+        {
+            inputDirection = Vector2.Zero;
+            _jetpackInputHeld = false;
+            _jetpack?.StopEffects();
+            characterModel?.Idle();
         }
     }
 }
