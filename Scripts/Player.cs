@@ -18,6 +18,10 @@ public partial class Player : CharacterBody3D
 
     [Export(PropertyHint.Range, "0, 50")]
     public double FuelRegenRate { get; set; } = 10.0; // Fuel per second
+    [Export(PropertyHint.Range, "0, 5")]
+    public double RegenDelay { get; set; } = 1.0;
+
+    private double _timeSinceLastJetpack = 0.0;
 
     private double _currentFuel;
     private bool _jetpackInputHeld = false;
@@ -144,17 +148,17 @@ public partial class Player : CharacterBody3D
 
         if (isJetpacking)
         {
-            // Apply upward thrust
             velocity.Y = JumpVelocity * (float)0.75;
-
-            // Consume fuel
             _currentFuel -= FuelBurnRate * delta;
-
             _jetpack.StartEffects();
+
+            _timeSinceLastJetpack = 0.0;
         }
         else
         {
             _jetpack.StopEffects();
+            
+            _timeSinceLastJetpack += delta;
         }
 
         // Use the stored input direction (updated in _UnhandledInput per device)
@@ -194,8 +198,7 @@ public partial class Player : CharacterBody3D
             characterModel?.Idle();
         }
 
-        // Only regenerate fuel if not jetpacking AND on the floor
-        if (!isJetpacking && IsOnFloor() && _currentFuel < MaxJetpackFuel)
+        if (_timeSinceLastJetpack > RegenDelay && _currentFuel < MaxJetpackFuel)
         {
             _currentFuel += FuelRegenRate * delta;
             _currentFuel = Math.Min(_currentFuel, MaxJetpackFuel);
