@@ -21,11 +21,11 @@ sky = SubResource("Sky_wkftn")
 tonemap_mode = 2
 glow_enabled = true
 
-[node name="Level" type="Node3D" node_paths=PackedStringArray("SplitScreenContainer", "UIManagerLayer")]
+[node name="Level" type="Node3D" node_paths=PackedStringArray("SplitScreenContainer", "UIManager")]
 script = ExtResource("1_wkftn")
 PlayerScene = ExtResource("2_t7iv1")
 SplitScreenContainer = NodePath("SplitScreenViews/GridContainer")
-UIManagerLayer = NodePath("UIManager")
+UIManager = NodePath("UIManager")
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_q4iis")
@@ -67,6 +67,7 @@ grow_vertical = 2
 
 [node name="UIManager" parent="." instance=ExtResource("4_wkftn")]
 
-[node name="GoalZone" parent="." instance=ExtResource("7_ienac")]
+[node name="GoalZone" parent="." node_paths=PackedStringArray("LevelUIManager") instance=ExtResource("7_ienac")]
 transform = Transform3D(50, 0, 0, 0, 50, 0, 0, 0, 50, 0, 24.989, 0)
 visible = false
+LevelUIManager = NodePath("../UIManager")

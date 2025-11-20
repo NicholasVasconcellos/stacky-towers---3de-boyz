@@ -18,10 +18,17 @@ public partial class Player : CharacterBody3D
 
     [Export(PropertyHint.Range, "0, 50")]
     public double FuelRegenRate { get; set; } = 10.0; // Fuel per second
+    [Export(PropertyHint.Range, "0, 5")]
+    public double RegenDelay { get; set; } = 1.0;
+
+    private double _timeSinceLastJetpack = 0.0;
 
     private double _currentFuel;
     private bool _jetpackInputHeld = false;
     private Jetpack _jetpack;
+    
+    private bool _canMove = true;
+    private PlayerHUD _localHUD;
 
     [Export]
     public float Speed = 5.0f;
@@ -104,6 +111,8 @@ public partial class Player : CharacterBody3D
 
     public override void _Ready()
     {
+        AddToGroup("Players");
+        
         Camera = GetNode<Node3D>(CameraPath);
 
         // Initialize grab Features
@@ -121,6 +130,10 @@ public partial class Player : CharacterBody3D
         // Jetpack Variables
         _jetpack = GetNode<Jetpack>("GobotSkin/JetpackMount/Jetpack");
         _currentFuel = MaxJetpackFuel;
+        
+        // HUD
+        _localHUD = GetNode<PlayerHUD>("CanvasLayer/PlayerHud");
+        _localHUD.OnUpdateFuel(_currentFuel, MaxJetpackFuel);
     }
 
     public override void _PhysicsProcess(double delta)
@@ -134,25 +147,25 @@ public partial class Player : CharacterBody3D
             velocity += GetGravity() * (float)delta;
         }
 
-        bool isJetpacking = _jetpackInputHeld && _currentFuel > 0;
+        bool isJetpacking = _canMove && _jetpackInputHeld && _currentFuel > 0;
 
         if (isJetpacking)
         {
-            // Apply upward thrust
             velocity.Y = JumpVelocity * (float)0.75;
-
-            // Consume fuel
             _currentFuel -= FuelBurnRate * delta;
-
             _jetpack.StartEffects();
+
+            _timeSinceLastJetpack = 0.0;
         }
         else
         {
             _jetpack.StopEffects();
+            
+            _timeSinceLastJetpack += delta;
         }
 
         // Use the stored input direction (updated in _UnhandledInput per device)
-        Vector2 inputVector = inputDirection;
+        Vector2 inputVector = _canMove ? inputDirection : Vector2.Zero;
 
         // Create direction vector and rotate by camera's Y rotation
         Vector3 moveDirection = new Vector3(inputVector.X, 0, inputVector.Y);
@@ -188,8 +201,7 @@ public partial class Player : CharacterBody3D
             characterModel?.Idle();
         }
 
-        // Only regenerate fuel if not jetpacking AND on the floor
-        if (!isJetpacking && IsOnFloor() && _currentFuel < MaxJetpackFuel)
+        if (_timeSinceLastJetpack > RegenDelay && _currentFuel < MaxJetpackFuel)
         {
             _currentFuel += FuelRegenRate * delta;
             _currentFuel = Math.Min(_currentFuel, MaxJetpackFuel);
@@ -198,11 +210,13 @@ public partial class Player : CharacterBody3D
         Velocity = velocity;
         MoveAndSlide();
 
-        EmitSignal(SignalName.FuelUpdated, _currentFuel, MaxJetpackFuel);
+        _localHUD.OnUpdateFuel(_currentFuel, MaxJetpackFuel);
     }
 
     public override void _UnhandledInput(InputEvent @event)
     {
+        if (!_canMove) return;
+        
         Vector3 velocity = Velocity;
         if (@event.Device != PlayerDeviceId)
         {
@@ -434,6 +448,19 @@ public partial class Player : CharacterBody3D
         if (highlightedBlock != null)
         {
             highlightedBlock.Highlight();
+        }
+    }
+
+    public void SetInputEnabled(bool enabled)
+    {
+        _canMove = enabled;
+
+        if (!enabled)
+        {
+            inputDirection = Vector2.Zero;
+            _jetpackInputHeld = false;
+            _jetpack?.StopEffects();
+            characterModel?.Idle();
         }
     }
 }

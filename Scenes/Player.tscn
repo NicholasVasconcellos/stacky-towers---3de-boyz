@@ -1,9 +1,10 @@
-[gd_scene load_steps=10 format=3 uid="uid://ddfeug7d5du1f"]
+[gd_scene load_steps=11 format=3 uid="uid://ddfeug7d5du1f"]
 
 [ext_resource type="Script" uid="uid://dvrskk01phk14" path="res://Scripts/Player.cs" id="1_xhfnw"]
 [ext_resource type="PackedScene" uid="uid://cy36aygvs66pn" path="res://addons/gdquest_gobot/gobot_skin.tscn" id="2_kne1u"]
 [ext_resource type="PackedScene" uid="uid://bq4oofsrmpwgy" path="res://Scenes/CameraController.tscn" id="2_kpjcp"]
 [ext_resource type="PackedScene" uid="uid://b3y4j5hcprcra" path="res://Scenes/Jetpack.tscn" id="4_dewec"]
+[ext_resource type="PackedScene" uid="uid://buf046uhxtkwm" path="res://UI/Scenes/PlayerHUD.tscn" id="5_5ixxa"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_kpjcp"]
 radius = 0.42138672
@@ -71,3 +72,15 @@ visible = false
 mesh = SubResource("BoxMesh_kne1u")
 
 [node name="Node" type="Node" parent="."]
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="PlayerHud" parent="CanvasLayer" instance=ExtResource("5_5ixxa")]
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+offset_left = -100.0
+offset_top = -50.0
+offset_right = 100.0
+grow_vertical = 0

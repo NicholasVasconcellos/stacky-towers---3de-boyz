@@ -12,7 +12,7 @@ public partial class Level : Node3D
     private GridContainer SplitScreenContainer;
 
     [Export]
-    public CanvasLayer UIManagerLayer;
+    public UIManager UIManager;
 
     private GameManager gameManager;
     private World3D mainWorld;

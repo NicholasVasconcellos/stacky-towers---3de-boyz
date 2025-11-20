@@ -1,5 +1,6 @@
 using Godot;
 using System;
+using System.Threading.Tasks;
 
 public partial class UIManager : CanvasLayer
 {
@@ -8,6 +9,8 @@ public partial class UIManager : CanvasLayer
 	private TimerLabel _timerLabel;
 	private WinScreen _winScreen;
 	private CenterContainer _towerHeightContainer;
+	// [Export] private PackedScene _playerHudPrefab;
+	// [Export] private Control _hudContainer;
 
 	private bool _isGameOver = false;
 	
@@ -17,7 +20,6 @@ public partial class UIManager : CanvasLayer
 		_optionsMenu = GetNode<Control>("OptionsMenu");
 		_timerLabel = GetNode<TimerLabel>("TimerLabel");
 		_winScreen = GetNode<WinScreen>("WinScreen");
-		GD.Print($"UIManager found WinScreen with ID: {_winScreen.GetInstanceId()}");
 		_towerHeightContainer = GetNode<CenterContainer>("TowerHeightContainer");
 		
 		_pauseMenu.ProcessMode = ProcessModeEnum.Always;
@@ -29,9 +31,6 @@ public partial class UIManager : CanvasLayer
 		_winScreen.Hide();
 
 		_timerLabel.TimeUp += _OnTimerTimeUp;
-		
-		_winScreen.PlayAgain += OnWinScreenPlayAgain;
-		_winScreen.MainMenu += OnWinScreenMainMenu;
 	}
 
 	public override void _Process(double delta)
@@ -55,46 +54,47 @@ public partial class UIManager : CanvasLayer
 	/// </summary>
 	private void _OnTimerTimeUp()
 	{
-		GD.Print("UIManager heard that the time is up!");
-		
-		_isGameOver = true;
-		GetTree().Paused = true;
-		
-		_pauseMenu.Hide();
-		_optionsMenu.Hide();
-		_towerHeightContainer.Hide();
-		_timerLabel.Hide();
-		
-		// [TODO] Connect win logic to here
-		_winScreen.SetWinnerText("Player 1 Wins!");
+		// [TODO] Connect win logic (highest tower wins) to here
+		RunWinSequence("Time's Up!");
+	}
 
+	/// <summary>
+	/// Called manually by GoalZone when a player reaches the top.
+	/// </summary>
+	/// <param name="winnerName"></param>
+	public void TriggerWinSequence(string winnerName)
+	{
+		RunWinSequence(winnerName);
+	}
+
+	/// <summary>
+	/// The shared logic that handles freezing, camera panning, and UI showing.
+	/// </summary>
+	/// <param name="resultText"></param>
+	public async void RunWinSequence(string resultText)
+	{
+		if (_isGameOver) return;
+		_isGameOver = true;
+		
+		GD.Print($"Game Over Sequence Started. Result: {resultText}");
+		
+		_timerLabel.SetProcess(false);
+		_timerLabel.Hide();
+		_towerHeightContainer.Hide();
+		
+		GetTree().CallGroup("Players", "SetInputEnabled", false);
+
+		GD.Print("Camera Panning...");
+		// [TODO] Camera pan over tower here
+		// For now, we just wait 2 seconds to simulate the panning time.
+		// Later, replace this with: await CameraController.PanToTowers();
+		await ToSignal(GetTree().CreateTimer(2.0f), SceneTreeTimer.SignalName.Timeout);
+		
+		GD.Print("Sequence finished. Showing Win Screen.");
+		_winScreen.SetWinnerText(resultText);
 		_winScreen.Show();
 		
-	}
-
-	private void OnWinScreenPlayAgain()
-	{
-		GD.Print("UIManager: Restarting Game...");
-		
-		GetTree().Paused = false;
-		_isGameOver = false;
-		
-		_winScreen.Hide();
-		_towerHeightContainer.Show();
-		_timerLabel.Show();
-		
-		GetTree().ReloadCurrentScene();
-	}
-
-	private void OnWinScreenMainMenu()
-	{
-		GD.Print("UIManager: Going to Main Menu...");
-		
-		GetTree().Paused = false;
-		_isGameOver = false;
-		_winScreen.Hide();
-		
-		GetTree().ChangeSceneToFile("res://UI/Scenes/main_menu.tscn");
+		GetTree().Paused = true;
 	}
 
 	/// <summary>
@@ -139,4 +139,15 @@ public partial class UIManager : CanvasLayer
 		_optionsMenu.Hide();
 		_pauseMenu.Show();
 	}
+	//
+	// public void CreateHUDForPlayer(Player player)
+	// {
+	// 	PlayerHUD newHud = _playerHudPrefab.Instantiate<PlayerHUD>();
+	// 	_hudContainer.AddChild(newHud);
+	//
+	// 	player.FuelUpdated += newHud.OnUpdateFuel;
+	// 	newHud.Modulate = player.PlayerColor;
+	// 	
+	// 	newHud.OnUpdateFuel(player.MaxJetpackFuel, player.MaxJetpackFuel);
+	// }
 }

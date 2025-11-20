@@ -26,11 +26,6 @@ public partial class WinScreen : Control
 		// Connect the button signals to our local functions
 		playAgainButton.Pressed += OnPlayAgain_Pressed;
 		mainMenuButton.Pressed += OnMainMenu_Pressed;
-
-		if (GameManager.Instance != null)
-		{
-			winnerText.Text = GameManager.Instance.WinnerText;
-		}
 	}
 
 	/// <summary>
@@ -44,14 +39,13 @@ public partial class WinScreen : Control
 
 	private void OnPlayAgain_Pressed()
 	{
-		GD.Print($"WinScreen ({GetInstanceId()}) - Button Clicked!");
-		// EmitSignal(SignalName.PlayAgain);
+		GetTree().Paused = false;
 		GameManager.Instance.StartGame();
 	}
 
 	private void OnMainMenu_Pressed()
 	{
-		// EmitSignal(SignalName.MainMenu);
+		GetTree().Paused = false;
 		GameManager.Instance.GoToMainMenu();
 	}
 }

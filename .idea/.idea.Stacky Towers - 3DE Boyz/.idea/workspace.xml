@@ -5,15 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="c2f424eb-9508-4bf4-9216-96c278956c76" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/.idea.Stacky Towers - 3DE Boyz/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Stacky Towers - 3DE Boyz/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Scripts/GameManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Scripts/GameManager.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Scripts/GoalZone.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Scripts/GoalZone.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/UI/Scenes/OptionsMenu.tscn" beforeDir="false" afterPath="$PROJECT_DIR$/UI/Scenes/OptionsMenu.tscn" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/UI/Scenes/PlayerSetupScreen.tscn" beforeDir="false" afterPath="$PROJECT_DIR$/UI/Scenes/PlayerSetupScreen.tscn" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/UI/Scenes/WinScreen.tscn" beforeDir="false" afterPath="$PROJECT_DIR$/UI/Scenes/WinScreen.tscn" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/UI/Scenes/main_menu.tscn" beforeDir="false" afterPath="$PROJECT_DIR$/UI/Scenes/main_menu.tscn" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/UI/Scripts/UIManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/UI/Scripts/UIManager.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/UI/Scripts/WinScreen.cs" beforeDir="false" afterPath="$PROJECT_DIR$/UI/Scripts/WinScreen.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Scripts/Player.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Scripts/Player.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -29,6 +21,7 @@
   <component name="HighlightingSettingsPerFile">
     <setting file="file://$PROJECT_DIR$/UI/Scripts/OptionsMenuFromMainMenu.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/UI/Scripts/PlayerCard.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/UI/Scripts/PlayerHUD.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/UI/Scripts/PlayerSetupScreen.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/UI/Scripts/TimerLabel.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/UI/Scripts/UIManager.cs" root0="FORCE_HIGHLIGHTING" />
@@ -45,7 +38,7 @@
   </component>
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
-    ".NET Executable.Player.executor": "Run",
+    ".NET Executable.Player.executor": "Debug",
     "ModuleVcsDetector.initialDetectionPerformed": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.git.unshallow": "true",

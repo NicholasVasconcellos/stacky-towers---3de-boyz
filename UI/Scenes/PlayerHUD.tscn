@@ -1,0 +1,30 @@
+[gd_scene load_steps=4 format=3 uid="uid://buf046uhxtkwm"]
+
+[ext_resource type="Script" uid="uid://yjebv0snodu" path="res://UI/Scripts/PlayerHUD.cs" id="1_61df2"]
+
+[sub_resource type="Gradient" id="Gradient_53336"]
+colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_61df2"]
+gradient = SubResource("Gradient_53336")
+
+[node name="PlayerHud" type="Control"]
+custom_minimum_size = Vector2(200, 50)
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+script = ExtResource("1_61df2")
+
+[node name="FuelBar" type="TextureProgressBar" parent="."]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+mouse_filter = 2
+value = 50.0
+nine_patch_stretch = true
+texture_progress = SubResource("GradientTexture2D_61df2")

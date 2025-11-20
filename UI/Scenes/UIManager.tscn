@@ -34,5 +34,3 @@ label_settings = SubResource("LabelSettings_s14jw")
 script = ExtResource("4_eosfr")
 
 [node name="TowerHeightContainer" parent="." instance=ExtResource("5_v4jn0")]
-
-[connection signal="GoalUpdated" from="TowerHeightContainer" to="." method="_on_tower_height_container_goal_updated"]
