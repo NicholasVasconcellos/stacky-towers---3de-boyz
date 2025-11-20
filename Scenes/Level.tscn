@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=3 uid="uid://pkinvscjucx"]
+[gd_scene load_steps=13 format=3 uid="uid://pkinvscjucx"]
 
 [ext_resource type="PackedScene" uid="uid://bmv5nwfpl1s4u" path="res://Scenes/Floor.tscn" id="1_bexhn"]
 [ext_resource type="Script" uid="uid://dv51a2fm88hi6" path="res://Scripts/Level.cs" id="1_wkftn"]
@@ -7,6 +7,8 @@
 [ext_resource type="PackedScene" uid="uid://cla2u363q8sq5" path="res://UI/Scenes/UIManager.tscn" id="4_wkftn"]
 [ext_resource type="Script" uid="uid://nhvtsuc3c0jt" path="res://Scripts/BlockSpawner.cs" id="6_tj5wv"]
 [ext_resource type="PackedScene" uid="uid://diry42au7qyke" path="res://Scenes/GoalZone.tscn" id="7_ienac"]
+[ext_resource type="Script" uid="uid://ldk4a8wloc62" path="res://Scenes/PlayerZones.cs" id="8_or7tv"]
+[ext_resource type="PackedScene" uid="uid://rp7c8smiamrq" path="res://Scenes/PlayerZoneDecal.tscn" id="9_or7tv"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_2nifc"]
 sky_horizon_color = Color(0.66224277, 0.6717428, 0.6867428, 1)
@@ -21,11 +23,10 @@ sky = SubResource("Sky_wkftn")
 tonemap_mode = 2
 glow_enabled = true
 
-[node name="Level" type="Node3D" node_paths=PackedStringArray("SplitScreenContainer", "UIManager")]
+[node name="Level" type="Node3D" node_paths=PackedStringArray("SplitScreenContainer")]
 script = ExtResource("1_wkftn")
 PlayerScene = ExtResource("2_t7iv1")
 SplitScreenContainer = NodePath("SplitScreenViews/GridContainer")
-UIManager = NodePath("UIManager")
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_q4iis")
@@ -36,7 +37,7 @@ shadow_enabled = true
 directional_shadow_max_distance = 1.0
 
 [node name="Floor" parent="." instance=ExtResource("1_bexhn")]
-transform = Transform3D(-0.32, 0, 0, 0, -0.32, 0, 0, 0, -0.32, 0, 0, 0)
+transform = Transform3D(1, 0, 0, 0, 0.32, 0, 0, 0, 1, 0, 0, 0)
 
 [node name="Entities" type="Node3D" parent="."]
 
@@ -67,7 +68,25 @@ grow_vertical = 2
 
 [node name="UIManager" parent="." instance=ExtResource("4_wkftn")]
 
-[node name="GoalZone" parent="." node_paths=PackedStringArray("LevelUIManager") instance=ExtResource("7_ienac")]
+[node name="GoalZone" parent="." instance=ExtResource("7_ienac")]
 transform = Transform3D(50, 0, 0, 0, 50, 0, 0, 0, 50, 0, 24.989, 0)
 visible = false
-LevelUIManager = NodePath("../UIManager")
+
+[node name="PlayerZones" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -34.07595, 0.15041125, 35.98443)
+script = ExtResource("8_or7tv")
+
+[node name="Player1Zone" parent="PlayerZones" instance=ExtResource("9_or7tv")]
+size = Vector3(18.735, 0.1, 20.101)
+
+[node name="Player2Zone" parent="PlayerZones" instance=ExtResource("9_or7tv")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 71.56619, 0, -0.066581726)
+size = Vector3(18.735, 0.1, 20.101)
+
+[node name="Player3Zone" parent="PlayerZones" instance=ExtResource("9_or7tv")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.128521, 0, -71.495544)
+size = Vector3(18.735, 0.1, 20.101)
+
+[node name="Player4Zone" parent="PlayerZones" instance=ExtResource("9_or7tv")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 70.43856, 0, -70.17098)
+size = Vector3(18.735, 0.1, 20.101)

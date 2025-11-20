@@ -1,14 +1,9 @@
-[gd_scene load_steps=5 format=3 uid="uid://bmv5nwfpl1s4u"]
+[gd_scene load_steps=4 format=3 uid="uid://bmv5nwfpl1s4u"]
 
-[ext_resource type="Texture2D" uid="uid://bkau5m34kd6ff" path="res://Sprites/Ground_Texture.png" id="1_4xl7o"]
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_qbq3j"]
-albedo_texture = ExtResource("1_4xl7o")
-uv1_scale = Vector3(37.6, 37.6, 37.6)
-texture_filter = 0
+[ext_resource type="Material" uid="uid://dgbeg81j5f5pw" path="res://Materials/FloorMaterial.svg.import.res" id="1_4xl7o"]
 
 [sub_resource type="BoxMesh" id="BoxMesh_spmh5"]
-material = SubResource("StandardMaterial3D_qbq3j")
+material = ExtResource("1_4xl7o")
 size = Vector3(100, 1, 100)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_wm4b4"]
