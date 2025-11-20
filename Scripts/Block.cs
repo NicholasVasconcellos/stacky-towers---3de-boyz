@@ -7,6 +7,8 @@ public partial class Block : RigidBody3D
     private MeshInstance3D defaultMesh;
     private MeshInstance3D highlightMesh;
 
+    private MeshInstance3D previewMesh;
+
     private CollisionShape3D blockCollider;
 
     private RayCast3D groundCheck;
@@ -29,6 +31,7 @@ public partial class Block : RigidBody3D
         snapPoints = GetNode<Node3D>("SnapPoints");
         defaultMesh = GetNode<MeshInstance3D>("Meshes/DefaultMesh");
         highlightMesh = GetNode<MeshInstance3D>("Meshes/HighlightMesh");
+        previewMesh = GetNode<MeshInstance3D>("Meshes/PreviewMesh");
 
         // Get Ray Cast References
         groundCheck = GetNode<RayCast3D>("GroundCheck");
@@ -109,6 +112,11 @@ public partial class Block : RigidBody3D
         return blockCollider;
     }
 
+    public MeshInstance3D getPreviewMesh()
+    {
+        return previewMesh;
+    }
+
     public bool isGrounded()
     {
         return _isGrounded;
@@ -117,5 +125,10 @@ public partial class Block : RigidBody3D
     public bool isRoofed()
     {
         return _isRoofed;
+    }
+
+    public int getLenght()
+    {
+        return lenght;
     }
 }

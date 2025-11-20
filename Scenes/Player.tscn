@@ -44,6 +44,12 @@ shape = SubResource("CapsuleShape3D_kpjcp")
 
 [node name="CameraController" parent="." instance=ExtResource("2_kpjcp")]
 
+[node name="PlaceRay_Front" type="RayCast3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
+target_position = Vector3(0, 0, 3)
+debug_shape_custom_color = Color(0, 0.99607843, 0, 1)
+debug_shape_thickness = 5
+
 [node name="GrabFeatures" type="Node3D" parent="."]
 
 [node name="GrabRange" type="Area3D" parent="GrabFeatures"]

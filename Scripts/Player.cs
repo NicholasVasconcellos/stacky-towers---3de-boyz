@@ -18,6 +18,7 @@ public partial class Player : CharacterBody3D
 
     [Export(PropertyHint.Range, "0, 50")]
     public double FuelRegenRate { get; set; } = 10.0; // Fuel per second
+
     [Export(PropertyHint.Range, "0, 5")]
     public double RegenDelay { get; set; } = 1.0;
 
@@ -26,7 +27,7 @@ public partial class Player : CharacterBody3D
     private double _currentFuel;
     private bool _jetpackInputHeld = false;
     private Jetpack _jetpack;
-    
+
     private bool _canMove = true;
     private PlayerHUD _localHUD;
 
@@ -59,8 +60,6 @@ public partial class Player : CharacterBody3D
     public Color PlayerColor { get; private set; }
 
     /*Grabbing Functionality*/
-    // Placement Preview Location
-
     // Time for block to reach grab position
     [Export]
     private float grabTime = 0.2f;
@@ -73,11 +72,12 @@ public partial class Player : CharacterBody3D
     // Valid Grab Area (volume)
     private Area3D grabRange;
 
-    
     private Area3D placeRange;
 
     // Ref to Grabbed Block Object
     private Block grabbedBlock;
+
+    private MeshInstance3D placePreview = null;
 
     private Node3D prevParent;
 
@@ -92,6 +92,12 @@ public partial class Player : CharacterBody3D
 
     // Temporary Collision Shape
     private CollisionShape3D tempCollider;
+
+    /* Block Placement Features*/
+    private RayCast3D placeRay;
+
+    [Export]
+    private float distSquareTreshold = 1.0f;
 
     private GobotSkin characterModel;
 
@@ -112,7 +118,7 @@ public partial class Player : CharacterBody3D
     public override void _Ready()
     {
         AddToGroup("Players");
-        
+
         Camera = GetNode<Node3D>(CameraPath);
 
         // Initialize grab Features
@@ -130,10 +136,13 @@ public partial class Player : CharacterBody3D
         // Jetpack Variables
         _jetpack = GetNode<Jetpack>("GobotSkin/JetpackMount/Jetpack");
         _currentFuel = MaxJetpackFuel;
-        
+
         // HUD
         _localHUD = GetNode<PlayerHUD>("CanvasLayer/PlayerHud");
         _localHUD.OnUpdateFuel(_currentFuel, MaxJetpackFuel);
+
+        // Get RayCast ref
+        placeRay = GetNode<RayCast3D>("PlaceRay_Front");
     }
 
     public override void _PhysicsProcess(double delta)
@@ -160,7 +169,7 @@ public partial class Player : CharacterBody3D
         else
         {
             _jetpack.StopEffects();
-            
+
             _timeSinceLastJetpack += delta;
         }
 
@@ -207,6 +216,66 @@ public partial class Player : CharacterBody3D
             _currentFuel = Math.Min(_currentFuel, MaxJetpackFuel);
         }
 
+        // Placement Preview
+        if (
+            grabbedBlock != null
+            && placeRay.IsColliding()
+            && placeRay.GetCollider() is Block targetBlock
+        )
+        {
+            var collisionPoint = placeRay.GetCollisionPoint();
+            var normal = placeRay.GetCollisionNormal();
+            var distanceSquare = GlobalPosition.DistanceSquaredTo(collisionPoint);
+
+            // Place position is in the normal direction offset by half a lenght
+            Vector3 placePosition = targetBlock.GlobalPosition + normal * targetBlock.getLenght();
+
+            // Instanceciate grabbed blocked preview mesh at the place Position
+            if (placePreview == null)
+            {
+                GD.Print("Unable to Find Place Preview Mesh");
+            }
+            // Turn Preview Visible and Move it to the calculated Position
+            GD.Print("Made it here");
+            placePreview.GlobalPosition = placePosition;
+            placePreview.Visible = true;
+
+            // if (distanceSquare < distSquareTreshold)
+            // {
+            //     // Place on Top of the Block
+
+            //     // Place position is in the normal direction offset by half a lenght
+            //     Vector3 placePosition =
+            //         targetBlock.GlobalPosition + normal * targetBlock.getLenght();
+
+            //     // Instanceciate grabbed blocked preview mesh at the place Position
+            //     MeshInstance3D placePreview = grabbedBlock.getPreviewMesh();
+
+            //     AddChild(placePreview);
+            //     placePreview.GlobalPosition = placePosition;
+            //     placePreview.Visible = true;
+
+            //     // show the preview mesh
+            // }
+            // else
+            // {
+            //     // Preview Front
+
+            //     // Get the target location
+
+            //     // Show the preview mesh
+            // }
+        }
+        else
+        {
+            if (placePreview != null)
+            {
+                // Hide Preview for Now
+                placePreview.Visible = false;
+            }
+        }
+
+        // SEt Velocity and Move
         Velocity = velocity;
         MoveAndSlide();
 
@@ -215,8 +284,9 @@ public partial class Player : CharacterBody3D
 
     public override void _UnhandledInput(InputEvent @event)
     {
-        if (!_canMove) return;
-        
+        if (!_canMove)
+            return;
+
         Vector3 velocity = Velocity;
         if (@event.Device != PlayerDeviceId)
         {
@@ -281,6 +351,10 @@ public partial class Player : CharacterBody3D
         // Set internal variable grabbedBlock to the highlighted block
         grabbedBlock = highlightedBlock;
 
+        // Set the Internal Preview Mesh Variable (Duplicate from the block's)
+        placePreview = grabbedBlock.getPreviewMesh().Duplicate() as MeshInstance3D;
+        placePreview.Visible = false; // Still Invisible
+
         // Unhighlight the block, Free the Array, remove reference
         highlightedBlock.removeHighlight();
         blocksInRange.Clear();
@@ -300,9 +374,11 @@ public partial class Player : CharacterBody3D
         // Disable physics of held block (make static)
         grabbedBlock.Freeze = true;
 
+        Block blockBeingGrabbed = grabbedBlock;
+
         Tween tween = CreateTween();
         tween
-            .TweenProperty(grabbedBlock, "position", holdOffset, grabTime)
+            .TweenProperty(blockBeingGrabbed, "position", holdOffset, grabTime)
             .SetTrans(Tween.TransitionType.Linear);
 
         // Callback function when tween finishes
@@ -310,7 +386,7 @@ public partial class Player : CharacterBody3D
             Callable.From(() =>
             {
                 // Set Layer to Player ONly while block is held
-                grabbedBlock.CollisionLayer = 0b1;
+                blockBeingGrabbed.CollisionLayer = 0b1;
             })
         );
     }
@@ -331,6 +407,14 @@ public partial class Player : CharacterBody3D
             GlobalPosition + PlacementOffset.Rotated(Vector3.Up, characterModel.Rotation.Y);
 
         Block placedBlock = grabbedBlock;
+
+        // Remove the placement preview
+        if (placePreview != null)
+        {
+            placePreview.Visible = false;
+            placePreview.QueueFree();
+            placePreview = null;
+        }
 
         // No Grabbed Block
         grabbedBlock = null;

@@ -37,7 +37,7 @@ shape = SubResource("BoxShape3D_ab6iy")
 
 [node name="Meshes" type="Node3D" parent="."]
 
-[node name="HologramMesh" type="MeshInstance3D" parent="Meshes"]
+[node name="PreviewMesh" type="MeshInstance3D" parent="Meshes"]
 visible = false
 mesh = SubResource("BoxMesh_x55lh")
 skeleton = NodePath("../..")
