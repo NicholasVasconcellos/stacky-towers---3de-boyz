@@ -55,9 +55,7 @@ public partial class TowerHeightContainer : CenterContainer
                     headIcon.Position.X,
                     GetNode<Control>("AxisZone").Size.Y - actualHeight
                 );
-                GD.Print(
-                    $"Player {playerConfig.DeviceId} Height: {playerHeight}m, Proportion: {heightProportion}, Actual Y Position: {actualHeight}"
-                );
+                //GD.Print($"Player {playerConfig.DeviceId} Height: {playerHeight}m, Proportion: {heightProportion}, Actual Y Position: {actualHeight}");
                 //update head icon element position based on height proportionaal to goal height
             }
         });
