@@ -43,6 +43,7 @@ mesh = SubResource("BoxMesh_x55lh")
 skeleton = NodePath("../..")
 
 [node name="DefaultMesh" type="MeshInstance3D" parent="Meshes"]
+visible = false
 mesh = SubResource("BoxMesh_hfsdp")
 skeleton = NodePath("../..")
 surface_material_override/0 = SubResource("StandardMaterial3D_2wby2")
@@ -50,3 +51,15 @@ surface_material_override/0 = SubResource("StandardMaterial3D_2wby2")
 [node name="HighlightMesh" type="MeshInstance3D" parent="Meshes"]
 visible = false
 mesh = SubResource("BoxMesh_rjsgv")
+
+[node name="GroundCheck" type="RayCast3D" parent="."]
+target_position = Vector3(0, -1.5, 0)
+collision_mask = 6
+debug_shape_custom_color = Color(0.46054584, 0.20978057, 0.5348755, 1)
+debug_shape_thickness = 5
+
+[node name="RoofCheck" type="RayCast3D" parent="."]
+target_position = Vector3(0, 1.5, 0)
+collision_mask = 6
+debug_shape_custom_color = Color(0.14055589, 0.38544577, 0.30485484, 1)
+debug_shape_thickness = 5

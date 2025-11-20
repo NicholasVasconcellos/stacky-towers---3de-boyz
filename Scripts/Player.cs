@@ -66,6 +66,9 @@ public partial class Player : CharacterBody3D
     // Valid Grab Area (volume)
     private Area3D grabRange;
 
+    
+    private Area3D placeRange;
+
     // Ref to Grabbed Block Object
     private Block grabbedBlock;
 

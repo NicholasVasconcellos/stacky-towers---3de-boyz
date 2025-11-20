@@ -9,6 +9,15 @@ public partial class Block : RigidBody3D
 
     private CollisionShape3D blockCollider;
 
+    private RayCast3D groundCheck;
+    private RayCast3D roofCheck;
+
+    // Grounded Check
+    private float groundCheckDistance = 0.15f;
+
+    private bool _isGrounded;
+    private bool _isRoofed;
+
     // Block Side lengh in meters
     [Export]
     private int lenght = 2;
@@ -21,6 +30,10 @@ public partial class Block : RigidBody3D
         defaultMesh = GetNode<MeshInstance3D>("Meshes/DefaultMesh");
         highlightMesh = GetNode<MeshInstance3D>("Meshes/HighlightMesh");
 
+        // Get Ray Cast References
+        groundCheck = GetNode<RayCast3D>("GroundCheck");
+        roofCheck = GetNode<RayCast3D>("RoofCheck");
+
         // SEt Visibility
         defaultMesh.Visible = true;
         highlightMesh.Visible = false;
@@ -29,9 +42,22 @@ public partial class Block : RigidBody3D
         blockCollider = GetNode<CollisionShape3D>("BlockCollider");
     }
 
-    public override void _Process(double delta)
+    public override void _PhysicsProcess(double delta)
     {
-        base._Process(delta);
+        // _isGrounded = groundCheck.IsColliding();
+        // _isRoofed = roofCheck.IsColliding();
+
+        // if (_isGrounded)
+        // {
+        //     CollisionLayer = 0b10;
+        //     CollisionMask = 0b110;
+        // }
+        // else
+        // {
+        //     // Falling
+        //     CollisionLayer = 0b1000;
+        //     CollisionMask = 0b1111;
+        // }
     }
 
     private void initSnapPoints()
@@ -81,5 +107,15 @@ public partial class Block : RigidBody3D
     public CollisionShape3D getCollider()
     {
         return blockCollider;
+    }
+
+    public bool isGrounded()
+    {
+        return _isGrounded;
+    }
+
+    public bool isRoofed()
+    {
+        return _isRoofed;
     }
 }
