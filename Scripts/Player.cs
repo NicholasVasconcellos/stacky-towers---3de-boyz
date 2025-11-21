@@ -101,6 +101,9 @@ public partial class Player : CharacterBody3D
 
     private GobotSkin characterModel;
 
+    // Container for all elements that rotate on charcter movement
+    private Node3D bodyPivot;
+
     private Node3D grabFeatures;
 
     // Store the current input direction for this player
@@ -121,20 +124,22 @@ public partial class Player : CharacterBody3D
 
         Camera = GetNode<Node3D>(CameraPath);
 
+        // Init Pivot Node
+        bodyPivot = GetNode<Node3D>("BodyPivot");
         // Initialize grab Features
-        grabFeatures = GetNode<Node3D>("GrabFeatures");
+        grabFeatures = GetNode<Node3D>("BodyPivot/GrabFeatures");
         // Initialize the grab area
-        grabRange = GetNode<Area3D>("GrabFeatures/GrabRange");
+        grabRange = GetNode<Area3D>("BodyPivot/GrabFeatures/GrabRange");
 
         // Initialize the reference to the Character Model
-        characterModel = GetNode<GobotSkin>("GobotSkin");
+        characterModel = GetNode<GobotSkin>("BodyPivot/GobotSkin");
 
         // Signals for Grab Range
         grabRange.BodyEntered += OnBlockEntered;
         grabRange.BodyExited += OnBlockExited;
 
         // Jetpack Variables
-        _jetpack = GetNode<Jetpack>("GobotSkin/JetpackMount/Jetpack");
+        _jetpack = GetNode<Jetpack>("BodyPivot/GobotSkin/JetpackMount/Jetpack");
         _currentFuel = MaxJetpackFuel;
 
         // HUD
@@ -142,11 +147,29 @@ public partial class Player : CharacterBody3D
         _localHUD.OnUpdateFuel(_currentFuel, MaxJetpackFuel);
 
         // Get RayCast ref
-        placeRay = GetNode<RayCast3D>("PlaceRay_Front");
+        placeRay = GetNode<RayCast3D>("BodyPivot/PlaceRay_Front");
     }
 
     public override void _PhysicsProcess(double delta)
     {
+        // DEBUG RAYCAST - Add this at the very top
+        if (placeRay == null)
+        {
+            GD.Print("PlaceRay is NULL!");
+        }
+        else
+        {
+            GD.Print($"PlaceRay enabled: {placeRay.Enabled}");
+            GD.Print($"PlaceRay target position: {placeRay.TargetPosition}");
+            GD.Print($"PlaceRay collision mask: {placeRay.CollisionMask}");
+            GD.Print($"PlaceRay is colliding: {placeRay.IsColliding()}");
+
+            if (placeRay.IsColliding())
+            {
+                GD.Print($"Colliding with: {placeRay.GetCollider()}");
+            }
+        }
+
         Vector3 velocity = Velocity;
 
         // Add the gravity.
@@ -187,26 +210,29 @@ public partial class Player : CharacterBody3D
             velocity.X = moveDirection.X * Speed;
             velocity.Z = moveDirection.Z * Speed;
 
-            // Rotate the Model
-            // calc rotation angle
-            // Set Rotation of the Char Model
-            float currAngle = characterModel.Rotation.Y;
+            // Play Run Animation
             characterModel?.Run();
 
-            // Target Angle
+            // Rotate
+            // calc rotation angle
+            // Set Rotation of the Body Pivot
+            float currAngle = bodyPivot.Rotation.Y;
+
+            // Calc Target Angle from move direction
             float targetAngle = MathF.Atan2(moveDirection.X, moveDirection.Z);
 
             // Rotate Towards Angle
             float nextAngle = Mathf.LerpAngle(currAngle, targetAngle, TurnSpeed * (float)delta);
-            characterModel.Rotation = new Vector3(Rotation.X, nextAngle, Rotation.Z);
+            bodyPivot.Rotation = new Vector3(Rotation.X, nextAngle, Rotation.Z);
             // Rotate Grab Features
-            grabFeatures.Rotation = new Vector3(Rotation.X, nextAngle, Rotation.Z);
+            // grabFeatures.Rotation = new Vector3(Rotation.X, nextAngle, Rotation.Z);
         }
         else
         {
             // Smooth Stopping
             velocity.X = Mathf.MoveToward(Velocity.X, 0, Speed);
             velocity.Z = Mathf.MoveToward(Velocity.Z, 0, Speed);
+            // Play Idle Animation
             characterModel?.Idle();
         }
 
@@ -214,6 +240,19 @@ public partial class Player : CharacterBody3D
         {
             _currentFuel += FuelRegenRate * delta;
             _currentFuel = Math.Min(_currentFuel, MaxJetpackFuel);
+        }
+
+        if (placeRay.IsColliding())
+        {
+            GD.Print("Colliding");
+            if (placeRay.GetCollider() is Block someFrickenBlock)
+            {
+                GD.Print("It's a block");
+            }
+            if (grabbedBlock != null && placePreview != null)
+            {
+                GD.Print("There is a preview mesh");
+            }
         }
 
         // Placement Preview
@@ -268,6 +307,7 @@ public partial class Player : CharacterBody3D
         }
         else
         {
+            // GD.Print("Just made it here tho");
             if (placePreview != null)
             {
                 // Hide Preview for Now
@@ -353,6 +393,7 @@ public partial class Player : CharacterBody3D
 
         // Set the Internal Preview Mesh Variable (Duplicate from the block's)
         placePreview = grabbedBlock.getPreviewMesh().Duplicate() as MeshInstance3D;
+        GetTree().Root.AddChild(placePreview);
         placePreview.Visible = false; // Still Invisible
 
         // Unhighlight the block, Free the Array, remove reference
@@ -404,7 +445,7 @@ public partial class Player : CharacterBody3D
 
         // Place the Block in front of player
         Vector3 targetPosition =
-            GlobalPosition + PlacementOffset.Rotated(Vector3.Up, characterModel.Rotation.Y);
+            GlobalPosition + PlacementOffset.Rotated(Vector3.Up, bodyPivot.Rotation.Y);
 
         Block placedBlock = grabbedBlock;
 

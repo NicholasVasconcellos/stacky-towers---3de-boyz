@@ -43,7 +43,6 @@ mesh = SubResource("BoxMesh_x55lh")
 skeleton = NodePath("../..")
 
 [node name="DefaultMesh" type="MeshInstance3D" parent="Meshes"]
-visible = false
 mesh = SubResource("BoxMesh_hfsdp")
 skeleton = NodePath("../..")
 surface_material_override/0 = SubResource("StandardMaterial3D_2wby2")
