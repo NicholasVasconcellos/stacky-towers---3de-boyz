@@ -6,7 +6,7 @@ public partial class Player : CharacterBody3D
 {
     [Signal]
     public delegate void FuelUpdatedEventHandler(double currentFuel, double maxFuel);
-
+    
     [Export(PropertyHint.Range, "0, 50")]
     public float JetpackAcceleration { get; set; } = 15.0f;
 
@@ -201,8 +201,9 @@ public partial class Player : CharacterBody3D
 
         // Create direction vector and rotate by camera's Y rotation
         Vector3 moveDirection = new Vector3(inputVector.X, 0, inputVector.Y);
-        moveDirection = moveDirection.Rotated(Vector3.Up, Camera.GlobalRotation.Y);
-        moveDirection = moveDirection.Normalized();
+        //moveDirection = moveDirection.Rotated(Vector3.Up, Camera.GlobalRotation.Y);
+        float cameraAngle = Camera.GetNode<Node3D>("SpringArm3D").GlobalRotation.Y;
+        moveDirection = moveDirection.Rotated(Vector3.Up, cameraAngle);
 
         if (moveDirection != Vector3.Zero)
         {
@@ -334,7 +335,7 @@ public partial class Player : CharacterBody3D
         }
 
         // Update movement direction based on this player's input
-        inputDirection = Input.GetVector("Move Back", "Move Forward", "Move Left", "Move Right");
+        inputDirection = Input.GetVector("Move Left", "Move Right", "Move Forward", "Move Back");
 
         // Handle jump button
         if (Input.IsActionJustPressed("ui_accept"))

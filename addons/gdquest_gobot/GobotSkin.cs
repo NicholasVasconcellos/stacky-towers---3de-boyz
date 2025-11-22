@@ -4,6 +4,9 @@ public partial class GobotSkin : Node3D
 {
     [Export]
     public MeshInstance3D GobotModel { get; set; }
+    
+    [Signal] 
+    public delegate void FootStepEventHandler();
 
     private AnimationTree _animationTree;
     private AnimationNodeStateMachinePlayback _stateMachine;
