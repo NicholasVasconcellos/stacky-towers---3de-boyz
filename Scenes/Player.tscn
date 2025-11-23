@@ -7,6 +7,7 @@
 [ext_resource type="PackedScene" uid="uid://buf046uhxtkwm" path="res://UI/Scenes/PlayerHUD.tscn" id="5_5ixxa"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_kne1u"]
+size = Vector3(1, 1, 1.5)
 
 [sub_resource type="BoxMesh" id="BoxMesh_kne1u"]
 size = Vector3(2, 2, 2)
@@ -50,11 +51,11 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.00030469894, 0.00042995
 [node name="GrabFeatures" type="Node3D" parent="BodyPivot"]
 
 [node name="GrabRange" type="Area3D" parent="BodyPivot/GrabFeatures"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0.5)
-visible = false
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.6148659, 0.5)
 collision_mask = 3
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="BodyPivot/GrabFeatures/GrabRange"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.23675537)
 shape = SubResource("BoxShape3D_kne1u")
 
 [node name="BoxPreview" type="MeshInstance3D" parent="BodyPivot/GrabFeatures"]

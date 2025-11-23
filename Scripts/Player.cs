@@ -61,6 +61,10 @@ public partial class Player : CharacterBody3D
 
     /*Grabbing Functionality*/
     // Time for block to reach grab position
+
+    // Become Click Locked while in the middle of Placing or Grabbing
+    private bool clickLocked = false;
+
     [Export]
     private float grabTime = 0.2f;
 
@@ -363,7 +367,7 @@ public partial class Player : CharacterBody3D
         }
 
         // Handle Grab Button (device-specific)
-        if (Input.IsActionJustPressed("Grab"))
+        if (Input.IsActionJustPressed("Grab") && !clickLocked)
         {
             if (grabbedBlock == null)
             {
@@ -390,6 +394,9 @@ public partial class Player : CharacterBody3D
             return;
         }
 
+        // Lock Click Interactions while grab is in process
+        clickLocked = true;
+
         // Set internal variable grabbedBlock to the highlighted block
         grabbedBlock = highlightedBlock;
 
@@ -409,8 +416,8 @@ public partial class Player : CharacterBody3D
         // Make Block a child of player
         grabbedBlock.Reparent(this);
 
-        // Set Layer to 4 while moving to grab position (invisible)
-        grabbedBlock.CollisionLayer = 0b1000;
+        // Set Layer to None while moving to grab position (invisible)
+        grabbedBlock.CollisionLayer = 0b0;
         // Set Mask to None
         grabbedBlock.CollisionMask = 0b0;
 
@@ -430,6 +437,8 @@ public partial class Player : CharacterBody3D
             {
                 // Set Layer to Player ONly while block is held
                 blockBeingGrabbed.CollisionLayer = 0b1;
+                // Disable Click Lock (Enable Grab / Place)
+                clickLocked = false;
             })
         );
     }
@@ -442,8 +451,14 @@ public partial class Player : CharacterBody3D
             return;
         }
 
-        // Place it in Layer 4 so it does't collide with player
-        grabbedBlock.CollisionLayer = 0b1000;
+        // Lock Click INteraction while Place is in process
+        clickLocked = true;
+
+        // Reset to original parent
+        grabbedBlock.Reparent(prevParent);
+
+        // Make it invisble on the way to placement location so it doesn't collide with player
+        grabbedBlock.CollisionLayer = 0b0;
 
         // Reference to block just placed
         Block placedBlock = grabbedBlock;
@@ -485,9 +500,6 @@ public partial class Player : CharacterBody3D
         tween.TweenCallback(
             Callable.From(() =>
             {
-                // Set to original parent
-                placedBlock.Reparent(prevParent);
-
                 // Reset Block Layer Settings
                 placedBlock.CollisionLayer = 0b10;
                 // Player: No, Block: Yes, Floor: Yes
@@ -495,6 +507,9 @@ public partial class Player : CharacterBody3D
 
                 // Un-Freeze Physics
                 placedBlock.Freeze = false;
+
+                // Disable Click Lock - Enable Grab/Place
+                clickLocked = false;
             })
         );
     }
