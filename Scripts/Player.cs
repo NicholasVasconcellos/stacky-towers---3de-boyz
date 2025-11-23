@@ -274,9 +274,11 @@ public partial class Player : CharacterBody3D
             {
                 GD.Print("Unable to Find Place Preview Mesh");
             }
-            // Turn Preview Visible and Move it to the calculated Position
-            GD.Print("Made it here");
+            // Position to target Position
             placePreview.GlobalPosition = placePosition;
+            // Adjust rotation to be in line with target Block
+            placePreview.GlobalRotation = targetBlock.Rotation;
+            // Set to visible
             placePreview.Visible = true;
 
             // if (distanceSquare < distSquareTreshold)
@@ -443,22 +445,35 @@ public partial class Player : CharacterBody3D
         // Place it in Layer 4 so it does't collide with player
         grabbedBlock.CollisionLayer = 0b1000;
 
-        // Place the Block in front of player
-        Vector3 targetPosition =
-            GlobalPosition + PlacementOffset.Rotated(Vector3.Up, bodyPivot.Rotation.Y);
-
+        // Reference to block just placed
         Block placedBlock = grabbedBlock;
 
-        // Remove the placement preview
-        if (placePreview != null)
+        // Remove Grabbed Block Reference
+        grabbedBlock = null;
+
+        Vector3 targetPosition;
+
+        if (placePreview != null && placePreview.Visible == true)
         {
+            // if the placement preview is available
+
+            // Target Postion is same as the preview
+            targetPosition = placePreview.GlobalPosition;
+
+            // Set the rotatin of the placed block (Fix make the rotation gradual as well)
+            placedBlock.GlobalRotation = placePreview.GlobalRotation;
+
+            // Remove the Placement Preview
             placePreview.Visible = false;
             placePreview.QueueFree();
             placePreview = null;
         }
-
-        // No Grabbed Block
-        grabbedBlock = null;
+        else
+        {
+            // Place in front of player
+            targetPosition =
+                GlobalPosition + PlacementOffset.Rotated(Vector3.Up, bodyPivot.Rotation.Y);
+        }
 
         // Gradually Move Block to Target Position
         Tween tween = CreateTween();
