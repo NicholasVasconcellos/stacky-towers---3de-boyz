@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=3 uid="uid://ddfeug7d5du1f"]
+[gd_scene load_steps=14 format=3 uid="uid://ddfeug7d5du1f"]
 
 [ext_resource type="Script" uid="uid://dvrskk01phk14" path="res://Scripts/Player.cs" id="1_xhfnw"]
 [ext_resource type="PackedScene" uid="uid://cy36aygvs66pn" path="res://addons/gdquest_gobot/gobot_skin.tscn" id="2_kne1u"]
@@ -27,6 +27,9 @@ albedo_color = Color(0.37142253, 0.7258708, 0, 1)
 material = SubResource("StandardMaterial3D_5ixxa")
 size = Vector3(0.1, 0.1, 3)
 
+[sub_resource type="BoxShape3D" id="BoxShape3D_5ixxa"]
+size = Vector3(2, 2, 2)
+
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_kpjcp"]
 radius = 0.42138672
 height = 1.2866211
@@ -37,6 +40,7 @@ script = ExtResource("1_xhfnw")
 TurnSpeed = 17.0
 JumpVelocity = 7.0
 CameraPath = NodePath("CameraController")
+distSquareTreshold = 10.0
 
 [node name="BodyPivot" type="Node3D" parent="."]
 
@@ -44,11 +48,14 @@ CameraPath = NodePath("CameraController")
 
 [node name="JetpackMount" type="Node3D" parent="BodyPivot/GobotSkin"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.80187666, -0.447)
+visible = false
 
 [node name="Jetpack" parent="BodyPivot/GobotSkin/JetpackMount" instance=ExtResource("4_dewec")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.00030469894, 0.0004299581)
+visible = false
 
 [node name="GrabFeatures" type="Node3D" parent="BodyPivot"]
+visible = false
 
 [node name="GrabRange" type="Area3D" parent="BodyPivot/GrabFeatures"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.6148659, 0.5)
@@ -77,6 +84,7 @@ mesh = SubResource("BoxMesh_kne1u")
 
 [node name="PlaceRay_Front" type="RayCast3D" parent="BodyPivot"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
+visible = false
 target_position = Vector3(0, 0, 4)
 collision_mask = 2
 debug_shape_custom_color = Color(0, 0.99607843, 0, 1)
@@ -84,14 +92,22 @@ debug_shape_thickness = 5
 
 [node name="DebugRay" type="MeshInstance3D" parent="BodyPivot"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.4969049, 1.507971)
+visible = false
 mesh = SubResource("BoxMesh_nn08x")
 skeleton = NodePath("../..")
 
+[node name="PlaceShapeCast" type="ShapeCast3D" parent="BodyPivot"]
+shape = SubResource("BoxShape3D_5ixxa")
+target_position = Vector3(0, 1.1, 1.1)
+collision_mask = 2
+
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.64331055, 0)
+visible = false
 shape = SubResource("CapsuleShape3D_kpjcp")
 
 [node name="CameraController" parent="." instance=ExtResource("2_kpjcp")]
+visible = false
 
 [node name="Node" type="Node" parent="."]
 

@@ -100,6 +100,8 @@ public partial class Player : CharacterBody3D
     /* Block Placement Features*/
     private RayCast3D placeRay;
 
+    private ShapeCast3D placeShapeCast;
+
     [Export]
     private float distSquareTreshold = 1.0f;
 
@@ -152,28 +154,12 @@ public partial class Player : CharacterBody3D
 
         // Get RayCast ref
         placeRay = GetNode<RayCast3D>("BodyPivot/PlaceRay_Front");
+        // Get Placement Shape Cast
+        placeShapeCast = GetNode<ShapeCast3D>("BodyPivot/PlaceShapeCast");
     }
 
     public override void _PhysicsProcess(double delta)
     {
-        // DEBUG RAYCAST - Add this at the very top
-        // if (placeRay == null)
-        // {
-        //     GD.Print("PlaceRay is NULL!");
-        // }
-        // else
-        // {
-        //     GD.Print($"PlaceRay enabled: {placeRay.Enabled}");
-        //     GD.Print($"PlaceRay target position: {placeRay.TargetPosition}");
-        //     GD.Print($"PlaceRay collision mask: {placeRay.CollisionMask}");
-        //     GD.Print($"PlaceRay is colliding: {placeRay.IsColliding()}");
-
-        //     if (placeRay.IsColliding())
-        //     {
-        //         GD.Print($"Colliding with: {placeRay.GetCollider()}");
-        //     }
-        // }
-
         Vector3 velocity = Velocity;
 
         // Add the gravity.
@@ -247,33 +233,40 @@ public partial class Player : CharacterBody3D
             _currentFuel = Math.Min(_currentFuel, MaxJetpackFuel);
         }
 
-        // Debug Collision
-        // if (placeRay.IsColliding())
-        // {
-        //     GD.Print("Colliding");
-        //     if (placeRay.GetCollider() is Block someFrickenBlock)
-        //     {
-        //         GD.Print("It's a block");
-        //     }
-        //     if (grabbedBlock != null && placePreview != null)
-        //     {
-        //         GD.Print("There is a preview mesh");
-        //     }
-        // }
-
         // Placement Preview
+
+        // Ensure Immediate Collision Updates
+        placeShapeCast.ForceShapecastUpdate();
         if (
             grabbedBlock != null
-            && placeRay.IsColliding()
-            && placeRay.GetCollider() is Block targetBlock
+            && placeShapeCast.IsColliding()
+            && placeShapeCast.GetCollider(0) is Block targetBlock
         )
         {
-            var collisionPoint = placeRay.GetCollisionPoint();
-            var normal = placeRay.GetCollisionNormal();
+            var collisionPoint = placeShapeCast.GetCollisionPoint(0);
+            var normal = placeShapeCast.GetCollisionNormal(0);
             var distanceSquare = GlobalPosition.DistanceSquaredTo(collisionPoint);
 
-            // Place position is in the normal direction offset by half a lenght
-            Vector3 placePosition = targetBlock.GlobalPosition + normal * targetBlock.getLenght();
+            Vector3 placePosition;
+
+            if (distanceSquare < distSquareTreshold)
+            {
+                // Up Place
+                placePosition = targetBlock.GlobalPosition + Vector3.Up * targetBlock.getLenght();
+            }
+            else
+            {
+                // Front Place
+
+                // Place position is in the normal direction offset by half a lenght
+                placePosition = targetBlock.GlobalPosition + normal * targetBlock.getLenght();
+            }
+
+            GD.Print(
+                $"Target: {targetBlock.GlobalPosition} | New Place: {placePosition} | Diff: {placePosition - targetBlock.GlobalPosition}"
+            );
+
+            // Check if Placing at position will clip any blocks (Todo)
 
             // Instanceciate grabbed blocked preview mesh at the place Position
             if (placePreview == null)
