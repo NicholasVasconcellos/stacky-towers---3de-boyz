@@ -6,7 +6,7 @@ public partial class Player : CharacterBody3D
 {
     [Signal]
     public delegate void FuelUpdatedEventHandler(double currentFuel, double maxFuel);
-    
+
     [Export(PropertyHint.Range, "0, 50")]
     public float JetpackAcceleration { get; set; } = 15.0f;
 
@@ -157,22 +157,22 @@ public partial class Player : CharacterBody3D
     public override void _PhysicsProcess(double delta)
     {
         // DEBUG RAYCAST - Add this at the very top
-        if (placeRay == null)
-        {
-            GD.Print("PlaceRay is NULL!");
-        }
-        else
-        {
-            GD.Print($"PlaceRay enabled: {placeRay.Enabled}");
-            GD.Print($"PlaceRay target position: {placeRay.TargetPosition}");
-            GD.Print($"PlaceRay collision mask: {placeRay.CollisionMask}");
-            GD.Print($"PlaceRay is colliding: {placeRay.IsColliding()}");
+        // if (placeRay == null)
+        // {
+        //     GD.Print("PlaceRay is NULL!");
+        // }
+        // else
+        // {
+        //     GD.Print($"PlaceRay enabled: {placeRay.Enabled}");
+        //     GD.Print($"PlaceRay target position: {placeRay.TargetPosition}");
+        //     GD.Print($"PlaceRay collision mask: {placeRay.CollisionMask}");
+        //     GD.Print($"PlaceRay is colliding: {placeRay.IsColliding()}");
 
-            if (placeRay.IsColliding())
-            {
-                GD.Print($"Colliding with: {placeRay.GetCollider()}");
-            }
-        }
+        //     if (placeRay.IsColliding())
+        //     {
+        //         GD.Print($"Colliding with: {placeRay.GetCollider()}");
+        //     }
+        // }
 
         Vector3 velocity = Velocity;
 
@@ -247,18 +247,19 @@ public partial class Player : CharacterBody3D
             _currentFuel = Math.Min(_currentFuel, MaxJetpackFuel);
         }
 
-        if (placeRay.IsColliding())
-        {
-            GD.Print("Colliding");
-            if (placeRay.GetCollider() is Block someFrickenBlock)
-            {
-                GD.Print("It's a block");
-            }
-            if (grabbedBlock != null && placePreview != null)
-            {
-                GD.Print("There is a preview mesh");
-            }
-        }
+        // Debug Collision
+        // if (placeRay.IsColliding())
+        // {
+        //     GD.Print("Colliding");
+        //     if (placeRay.GetCollider() is Block someFrickenBlock)
+        //     {
+        //         GD.Print("It's a block");
+        //     }
+        //     if (grabbedBlock != null && placePreview != null)
+        //     {
+        //         GD.Print("There is a preview mesh");
+        //     }
+        // }
 
         // Placement Preview
         if (
@@ -314,7 +315,6 @@ public partial class Player : CharacterBody3D
         }
         else
         {
-            // GD.Print("Just made it here tho");
             if (placePreview != null)
             {
                 // Hide Preview for Now
