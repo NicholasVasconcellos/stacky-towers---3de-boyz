@@ -1,6 +1,6 @@
 [gd_scene load_steps=5 format=3 uid="uid://rp7c8smiamrq"]
 
-[ext_resource type="Texture2D" uid="uid://bkau5m34kd6ff" path="res://Sprites/Ground_Texture.png" id="1_0o6r1"]
+[ext_resource type="Texture2D" uid="uid://bkau5m34kd6ff" path="res://Assets/Sprites/Ground_Texture.png" id="1_0o6r1"]
 [ext_resource type="Script" uid="uid://cy2jxjt8xd8pe" path="res://Scenes/PlayerZoneDecal.cs" id="2_l47rq"]
 
 [sub_resource type="CompressedTexture2D" id="CompressedTexture2D_0o6r1"]

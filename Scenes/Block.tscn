@@ -1,6 +1,7 @@
-[gd_scene load_steps=9 format=3 uid="uid://bgcxuru7egs0k"]
+[gd_scene load_steps=8 format=3 uid="uid://bgcxuru7egs0k"]
 
 [ext_resource type="Script" uid="uid://cccemn41y18rm" path="res://Scripts/Block.cs" id="1_ovn4m"]
+[ext_resource type="ArrayMesh" uid="uid://cbmiksvythsvo" path="res://Assets/Models/blockbench_export_mesh.res" id="2_x55lh"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_ab6iy"]
 size = Vector3(2, 2, 2)
@@ -11,12 +12,6 @@ albedo_color = Color(0.3961487, 0.5618644, 1, 1)
 [sub_resource type="BoxMesh" id="BoxMesh_x55lh"]
 material = SubResource("StandardMaterial3D_ovn4m")
 size = Vector3(2, 2, 2)
-
-[sub_resource type="BoxMesh" id="BoxMesh_hfsdp"]
-size = Vector3(2, 2, 2)
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_2wby2"]
-albedo_color = Color(0.8956227, 0.30090225, 0.25784513, 1)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ujcp4"]
 albedo_color = Color(0.77254903, 0.6862745, 0.039215688, 1)
@@ -43,9 +38,9 @@ mesh = SubResource("BoxMesh_x55lh")
 skeleton = NodePath("../..")
 
 [node name="DefaultMesh" type="MeshInstance3D" parent="Meshes"]
-mesh = SubResource("BoxMesh_hfsdp")
+transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, 0, -1, 0)
+mesh = ExtResource("2_x55lh")
 skeleton = NodePath("../..")
-surface_material_override/0 = SubResource("StandardMaterial3D_2wby2")
 
 [node name="HighlightMesh" type="MeshInstance3D" parent="Meshes"]
 visible = false
