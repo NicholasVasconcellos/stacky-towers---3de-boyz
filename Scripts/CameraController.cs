@@ -4,81 +4,102 @@ using Godot;
 
 public partial class CameraController : Node3D
 {
-    private float hRotation = 0f;
-    private float vRotation = 0f;
-
-    [Export]
-    public float sensitivity = 0.3f;
-
-    [Export]
-    public float maxPitch = 60f;
-
-    [Export]
-    public float minPitch = -30f;
-
-    [Export]
-    public double hAcceleration = 2.0;
-
-    [Export]
-    public double vAcceleration = 2.0;
+    [Export] public float sensitivity = 0.3f;
+    [Export] public float maxPitch = 60f;
+    [Export] public float minPitch = -30f;
+    
+    // Joystick sensitivity often needs to be different than mouse
+    [Export] public float joystickSensitivity = 2.0f; 
 
     private int playerDeviceId;
     private Player player;
+    private SpringArm3D _springArm;
 
-    // Called when the node enters the scene tree for the first time.
     public override void _Ready()
     {
-        player = Owner as Player;
-
+        // 1. Grab the Player reference
+        player = Owner as Player; // Or GetParent() depending on setup
         if (player == null)
         {
-            GD.PrintErr("Camera controller cannot find player ");
+            GD.PrintErr("Camera controller cannot find player");
             return;
         }
 
-        // Now you have the ID!
         playerDeviceId = player.PlayerDeviceId;
+        
+        // 2. Grab the SpringArm reference
+        _springArm = GetNode<SpringArm3D>("SpringArm3D");
+        
+        // Optional: Ensure the SpringArm doesn't inherit rotation from the parent 
+        // if you want the camera to stay steady when the player turns.
+        _springArm.TopLevel = false; 
     }
 
-    // Called every frame. 'delta' is the elapsed time since the previous frame.
-    public override void _Process(double delta) { }
-
-    // Called on Every Input
+    // Called on Every Input (Mouse)
     public override void _UnhandledInput(InputEvent @event)
     {
-        if (@event.Device != playerDeviceId)
-        {
-            return; // If yes, stop. This isn't my business.
-        }
+        if (@event.Device != playerDeviceId) return;
 
         base._UnhandledInput(@event);
 
         if (@event is InputEventMouseMotion motion)
         {
-            // Get the mosue offset
-            Vector2 relativeMotion = motion.Relative;
-
-            // update the Horizontal rotation
-            hRotation -= relativeMotion.X * sensitivity;
-
-            // update the Vertical rotation
-            vRotation -= relativeMotion.Y * sensitivity;
-
-            // Calmp the Vertical Rotation
-            vRotation = Mathf.Clamp(vRotation, minPitch, maxPitch);
-
-            // Update Object Rotation
-            RotationDegrees = new Vector3(0, hRotation, vRotation);
+            // Apply rotation logic directly to the SpringArm
+            ApplyRotation(motion.Relative.X * sensitivity, motion.Relative.Y * sensitivity);
         }
     }
 
-    //for doing joystick rotation
-    private void RotateFromVector(Vector2 V)
+    // Called every frame (Joystick)
+    public override void _Process(double delta) 
     {
-        if (V.Length() == 0)
+        // Assuming you are getting a Vector2 from your Input map somewhere else
+        // and calling RotateFromVector. 
+        // If you are calling RotateFromVector from the Player script, this is fine.
+        // If you want to handle it here:
+        Vector2 lookDir = Input.GetVector("ui_left", "ui_right", "ui_up", "ui_down");
+        if (lookDir.Length() > 0)
         {
-            return;
+             RotateFromVector(lookDir * (float)delta * joystickSensitivity);
         }
-        Rotation = new Vector3(Rotation.X, Rotation.Y + V.X, Rotation.Z);
+    }
+
+    // Unified Rotation Logic (Used by both Mouse and Joystick)
+private void ApplyRotation(float yawChange, float pitchChange)
+    {
+        // 1. Yaw (Left/Right) - Rotate the ROOT (The Turntable)
+        // We rotate 'this' (The CameraController node), NOT the _springArm.
+        // Since the Controller is always flat (0,0,0), it rotates perfectly horizontally.
+        this.RotateY(Mathf.DegToRad(-yawChange));
+
+        // 2. Pitch (Up/Down) - Rotate the SPRING ARM (The Hinge)
+        float currentPitch = _springArm.RotationDegrees.X;
+        
+        currentPitch -= pitchChange; 
+        currentPitch = Mathf.Clamp(currentPitch, minPitch, maxPitch);
+
+        // Apply rotation ONLY to X. Keep Y and Z at 0 for the arm.
+        // The Arm doesn't need to know about Yaw, because its Parent (Root) handles that.
+        _springArm.RotationDegrees = new Vector3(currentPitch, 0, 0);
+    }
+
+    // Updated Joystick Method
+    public void RotateFromVector(Vector2 V)
+    {
+        if (V.Length() == 0) return;
+        
+        // Pass the Vector data to the unified function
+        // V.X is Left/Right, V.Y is Up/Down
+        ApplyRotation(V.X, V.Y);
+    }
+
+    // --- HELPER FOR YOUR WASD MOVEMENT ---
+    // Since we are rotating the SpringArm (child), the Root (parent) Rotation stays at 0.
+    // If your Player script asks for "Rotation.Y", it gets 0.
+    // Use this property to get the ACTUAL camera angle for movement.
+public float CameraYaw
+    {
+        // We now return the Global Rotation of the Controller (Root), 
+        // because that is the one doing the horizontal spinning.
+        get { return this.GlobalRotation.Y; }
     }
 }

@@ -1,16 +1,20 @@
 using System;
 using Godot;
 
-public partial class PlayerZone : Node3D
+public partial class PlayerZoneDecal : Node3D
 {
     // Assigned by PlayerZones manager
     public int PlayerDeviceId { get; set; } = -1;
 
-    private MeshInstance3D _zoneMesh;
+    [Export]
+    private MeshInstance3D _zoneMesh{ get; set; }
 
     public override void _Ready()
     {
-        _zoneMesh = GetNode<MeshInstance3D>("MeshInstance3D");
+        if (_zoneMesh == null)
+        {
+            GD.PrintErr("PlayerZoneDecal: Zone Mesh is not assigned!");
+        }
     }
 
     public void SetColor(Color color)

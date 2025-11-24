@@ -12,7 +12,7 @@ public partial class PlayerZones : Node3D
         foreach (Node3D child in GetChildren())
         {
             //idk why this is PlayerZone but PlayerZoneDecal is what it's supposed to be named and doen't work
-            if (child is PlayerZone playerZone)
+            if (child is PlayerZoneDecal playerZoneDecal)
             {
                 GD.Print($"PlayerZones: Processing Zone {index}");
                 if (index < playerConfigs.Count)
@@ -22,15 +22,15 @@ public partial class PlayerZones : Node3D
                     GD.Print(
                         $"PlayerZones: Assigning Zone {index} to DeviceId {config.DeviceId} with Color {config.PlayerColor}"
                     );
-                    playerZone.PlayerDeviceId = config.DeviceId;
-                    playerZone.SetColor(config.PlayerColor);
-                    playerZone.Visible = true;
+                    playerZoneDecal.PlayerDeviceId = config.DeviceId;
+                    playerZoneDecal.SetColor(config.PlayerColor);
+                    playerZoneDecal.Visible = true;
                 }
                 else
                 {
                     // hide unused zones
                     GD.Print($"PlayerZones: Hiding unused Zone {index}");
-                    playerZone.Visible = false;
+                    playerZoneDecal.Visible = false;
                 }
                 index++;
             }
