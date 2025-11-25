@@ -88,8 +88,10 @@ public partial class Player : CharacterBody3D
     // Placement Preview mesh
     private MeshInstance3D placePreview = null;
 
-    private StandardMaterial3D validPreviewMaterial;
+    private StandardMaterial3D snapPreviewMaterial;
     private StandardMaterial3D invalidPreviewMaterial;
+
+    private StandardMaterial3D defaultPreviewMaterial;
 
     private Node3D prevParent;
 
@@ -166,13 +168,17 @@ public partial class Player : CharacterBody3D
 
         // Standard Material for Place Preview
         // Pre-create both materials
-        validPreviewMaterial = new StandardMaterial3D();
-        validPreviewMaterial.Transparency = BaseMaterial3D.TransparencyEnum.Alpha;
-        validPreviewMaterial.AlbedoColor = new Color(0, 0, 1, 0.5f); // Blue
+        snapPreviewMaterial = new StandardMaterial3D();
+        snapPreviewMaterial.Transparency = BaseMaterial3D.TransparencyEnum.Alpha;
+        snapPreviewMaterial.AlbedoColor = new Color(0, 1, 0, 0.5f); // Green
 
         invalidPreviewMaterial = new StandardMaterial3D();
         invalidPreviewMaterial.Transparency = BaseMaterial3D.TransparencyEnum.Alpha;
         invalidPreviewMaterial.AlbedoColor = new Color(1, 0, 0, 0.5f); // Red
+
+        defaultPreviewMaterial = new StandardMaterial3D();
+        defaultPreviewMaterial.Transparency = BaseMaterial3D.TransparencyEnum.Alpha;
+        defaultPreviewMaterial.AlbedoColor = new Color(0, 0, 1, 0.5f); // Blue
 
         // Get Placement Shape Cast
         placeShapeCast = GetNode<ShapeCast3D>("BodyPivot/PlaceShapeCast");
@@ -345,8 +351,13 @@ public partial class Player : CharacterBody3D
 
         // Set the Internal Preview Mesh Variable (Duplicate from the block's)
         placePreview = grabbedBlock.getPreviewMesh().Duplicate() as MeshInstance3D;
-        GetTree().Root.AddChild(placePreview);
-        placePreview.Visible = false; // Still Invisible
+
+        // Add as child of grab features
+        grabFeatures.AddChild(placePreview);
+
+        // Set starting position of place preview based on place Offset
+        placePreview.Position = PlacementOffset;
+        placePreview.Visible = true; // Make it visible
 
         // Set the grabbed Block Collision shape (Duplicate original)
         grabbedBlockColliderShape = (Shape3D)grabbedBlock.getCollider().Shape.Duplicate();
@@ -426,29 +437,22 @@ public partial class Player : CharacterBody3D
 
         grabbedBlockColliderShape = null; // Block Shape
 
-        Vector3 targetPosition;
-
-        if (placePreview != null && placePreview.Visible == true)
+        if (placePreview == null)
         {
-            // if the placement preview is available
-
-            // Target Postion is same as the preview
-            targetPosition = placePreview.GlobalPosition;
-
-            // Set the rotatin of the placed block (Fix make the rotation gradual as well)
-            placedBlock.GlobalRotation = placePreview.GlobalRotation;
-
-            // Remove the Placement Preview
-            placePreview.Visible = false;
-            placePreview.QueueFree();
-            placePreview = null;
+            GD.PrintErr("No Place Preview even though has held block");
+            return;
         }
-        else
-        {
-            // Place in front of player
-            targetPosition =
-                GlobalPosition + PlacementOffset.Rotated(Vector3.Up, bodyPivot.Rotation.Y);
-        }
+
+        // Target Postion is same as the preview position
+        Vector3 targetPosition = placePreview.GlobalPosition;
+
+        // Set the rotatin of the placed block (Fix make the rotation gradual as well)
+        placedBlock.GlobalRotation = placePreview.GlobalRotation;
+
+        // Remove the Placement Preview
+        placePreview.Visible = false;
+        placePreview.QueueFree();
+        placePreview = null;
 
         // Gradually Move Block to Target Position
         Tween tween = CreateTween();
@@ -568,7 +572,10 @@ public partial class Player : CharacterBody3D
 
     private void updatePlacePreview()
     {
+        // If colliding , get target block and update position to snapped position
         // Ensure Immediate Collision Updates
+        bool isSnapping = false;
+
         placeShapeCast.ForceShapecastUpdate();
         if (
             grabbedBlock != null
@@ -576,6 +583,8 @@ public partial class Player : CharacterBody3D
             && placeShapeCast.GetCollider(0) is Block targetBlock
         )
         {
+            isSnapping = true;
+            // Calculate new place position
             var collisionPoint = placeShapeCast.GetCollisionPoint(0);
 
             Vector3 dist = GlobalPosition - collisionPoint;
@@ -588,76 +597,70 @@ public partial class Player : CharacterBody3D
 
             var distanceSquare = GlobalPosition.DistanceSquaredTo(collisionPoint);
 
-            Vector3 placePosition;
+            // Rotate to match existing block
+            placePreview.GlobalRotation = targetBlock.GlobalRotation;
 
             if (distanceSquare < distSquareTreshold)
             {
                 // Up Place
-                placePosition = targetBlock.GlobalPosition + Vector3.Up * targetBlock.getLenght();
+                placePreview.GlobalPosition =
+                    targetBlock.GlobalPosition + Vector3.Up * targetBlock.getLenght();
             }
             else
             {
                 // Front Place
 
                 // Place position is in the normal direction offset by half a lenght
-                placePosition = targetBlock.GlobalPosition + normal * targetBlock.getLenght();
+                placePreview.GlobalPosition =
+                    targetBlock.GlobalPosition + normal * targetBlock.getLenght();
             }
-
-            // Check if Placing at position will clip any blocks (Todo)
-            // Check if placing at position will clip any blocks
-            bool wouldCollide = CheckBlockCollision(
-                placePosition,
-                targetBlock.Rotation,
-                targetBlock
-            );
-
-            if (wouldCollide)
-            {
-                // No Collisino
-                // Instanceciate grabbed blocked preview mesh at the place Position
-                if (placePreview == null)
-                {
-                    GD.Print("Unable to Find Place Preview Mesh");
-                }
-
-                placePreview.MaterialOverride = invalidPreviewMaterial;
-                // Position to target Position
-                placePreview.GlobalPosition = placePosition;
-                // Adjust rotation to be in line with target Block
-                placePreview.GlobalRotation = targetBlock.Rotation;
-                // Set to visible
-                placePreview.Visible = true;
-            }
-            else
-            {
-                // No Collisino
-                // Instanceciate grabbed blocked preview mesh at the place Position
-                if (placePreview == null)
-                {
-                    GD.Print("Unable to Find Place Preview Mesh");
-                }
-
-                // Adjust the Color
-                placePreview.MaterialOverride = validPreviewMaterial;
-
-                // Position to target Position
-                placePreview.GlobalPosition = placePosition;
-                // Adjust rotation to be in line with target Block
-                placePreview.GlobalRotation = targetBlock.Rotation;
-                // Set to visible
-                placePreview.Visible = true;
-            }
-
-            // Collision preview
         }
         else
         {
-            if (placePreview != null)
+            // No Target Block, Place Preview still based on offset Position
+            placePreview.Position = PlacementOffset;
+            // Reset Relative rotation of the mesh (same as it was when picked up)
+            placePreview.Rotation = Vector3.Zero;
+        }
+
+        // Check if Placing at position with rotation will clip any blocks
+        bool wouldCollide = CheckBlockCollision(
+            placePreview.GlobalPosition,
+            placePreview.GlobalRotation
+        );
+
+        if (wouldCollide)
+        {
+            // Instanceciate grabbed blocked preview mesh at the place Position
+            if (placePreview == null)
             {
-                // Hide Preview for Now
-                placePreview.Visible = false;
+                GD.Print("Unable to Find Place Preview Mesh");
+            }
+
+            placePreview.MaterialOverride = invalidPreviewMaterial;
+        }
+        else
+        {
+            // No Collisino
+            // Instanceciate grabbed blocked preview mesh at the place Position
+            if (placePreview == null)
+            {
+                GD.Print("Unable to Find Place Preview Mesh");
+            }
+
+            if (isSnapping)
+            {
+                // Adjust the Color
+                placePreview.MaterialOverride = snapPreviewMaterial;
+            }
+            else
+            {
+                // Adjust the Color
+                placePreview.MaterialOverride = defaultPreviewMaterial;
             }
         }
+
+        // Collision preview
     }
 
     public void SetInputEnabled(bool enabled)
@@ -699,7 +702,7 @@ public partial class Player : CharacterBody3D
         }
     }
 
-    private bool CheckBlockCollision(Vector3 position, Vector3 rotation, Block targetBlock)
+    private bool CheckBlockCollision(Vector3 position, Vector3 rotation)
     {
         if (grabbedBlockColliderShape == null)
         {
@@ -718,7 +721,7 @@ public partial class Player : CharacterBody3D
         // Consider collisions with block objects that aren't the targetBlock
         foreach (var result in results)
         {
-            if (result["collider"].Obj is Block block && block != targetBlock)
+            if (result["collider"].Obj is Block block)
             {
                 return true; // Would collide with another block
             }
