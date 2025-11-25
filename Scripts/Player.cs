@@ -93,6 +93,11 @@ public partial class Player : CharacterBody3D
 
     private Node3D prevParent;
 
+    // Define this near your other constants/exports
+
+    [Export]
+    private float placeCollisionScale = 0.9f;
+
     // Ref to Currently Highlighted Block Object
     private Block highlightedBlock = null;
 
@@ -343,8 +348,14 @@ public partial class Player : CharacterBody3D
         GetTree().Root.AddChild(placePreview);
         placePreview.Visible = false; // Still Invisible
 
-        // Set the grabbed Block Collision shape
-        grabbedBlockColliderShape = grabbedBlock.getCollider().Shape;
+        // Set the grabbed Block Collision shape (Duplicate original)
+        grabbedBlockColliderShape = (Shape3D)grabbedBlock.getCollider().Shape.Duplicate();
+
+        // Shrink to remove tangential checks
+        if (grabbedBlockColliderShape is BoxShape3D cube)
+        {
+            cube.Size *= placeCollisionScale;
+        }
 
         // Set the Query Parameters based on block collider
         query.Shape = grabbedBlockColliderShape;
@@ -369,6 +380,9 @@ public partial class Player : CharacterBody3D
         grabbedBlock.Freeze = true;
 
         Block blockBeingGrabbed = grabbedBlock;
+
+        // Reset Rotation
+        blockBeingGrabbed.Rotation = Vector3.Zero;
 
         Tween tween = CreateTween();
         tween
