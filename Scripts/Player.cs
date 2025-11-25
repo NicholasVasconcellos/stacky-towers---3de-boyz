@@ -578,8 +578,13 @@ public partial class Player : CharacterBody3D
         {
             var collisionPoint = placeShapeCast.GetCollisionPoint(0);
 
+            Vector3 dist = GlobalPosition - collisionPoint;
+
             // Get Normal and align it to the target block's coordinate system
-            Vector3 normal = alignedNormal(placeShapeCast.GetCollisionNormal(0), targetBlock);
+            // Vector3 normal = alignedNormal(placeShapeCast.GetCollisionNormal(0), targetBlock);
+            Vector3 normal = alignedNormal(dist, targetBlock);
+
+            // Normal will be a line from block to player, but rotate it to align to block's roation
 
             var distanceSquare = GlobalPosition.DistanceSquaredTo(collisionPoint);
 
