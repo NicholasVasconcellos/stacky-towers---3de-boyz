@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=3 uid="uid://bgcxuru7egs0k"]
+[gd_scene load_steps=9 format=3 uid="uid://bgcxuru7egs0k"]
 
 [ext_resource type="Script" uid="uid://cccemn41y18rm" path="res://Scripts/Block.cs" id="1_ovn4m"]
 [ext_resource type="ArrayMesh" uid="uid://cbmiksvythsvo" path="res://Assets/Models/blockbench_export_mesh.res" id="2_x55lh"]
@@ -18,6 +18,9 @@ albedo_color = Color(0.77254903, 0.6862745, 0.039215688, 1)
 
 [sub_resource type="BoxMesh" id="BoxMesh_rjsgv"]
 material = SubResource("StandardMaterial3D_ujcp4")
+size = Vector3(2, 2, 2)
+
+[sub_resource type="BoxMesh" id="BoxMesh_ujcp4"]
 size = Vector3(2, 2, 2)
 
 [node name="Block" type="RigidBody3D" groups=["Block"]]
@@ -46,14 +49,6 @@ skeleton = NodePath("../..")
 visible = false
 mesh = SubResource("BoxMesh_rjsgv")
 
-[node name="GroundCheck" type="RayCast3D" parent="."]
-target_position = Vector3(0, -1.5, 0)
-collision_mask = 6
-debug_shape_custom_color = Color(0.46054584, 0.20978057, 0.5348755, 1)
-debug_shape_thickness = 5
-
-[node name="RoofCheck" type="RayCast3D" parent="."]
-target_position = Vector3(0, 1.5, 0)
-collision_mask = 6
-debug_shape_custom_color = Color(0.14055589, 0.38544577, 0.30485484, 1)
-debug_shape_thickness = 5
+[node name="DebugMesh" type="MeshInstance3D" parent="Meshes"]
+visible = false
+mesh = SubResource("BoxMesh_ujcp4")

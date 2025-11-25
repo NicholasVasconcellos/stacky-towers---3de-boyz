@@ -8,17 +8,15 @@ public partial class Block : RigidBody3D
     private MeshInstance3D highlightMesh;
 
     private MeshInstance3D previewMesh;
+    private MeshInstance3D debugMesh;
 
     private CollisionShape3D blockCollider;
-
-    private RayCast3D groundCheck;
-    private RayCast3D roofCheck;
 
     // Grounded Check
     private float groundCheckDistance = 0.15f;
 
-    private bool _isGrounded;
-    private bool _isRoofed;
+    // private bool _isGrounded;
+    // private bool _isRoofed;
 
     // Block Side lengh in meters
     [Export]
@@ -29,13 +27,16 @@ public partial class Block : RigidBody3D
     {
         // Get Snap Points Container
         snapPoints = GetNode<Node3D>("SnapPoints");
+
+        // Get Mesh Object Reference
         defaultMesh = GetNode<MeshInstance3D>("Meshes/DefaultMesh");
         highlightMesh = GetNode<MeshInstance3D>("Meshes/HighlightMesh");
         previewMesh = GetNode<MeshInstance3D>("Meshes/PreviewMesh");
+        debugMesh = GetNode<MeshInstance3D>("Meshes/DebugMesh");
 
-        // Get Ray Cast References
-        groundCheck = GetNode<RayCast3D>("GroundCheck");
-        roofCheck = GetNode<RayCast3D>("RoofCheck");
+        // // Get Ray Cast References
+        // groundCheck = GetNode<RayCast3D>("GroundCheck");
+        // roofCheck = GetNode<RayCast3D>("RoofCheck");
 
         // SEt Visibility
         defaultMesh.Visible = true;
@@ -117,15 +118,25 @@ public partial class Block : RigidBody3D
         return previewMesh;
     }
 
-    public bool isGrounded()
+    public void addDebugMesh()
     {
-        return _isGrounded;
+        debugMesh.Visible = true;
     }
 
-    public bool isRoofed()
+    public void removeDebugMesh()
     {
-        return _isRoofed;
+        debugMesh.Visible = false;
     }
+
+    // public bool isGrounded()
+    // {
+    //     return _isGrounded;
+    // }
+
+    // public bool isRoofed()
+    // {
+    //     return _isRoofed;
+    // }
 
     public int getLenght()
     {
