@@ -334,20 +334,19 @@ public partial class Player : CharacterBody3D
 
             _jetpackInputHeld = false;
         }
-
-        // Handle Grab Button (device-specific)
-        if (Input.IsActionJustPressed("Grab") && !clickLocked)
-        {
-            if (grabbedBlock == null)
-            {
-                Grab();
-            }
-            else
-            {
-                Place();
-            }
-        }
         Velocity = velocity;
+    }
+
+    public void TryGrab()
+    {
+        if (grabbedBlock == null)
+        {
+            Grab();
+        }
+        else
+        {
+            Place();
+        }
     }
 
     public override void _Process(double delta)

@@ -35,22 +35,6 @@ public partial class CameraController : Node3D
         _springArm.TopLevel = false; 
     }
 
-    // Called on Every Input (Mouse)
-    public override void _Input(InputEvent @event)
-    {
-        // // 1. SAFETY CHECK: Only move camera if the mouse is captured (Gameplay Mode)
-        // if (Input.MouseMode != Input.MouseModeEnum.Captured)
-        // {
-        //     return;
-        // }
-        //
-        // // 2. Handle Mouse Motion
-        // if (@event is InputEventMouseMotion motion)
-        // {
-        //     ApplyRotation(motion.Relative.X * sensitivity, motion.Relative.Y * sensitivity);
-        // }
-    }
-
     // Called every frame (Joystick)
     public override void _Process(double delta) 
     {

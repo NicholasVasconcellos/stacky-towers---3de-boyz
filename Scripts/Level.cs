@@ -126,5 +126,14 @@ public partial class Level : Node3D
                 _player0Camera.ManualRotate(motion.Relative);
             }
         }
+        else if (@event.IsActionPressed("Grab"))
+        {
+            var player0 = _player0Camera?.GetParentOrNull<Player>();
+        
+            if (player0 != null)
+            {
+                player0.TryGrab();
+            }
+        }
     }
 }
