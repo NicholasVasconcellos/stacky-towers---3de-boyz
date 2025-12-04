@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://y7kgb7dhphth"
-path="res://.godot/imported/BlockTexture.png-0a1351aaa06187a59dae72c3c1ce3679.ctex"
+uid="uid://c2pc2joeeyppy"
+path="res://.godot/imported/BlockTextureBeveled.png-c52c740cfca9409295a87055acc540c5.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/Blockbench/BlockTexture.png"
-dest_files=["res://.godot/imported/BlockTexture.png-0a1351aaa06187a59dae72c3c1ce3679.ctex"]
+source_file="res://Assets/Blockbench/BlockTextureBeveled.png"
+dest_files=["res://.godot/imported/BlockTextureBeveled.png-c52c740cfca9409295a87055acc540c5.ctex"]
 
 [params]
 
