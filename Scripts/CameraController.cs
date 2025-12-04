@@ -11,7 +11,7 @@ public partial class CameraController : Node3D
     // Joystick sensitivity often needs to be different than mouse
     [Export] public float joystickSensitivity = 2.0f; 
 
-    private int playerDeviceId;
+    private int _playerDeviceId;
     private Player player;
     private SpringArm3D _springArm;
 
@@ -25,7 +25,7 @@ public partial class CameraController : Node3D
             return;
         }
 
-        playerDeviceId = player.PlayerDeviceId;
+        _playerDeviceId = player.PlayerDeviceId;
         
         // 2. Grab the SpringArm reference
         _springArm = GetNode<SpringArm3D>("SpringArm3D");
@@ -38,17 +38,17 @@ public partial class CameraController : Node3D
     // Called on Every Input (Mouse)
     public override void _Input(InputEvent @event)
     {
-        // 1. SAFETY CHECK: Only move camera if the mouse is captured (Gameplay Mode)
-        if (Input.MouseMode != Input.MouseModeEnum.Captured)
-        {
-            return;
-        }
-
-        // 2. Handle Mouse Motion
-        if (@event is InputEventMouseMotion motion)
-        {
-            ApplyRotation(motion.Relative.X * sensitivity, motion.Relative.Y * sensitivity);
-        }
+        // // 1. SAFETY CHECK: Only move camera if the mouse is captured (Gameplay Mode)
+        // if (Input.MouseMode != Input.MouseModeEnum.Captured)
+        // {
+        //     return;
+        // }
+        //
+        // // 2. Handle Mouse Motion
+        // if (@event is InputEventMouseMotion motion)
+        // {
+        //     ApplyRotation(motion.Relative.X * sensitivity, motion.Relative.Y * sensitivity);
+        // }
     }
 
     // Called every frame (Joystick)
@@ -62,6 +62,15 @@ public partial class CameraController : Node3D
         if (lookDir.Length() > 0)
         {
              RotateFromVector(lookDir * (float)delta * joystickSensitivity);
+        }
+    }
+    
+    public void ManualRotate(Vector2 relativeMotion)
+    {
+        // Only apply if this is the correct player (Player 1 / Mouse User)
+        if (_playerDeviceId == 0) 
+        {
+            ApplyRotation(relativeMotion.X * sensitivity, relativeMotion.Y * sensitivity);
         }
     }
 

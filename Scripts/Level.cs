@@ -16,6 +16,8 @@ public partial class Level : Node3D
 
     private GameManager gameManager;
     private World3D mainWorld;
+    
+    private CameraController _player0Camera;
 
     public override void _Ready()
     {
@@ -51,6 +53,7 @@ public partial class Level : Node3D
                 SizeFlagsHorizontal = Control.SizeFlags.ExpandFill,
                 SizeFlagsVertical = Control.SizeFlags.ExpandFill,
                 Stretch = true,
+                MouseFilter = Control.MouseFilterEnum.Ignore
             };
 
             // Create viewport for each player
@@ -96,8 +99,32 @@ public partial class Level : Node3D
                 );
                 return; // Stop the function
             }
+            
+            if (config.DeviceId == 0)
+            {
+                // Make sure your Camera in the Player scene is actually named "CameraController"
+                _player0Camera = playerInstance.GetNodeOrNull<CameraController>("CameraController");
+                if (_player0Camera == null) GD.PrintErr("Level could not find CameraController on Player 0!");
+            }
             SplitScreenContainer.AddChild(viewportContainer);
             GD.Print($"--- Loop finished for Device {config.DeviceId} ---");
+        }
+    }
+    
+    // This catches mouse movement globally, before the Viewports can mess it up.
+    public override void _Input(InputEvent @event)
+    {
+        // Only process if Mouse is Captured (Gameplay Mode)
+        if (Input.MouseMode != Input.MouseModeEnum.Captured) return;
+
+        // If it's mouse motion...
+        if (@event is InputEventMouseMotion motion)
+        {
+            // ...feed it directly to Player 0's camera
+            if (_player0Camera != null)
+            {
+                _player0Camera.ManualRotate(motion.Relative);
+            }
         }
     }
 }
