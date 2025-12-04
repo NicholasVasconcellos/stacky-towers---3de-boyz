@@ -36,15 +36,17 @@ public partial class CameraController : Node3D
     }
 
     // Called on Every Input (Mouse)
-    public override void _UnhandledInput(InputEvent @event)
+    public override void _Input(InputEvent @event)
     {
-        if (@event.Device != playerDeviceId) return;
+        // 1. SAFETY CHECK: Only move camera if the mouse is captured (Gameplay Mode)
+        if (Input.MouseMode != Input.MouseModeEnum.Captured)
+        {
+            return;
+        }
 
-        base._UnhandledInput(@event);
-
+        // 2. Handle Mouse Motion
         if (@event is InputEventMouseMotion motion)
         {
-            // Apply rotation logic directly to the SpringArm
             ApplyRotation(motion.Relative.X * sensitivity, motion.Relative.Y * sensitivity);
         }
     }

@@ -31,6 +31,8 @@ public partial class UIManager : CanvasLayer
 		_winScreen.Hide();
 
 		_timerLabel.TimeUp += _OnTimerTimeUp;
+
+		Input.MouseMode = Input.MouseModeEnum.Captured;
 	}
 
 	public override void _Process(double delta)
@@ -55,6 +57,7 @@ public partial class UIManager : CanvasLayer
 	private void _OnTimerTimeUp()
 	{
 		// [TODO] Connect win logic (highest tower wins) to here
+		Input.MouseMode = Input.MouseModeEnum.Visible;
 		RunWinSequence("Time's Up!");
 	}
 
@@ -113,12 +116,15 @@ public partial class UIManager : CanvasLayer
 			GetTree().Paused = false;
 			_pauseMenu.Hide();
 			_towerHeightContainer.Visible = true;
+			Input.MouseMode = Input.MouseModeEnum.Captured;
 		}
 		else
 		{
 			GetTree().Paused = true;
 			_pauseMenu.Show();
 			_towerHeightContainer.Visible = false;
+			Input.MouseMode = Input.MouseModeEnum.Visible;
+			
 		}
 	}
 
