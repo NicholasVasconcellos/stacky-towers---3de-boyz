@@ -1,7 +1,7 @@
 [gd_scene load_steps=11 format=3 uid="uid://b3y4j5hcprcra"]
 
 [ext_resource type="Script" uid="uid://c1wtkef2pp55" path="res://Scripts/Jetpack.cs" id="1_jhf8d"]
-[ext_resource type="AudioStream" uid="uid://duftvk4bf10n3" path="res://Sounds/rocketthrust.mp3" id="2_l46jp"]
+[ext_resource type="AudioStream" uid="uid://duftvk4bf10n3" path="res://Assets/Sounds/rocketthrust.mp3" id="2_l46jp"]
 
 [sub_resource type="CylinderMesh" id="CylinderMesh_i4uei"]
 
@@ -29,8 +29,11 @@ color_ramp = SubResource("GradientTexture1D_jhf8d")
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ol1my"]
 transparency = 1
+cull_mode = 2
 shading_mode = 0
 vertex_color_use_as_albedo = true
+billboard_mode = 1
+billboard_keep_scale = true
 
 [sub_resource type="QuadMesh" id="QuadMesh_do1fi"]
 material = SubResource("StandardMaterial3D_ol1my")
@@ -47,6 +50,8 @@ transform = Transform3D(0.049198385, -0.998789, 3.7252903e-09, -0.99829346, -0.0
 emitting = false
 amount = 50
 lifetime = 0.75
+visibility_aabb = AABB(-4, -4, -4, 10, 10, 10)
+local_coords = true
 process_material = SubResource("ParticleProcessMaterial_f0idu")
 draw_pass_1 = SubResource("QuadMesh_do1fi")
 
