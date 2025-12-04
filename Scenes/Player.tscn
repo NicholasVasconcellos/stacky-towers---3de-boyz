@@ -1,8 +1,8 @@
 [gd_scene load_steps=13 format=3 uid="uid://ddfeug7d5du1f"]
 
 [ext_resource type="Script" uid="uid://dvrskk01phk14" path="res://Scripts/Player.cs" id="1_xhfnw"]
-[ext_resource type="PackedScene" uid="uid://cy36aygvs66pn" path="res://addons/gdquest_gobot/gobot_skin.tscn" id="2_kne1u"]
 [ext_resource type="PackedScene" uid="uid://bq4oofsrmpwgy" path="res://Scenes/CameraController.tscn" id="2_kpjcp"]
+[ext_resource type="PackedScene" uid="uid://c73j5w6l53cjs" path="res://Scenes/PlayerSkin.tscn" id="2_nn08x"]
 [ext_resource type="PackedScene" uid="uid://b3y4j5hcprcra" path="res://Scenes/Jetpack.tscn" id="4_dewec"]
 [ext_resource type="PackedScene" uid="uid://buf046uhxtkwm" path="res://UI/Scenes/PlayerHUD.tscn" id="5_5ixxa"]
 
@@ -42,12 +42,12 @@ distSquareTreshold = 8.0
 
 [node name="BodyPivot" type="Node3D" parent="."]
 
-[node name="GobotSkin" parent="BodyPivot" instance=ExtResource("2_kne1u")]
+[node name="PlayerSkin" parent="BodyPivot" instance=ExtResource("2_nn08x")]
 
-[node name="JetpackMount" type="Node3D" parent="BodyPivot/GobotSkin"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.80187666, -0.447)
+[node name="JetpackMount" type="Node3D" parent="BodyPivot/PlayerSkin"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8.902818e-08, 0.80187666, 0.5713637)
 
-[node name="Jetpack" parent="BodyPivot/GobotSkin/JetpackMount" instance=ExtResource("4_dewec")]
+[node name="Jetpack" parent="BodyPivot/PlayerSkin/JetpackMount" instance=ExtResource("4_dewec")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.00030469894, 0.0004299581)
 
 [node name="GrabFeatures" type="Node3D" parent="BodyPivot"]

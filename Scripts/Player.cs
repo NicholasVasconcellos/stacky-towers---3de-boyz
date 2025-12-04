@@ -119,7 +119,7 @@ public partial class Player : CharacterBody3D
     [Export]
     private float distSquareTreshold = 1.0f;
 
-    private GobotSkin characterModel;
+    private AnimationNodeStateMachinePlayback _playback;
 
     // Container for all elements that rotate on charcter movement
     private Node3D bodyPivot;
@@ -143,7 +143,18 @@ public partial class Player : CharacterBody3D
         AddToGroup("Players");
 
         Camera = GetNode<Node3D>(CameraPath);
-
+        //get the animation tree shindig
+        AnimationTree AnimTree = GetNode<AnimationTree>("BodyPivot/PlayerSkin/AnimationTree");
+        if (AnimTree != null)
+        {
+            _playback = (AnimationNodeStateMachinePlayback)AnimTree.Get("parameters/playback");
+        }
+        else
+        {
+            GD.PrintErr(
+                "Path not found. Check if the node is actually named 'AnimationTree' inside PlayerSkin."
+            );
+        }
         // Init Pivot Node
         bodyPivot = GetNode<Node3D>("BodyPivot");
         // Initialize grab Features
@@ -152,14 +163,21 @@ public partial class Player : CharacterBody3D
         grabRange = GetNode<Area3D>("BodyPivot/GrabFeatures/GrabRange");
 
         // Initialize the reference to the Character Model
-        characterModel = GetNode<GobotSkin>("BodyPivot/GobotSkin");
+        if (AnimTree != null)
+        {
+            _playback = (AnimationNodeStateMachinePlayback)AnimTree.Get("parameters/playback");
+        }
+        else
+        {
+            GD.PrintErr("Make sure to assign Animation Tree to Player in inspector");
+        }
 
         // Signals for Grab Range
         grabRange.BodyEntered += OnBlockEntered;
         grabRange.BodyExited += OnBlockExited;
 
         // Jetpack Variables
-        _jetpack = GetNode<Jetpack>("BodyPivot/GobotSkin/JetpackMount/Jetpack");
+        _jetpack = GetNode<Jetpack>("BodyPivot/PlayerSkin/JetpackMount/Jetpack");
         _currentFuel = MaxJetpackFuel;
 
         // HUD
@@ -233,7 +251,8 @@ public partial class Player : CharacterBody3D
             velocity.Z = moveDirection.Z * Speed;
 
             // Play Run Animation
-            characterModel?.Run();
+            //characterModel?.Run();
+            _playback.Travel("Run");
 
             // Rotate
             // calc rotation angle
@@ -255,7 +274,8 @@ public partial class Player : CharacterBody3D
             velocity.X = Mathf.MoveToward(Velocity.X, 0, Speed);
             velocity.Z = Mathf.MoveToward(Velocity.Z, 0, Speed);
             // Play Idle Animation
-            characterModel?.Idle();
+            //characterModel?.Idle();
+            _playback.Travel("idle");
         }
 
         if (_timeSinceLastJetpack > RegenDelay && _currentFuel < MaxJetpackFuel)
@@ -296,7 +316,7 @@ public partial class Player : CharacterBody3D
         {
             if (IsOnFloor())
             {
-                characterModel?.Jump();
+                //characterModel?.Jump();
                 velocity.Y = JumpVelocity;
             }
             else
@@ -672,7 +692,7 @@ public partial class Player : CharacterBody3D
             inputDirection = Vector2.Zero;
             _jetpackInputHeld = false;
             _jetpack?.StopEffects();
-            characterModel?.Idle();
+            //characterModel?.Idle();
         }
     }
 
