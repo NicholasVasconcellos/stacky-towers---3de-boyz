@@ -19,6 +19,14 @@ grow_vertical = 2
 mouse_filter = 2
 script = ExtResource("1_61df2")
 
+[node name="FuelLabel" type="Label" parent="."]
+layout_mode = 0
+offset_left = 28.0
+offset_top = -27.0
+offset_right = 68.0
+offset_bottom = -4.0
+text = "FUEL"
+
 [node name="FuelBar" type="TextureProgressBar" parent="."]
 custom_minimum_size = Vector2(100, 0)
 layout_mode = 0
