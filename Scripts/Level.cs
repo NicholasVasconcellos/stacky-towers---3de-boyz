@@ -100,7 +100,7 @@ public partial class Level : Node3D
                 return; // Stop the function
             }
             
-            if (config.DeviceId == 0)
+            if (config.DeviceId == -1)
             {
                 // Make sure your Camera in the Player scene is actually named "CameraController"
                 _player0Camera = playerInstance.GetNodeOrNull<CameraController>("CameraController");
@@ -126,7 +126,7 @@ public partial class Level : Node3D
                 _player0Camera.ManualRotate(motion.Relative);
             }
         }
-        else if (@event.IsActionPressed("Grab"))
+        else if (@event.IsActionPressed("kb_grab"))
         {
             var player0 = _player0Camera?.GetParentOrNull<Player>();
         

@@ -52,7 +52,7 @@ public partial class CameraController : Node3D
     public void ManualRotate(Vector2 relativeMotion)
     {
         // Only apply if this is the correct player (Player 1 / Mouse User)
-        if (_playerDeviceId == 0) 
+        if (_playerDeviceId == -1) 
         {
             ApplyRotation(relativeMotion.X * sensitivity, relativeMotion.Y * sensitivity);
         }

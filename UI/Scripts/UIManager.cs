@@ -37,7 +37,7 @@ public partial class UIManager : CanvasLayer
 
 	public override void _Process(double delta)
 	{
-		if (Input.IsActionJustPressed("ui_cancel"))
+		if (Input.IsActionJustPressed("Pause"))
 		{
 			if (_isGameOver) return;
 			if (_optionsMenu.IsVisibleInTree())

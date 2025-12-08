@@ -128,6 +128,13 @@ public partial class Player : CharacterBody3D
 
     // Store the current input direction for this player
     private Vector2 inputDirection = Vector2.Zero;
+    
+    private string _actionMoveLeft;
+    private string _actionMoveRight;
+    private string _actionMoveForward;
+    private string _actionMoveBack;
+    private string _actionJump;
+    private string _actionGrab;
 
     //for use with game manager
     public Player Initialize(int deviceId, Color color, int xOffset, int zOffset)
@@ -135,6 +142,25 @@ public partial class Player : CharacterBody3D
         PlayerDeviceId = deviceId;
         PlayerColor = color;
         Position = new Vector3(Position.X + xOffset, 0, Position.Z + zOffset);
+        
+        if (PlayerDeviceId == -1) // Keyboard Player
+        {
+            _actionMoveLeft = "kb_move_left";
+            _actionMoveRight = "kb_move_right";
+            _actionMoveForward = "kb_move_forward";
+            _actionMoveBack = "kb_move_back";
+            _actionJump = "kb_jump";
+            _actionGrab = "kb_grab";
+        }
+        else // Controller Player
+        {
+            _actionMoveLeft = "joy_move_left";
+            _actionMoveRight = "joy_move_right";
+            _actionMoveForward = "joy_move_forward";
+            _actionMoveBack = "joy_move_back";
+            _actionJump = "joy_jump";
+            _actionGrab = "joy_grab";
+        }
         return this;
     }
 
@@ -301,22 +327,30 @@ public partial class Player : CharacterBody3D
     {
         if (!_canMove)
             return;
+        
+        bool isKeyboardEvent = (@event is InputEventKey || @event is InputEventMouseButton || @event is InputEventMouseMotion);
+        bool isJoypadEvent = (@event is InputEventJoypadButton || @event is InputEventJoypadMotion);
 
-        Vector3 velocity = Velocity;
-        if (@event.Device != PlayerDeviceId)
+        if (PlayerDeviceId == -1)
         {
-            return; //Not this player's input
+            if (!isKeyboardEvent) return; // KBM Player ignores controller inputs
         }
+        else
+        {
+            if (!isJoypadEvent) return; // Controller Player ignores keyboard inputs
+            if (@event.Device != PlayerDeviceId) return; // Controller Player ignores other controllers
+        }
+        
+        Vector3 velocity = Velocity;
 
         // Update movement direction based on this player's input
-        inputDirection = Input.GetVector("Move Left", "Move Right", "Move Forward", "Move Back");
+        inputDirection = Input.GetVector(_actionMoveLeft, _actionMoveRight, _actionMoveForward, _actionMoveBack);
 
         // Handle jump button
-        if (Input.IsActionJustPressed("ui_accept"))
+        if (Input.IsActionJustPressed(_actionJump))
         {
             if (IsOnFloor())
             {
-                //characterModel?.Jump();
                 velocity.Y = JumpVelocity;
             }
             else
@@ -324,7 +358,7 @@ public partial class Player : CharacterBody3D
                 _jetpackInputHeld = true;
             }
         }
-        else if (Input.IsActionJustReleased("ui_accept"))
+        else if (Input.IsActionJustReleased(_actionJump))
         {
             // Variable jump height
             if (velocity.Y > 0 && !_jetpackInputHeld)

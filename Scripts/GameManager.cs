@@ -44,10 +44,11 @@ public partial class GameManager : Node
         // Initialize the list
         PlayerConfigs = new List<PlayerConfig>();
 
-        PlayerConfigs.Add(new PlayerConfig(0, Colors.Red));
+        // Player 0: Keyboard/Mouse (ID -1)
+        PlayerConfigs.Add(new PlayerConfig(-1, Colors.Red));
 
-        //remove these to make it 1 player
-        PlayerConfigs.Add(new PlayerConfig(1, Colors.Blue));
+        // Player 1: First Connected Controller (ID 0)
+        PlayerConfigs.Add(new PlayerConfig(0, Colors.Blue));
     }
 
     public override void _Process(double delta) { }
