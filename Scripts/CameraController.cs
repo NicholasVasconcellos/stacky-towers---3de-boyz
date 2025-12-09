@@ -9,7 +9,7 @@ public partial class CameraController : Node3D
     [Export] public float minPitch = -30f;
     
     // Joystick sensitivity often needs to be different than mouse
-    [Export] public float joystickSensitivity = 150.0f; 
+    [Export] public float joystickSensitivity = 200.0f; 
 
     private Player player;
     private SpringArm3D _springArm;
