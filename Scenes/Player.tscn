@@ -1,10 +1,11 @@
-[gd_scene load_steps=13 format=3 uid="uid://ddfeug7d5du1f"]
+[gd_scene load_steps=14 format=3 uid="uid://ddfeug7d5du1f"]
 
 [ext_resource type="Script" uid="uid://dvrskk01phk14" path="res://Scripts/Player.cs" id="1_xhfnw"]
 [ext_resource type="PackedScene" uid="uid://bq4oofsrmpwgy" path="res://Scenes/CameraController.tscn" id="2_kpjcp"]
 [ext_resource type="PackedScene" uid="uid://c73j5w6l53cjs" path="res://Scenes/PlayerSkin.tscn" id="2_nn08x"]
 [ext_resource type="PackedScene" uid="uid://b3y4j5hcprcra" path="res://Scenes/Jetpack.tscn" id="4_dewec"]
 [ext_resource type="PackedScene" uid="uid://buf046uhxtkwm" path="res://UI/Scenes/PlayerHUD.tscn" id="5_5ixxa"]
+[ext_resource type="AudioStream" uid="uid://cfvfx85wasrx4" path="res://Assets/Sounds/cartoon-jump-6462.mp3" id="5_nn08x"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_kne1u"]
 size = Vector3(1, 1, 1.5)
@@ -88,6 +89,16 @@ shape = SubResource("CapsuleShape3D_kpjcp")
 
 [node name="CameraController" parent="." instance=ExtResource("2_kpjcp")]
 visible = false
+
+[node name="AudioListener3D" type="AudioListener3D" parent="CameraController"]
+current = true
+
+[node name="JumpSound" type="AudioStreamPlayer3D" parent="."]
+stream = ExtResource("5_nn08x")
+volume_db = -50.0
+max_db = -20.0
+
+[node name="LandSound" type="AudioStreamPlayer3D" parent="."]
 
 [node name="Node" type="Node" parent="."]
 

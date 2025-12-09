@@ -10,6 +10,7 @@ public partial class BlockL : Block
 
     protected override void initColliderReferences()
     {
+        colliders = new Godot.Collections.Array<CollisionShape3D>();
         // Read All Children from Root
         foreach (Node child in GetChildren())
         {

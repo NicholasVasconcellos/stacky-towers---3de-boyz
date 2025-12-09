@@ -121,7 +121,7 @@ public partial class Player : CharacterBody3D
 
     /* Block Placement Features*/
 
-    private BoxShape3D unitCubeShape;
+    private BoxShape3D scaledUnitCubeShape;
 
     private ShapeCast3D placeShapeCast;
 
@@ -144,6 +144,10 @@ public partial class Player : CharacterBody3D
     private string _actionMoveBack;
     private string _actionJump;
     private string _actionGrab;
+    
+    private AudioStreamPlayer3D _jumpSound;
+    private AudioStreamPlayer3D _landSound;
+    private bool _wasOnFloor = true;
 
     //for use with game manager
     public Player Initialize(int deviceId, Color color, int xOffset, int zOffset)
@@ -170,6 +174,9 @@ public partial class Player : CharacterBody3D
             _actionJump = "joy_jump";
             _actionGrab = "joy_grab";
         }
+        
+        _jumpSound = GetNode<AudioStreamPlayer3D>("JumpSound");
+        _landSound = GetNode<AudioStreamPlayer3D>("LandSound");
         return this;
     }
 
@@ -225,8 +232,8 @@ public partial class Player : CharacterBody3D
         query.CollideWithBodies = true;
         query.CollisionMask = 0b10; // Check's only for blocks
         // Init basic cube shape (TODO GET THE BLOCK SHAPE FROM BLOCK CLASS STATIC VAR)
-        float cubeSize = 2 * placeCollisionScale; // Shrinked to remove tangential checks
-        unitCubeShape = new BoxShape3D { Size = Vector3.One * cubeSize };
+        float scaledCubeSize = 2 * placeCollisionScale; // Shrinked to remove tangential checks
+        scaledUnitCubeShape = new BoxShape3D { Size = Vector3.One * scaledCubeSize };
 
         // Init Placement Preview Meshses Array
         placePreviewMeshes = new Array<MeshInstance3D>();
@@ -242,6 +249,16 @@ public partial class Player : CharacterBody3D
             // Decrement Velocity by a * dT
             velocity += GetGravity() * (float)delta;
         }
+        
+        if (!_wasOnFloor && IsOnFloor())
+        {
+            // Optional: Only play if we were falling fast enough (prevents sounds on tiny bumps)
+            // if (_lastVelocityY < -1.0f) 
+            _landSound.PitchScale = (float)GD.RandRange(0.9, 1.1);
+            _landSound.Play();
+        }
+        
+        _wasOnFloor = IsOnFloor();
 
         bool isJetpacking = _canMove && _jetpackInputHeld && _currentFuel > 0;
 
@@ -325,9 +342,14 @@ public partial class Player : CharacterBody3D
 
     public override void _UnhandledInput(InputEvent @event)
     {
-        if (!_canMove) return;
-        
-        bool isKeyboardEvent = (@event is InputEventKey || @event is InputEventMouseButton || @event is InputEventMouseMotion);
+        if (!_canMove)
+            return;
+
+        bool isKeyboardEvent = (
+            @event is InputEventKey
+            || @event is InputEventMouseButton
+            || @event is InputEventMouseMotion
+        );
         bool isJoypadEvent = (@event is InputEventJoypadButton || @event is InputEventJoypadMotion);
 
         if (PlayerDeviceId == -1)
@@ -359,6 +381,8 @@ public partial class Player : CharacterBody3D
             if (IsOnFloor())
             {
                 velocity.Y = JumpVelocity;
+                _jumpSound.PitchScale = (float)GD.RandRange(0.9, 1.1);
+                _jumpSound.Play();
             }
             else
             {
@@ -375,8 +399,8 @@ public partial class Player : CharacterBody3D
 
             _jetpackInputHeld = false;
         }
-        
-        if (Input.IsActionJustPressed(_actionGrab)) 
+
+        if (Input.IsActionJustPressed(_actionGrab))
         {
             TryGrab();
         }
@@ -692,19 +716,23 @@ public partial class Player : CharacterBody3D
             // Rotate to match existing block
             placePreview.GlobalRotation = targetBlock.GlobalRotation;
 
+            // Collision Point Snapped to nearest cube within block
+            Vector3 nearestCube = GetNearestCubeCenter(collisionPoint, targetBlock);
+            // Instad of targetBlock.GlobalPosition
+
             if (distanceSquare < distSquareTreshold)
             {
                 // Up Place
+
                 placePreview.GlobalPosition =
-                    targetBlock.GlobalPosition + Vector3.Up * targetBlock.getblockLength();
+                    nearestCube + Vector3.Up * targetBlock.getblockLength();
             }
             else
             {
                 // Front Place
 
                 // Place position is in the normal direction offset by half a lenght
-                placePreview.GlobalPosition =
-                    targetBlock.GlobalPosition + normal * targetBlock.getblockLength();
+                placePreview.GlobalPosition = nearestCube + normal * targetBlock.getblockLength();
             }
         }
         else
@@ -753,6 +781,30 @@ public partial class Player : CharacterBody3D
         }
 
         // Collision preview
+    }
+
+    private Vector3 GetNearestCubeCenter(Vector3 collisionPoint, Block targetBlock)
+    {
+        Vector3[] targetCubeCenters = targetBlock.getCubeCenters();
+        Vector3 nearestCenter = targetBlock.GlobalPosition;
+        float minDistSq = float.MaxValue;
+
+        Basis targetBasis = targetBlock.GlobalTransform.Basis;
+
+        foreach (Vector3 localCenter in targetCubeCenters)
+        {
+            // Convert local cube center to global position
+            Vector3 globalCenter = targetBlock.GlobalPosition + (targetBasis * localCenter);
+
+            float distSq = collisionPoint.DistanceSquaredTo(globalCenter);
+            if (distSq < minDistSq)
+            {
+                minDistSq = distSq;
+                nearestCenter = globalCenter;
+            }
+        }
+
+        return nearestCenter;
     }
 
     private void setPlacePreviewMaterial(StandardMaterial3D material)
@@ -826,7 +878,7 @@ public partial class Player : CharacterBody3D
 
         // Set the Query Parameters based on block collider
         // How do I create a cube with the blockLength * placementOffset Scale here?
-        query.Shape = unitCubeShape;
+        query.Shape = scaledUnitCubeShape;
         var spaceState = GetWorld3D().DirectSpaceState;
         var basis = Basis.FromEuler(rotation);
 
