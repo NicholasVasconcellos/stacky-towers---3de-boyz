@@ -4,7 +4,7 @@ using Godot;
 public partial class BlockSpawner : Node3D
 {
     [Export]
-    public PackedScene BlockScene;
+    public PackedScene[] BlockScenes; // Array of block types
 
     [Export]
     public float BlocksPerSecond = 2.0f;
@@ -24,23 +24,21 @@ public partial class BlockSpawner : Node3D
 
     private int count;
 
-    // Called when the node enters the scene tree for the first time.
     public override void _Ready()
     {
         spawnInterval = 1.0f / BlocksPerSecond;
     }
 
-    // Called every frame. 'delta' is the elapsed time since the previous frame.
     public override void _Process(double delta)
     {
-        if (BlockScene == null)
+        if (BlockScenes == null || BlockScenes.Length == 0)
         {
             return;
         }
 
         timer += (float)delta;
 
-        if (count > maxBlocks)
+        if (count >= maxBlocks)
         {
             return;
         }
@@ -49,28 +47,31 @@ public partial class BlockSpawner : Node3D
         {
             SpawnBlock();
             count++;
-            // Reset timer
             timer = 0f;
         }
     }
 
     private void SpawnBlock()
     {
-        // Add an instance of BlockScene
-        var block = (Block)BlockScene.Instantiate();
+        // Pick a random block type
+        int index = random.Next(BlockScenes.Length);
+        PackedScene selectedScene = BlockScenes[index];
 
-        // Get Rand Float from 0 to 1
-        // Mult by the range
-        // Subtract by half the range to centralize
+        if (selectedScene == null)
+        {
+            GD.PrintErr($"BlockScene at index {index} is null");
+            return;
+        }
+
+        var block = (Block)selectedScene.Instantiate();
+
         var randPosition = new Vector3(
             (float)(random.NextDouble() * SpawnRange.X - SpawnRange.X / 2),
             (float)(random.NextDouble() * SpawnRange.Y - SpawnRange.Y / 2),
             (float)(random.NextDouble() * SpawnRange.Z - SpawnRange.Z / 2)
         );
 
-        // Set position
         block.Position = SpawnCenter + randPosition;
-        // Add this as child
         AddChild(block);
     }
 }
