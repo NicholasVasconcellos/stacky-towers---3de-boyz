@@ -43,12 +43,6 @@ public partial class GameManager : Node
         GD.Print("GameManager ready running");
         // Initialize the list
         PlayerConfigs = new List<PlayerConfig>();
-
-        // Player 0: Keyboard/Mouse (ID -1)
-        PlayerConfigs.Add(new PlayerConfig(-1, Colors.Red));
-
-        // Player 1: First Connected Controller (ID 0)
-        PlayerConfigs.Add(new PlayerConfig(0, Colors.Blue));
     }
 
     public override void _Process(double delta) { }
@@ -97,6 +91,11 @@ public partial class GameManager : Node
         CurrentState = GameState.InGame;
         GetTree().Paused = false;
         GetTree().ChangeSceneToFile("res://Scenes/Level.tscn");
+    }
+    
+    public void ResetPlayers()
+    {
+        PlayerConfigs.Clear();
     }
 
     //consider moving pause to gamemanger

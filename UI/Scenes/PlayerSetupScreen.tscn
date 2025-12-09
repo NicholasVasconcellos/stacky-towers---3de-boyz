@@ -4,7 +4,7 @@
 [ext_resource type="PackedScene" uid="uid://bgcfq1681f7xg" path="res://UI/Scenes/MenuButton.tscn" id="1_tsifu"]
 [ext_resource type="Script" uid="uid://lgsrqbl0485q" path="res://UI/Scripts/PlayerSetupScreen.cs" id="1_yf52a"]
 
-[node name="PlayerSetupScreen" type="Control"]
+[node name="PlayerSetupScreen" type="Control" node_paths=PackedStringArray("_playerCards", "_startButton")]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -13,6 +13,8 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
 script = ExtResource("1_yf52a")
+_playerCards = [NodePath("CenterContainer/HBoxContainer/PlayerCard1"), NodePath("CenterContainer/HBoxContainer/PlayerCard2"), NodePath("CenterContainer/HBoxContainer/PlayerCard3"), NodePath("CenterContainer/HBoxContainer/PlayerCard4")]
+_startButton = NodePath("StartButton")
 
 [node name="BackButton" parent="." instance=ExtResource("1_tsifu")]
 layout_mode = 0
