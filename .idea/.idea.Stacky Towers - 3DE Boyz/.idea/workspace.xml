@@ -7,9 +7,6 @@
     <list default="true" id="c2f424eb-9508-4bf4-9216-96c278956c76" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.Stacky Towers - 3DE Boyz/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Stacky Towers - 3DE Boyz/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Scenes/Jetpack.tscn" beforeDir="false" afterPath="$PROJECT_DIR$/Scenes/Jetpack.tscn" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Scenes/Player.tscn" beforeDir="false" afterPath="$PROJECT_DIR$/Scenes/Player.tscn" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Scripts/Jetpack.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Scripts/Jetpack.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Scripts/Level.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Scripts/Level.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
