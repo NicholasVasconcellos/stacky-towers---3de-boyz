@@ -57,7 +57,12 @@ public partial class Level : Node3D
             };
 
             // Create viewport for each player
-            var subViewport = new SubViewport { HandleInputLocally = false, World3D = mainWorld };
+            var subViewport = new SubViewport
+            {
+                HandleInputLocally = false,
+                World3D = mainWorld,
+                AudioListenerEnable3D = true
+            };
 
             // Get player scene to initialize
             if (PlayerScene == null)
