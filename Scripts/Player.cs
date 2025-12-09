@@ -308,10 +308,7 @@ public partial class Player : CharacterBody3D
             // Play Idle Animation
             //characterModel?.Idle();
             //if no other animation playing, play idle
-            if (!animationPlayer.IsPlaying())
-            {
-                animationPlayer.Play("idle");
-            }
+            animationPlayer.Play("idle");
         }
 
         if (_timeSinceLastJetpack > RegenDelay && _currentFuel < MaxJetpackFuel)
