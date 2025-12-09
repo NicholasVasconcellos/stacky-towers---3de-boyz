@@ -1,6 +1,11 @@
-[gd_scene load_steps=2 format=3 uid="uid://dvkcsc2bnggbk"]
+[gd_scene load_steps=3 format=3 uid="uid://dvkcsc2bnggbk"]
 
 [ext_resource type="Script" uid="uid://n4eu8a05fqq5" path="res://UI/Scripts/HeightTick.cs" id="1_gtliy"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_gtliy"]
+font_size = 23
+outline_size = 2
+outline_color = Color(0, 0, 0, 1)
 
 [node name="HeightTick" type="Control"]
 layout_mode = 3
@@ -21,8 +26,11 @@ color = Color(0, 0, 0, 0.6784314)
 
 [node name="TickLabel" type="Label" parent="."]
 layout_mode = 0
-offset_left = 15.0
-offset_top = -10.0
-offset_right = 55.0
-offset_bottom = 13.0
+offset_left = -104.0
+offset_top = -17.0
+offset_right = -16.0
+offset_bottom = 18.0
 text = "..."
+label_settings = SubResource("LabelSettings_gtliy")
+horizontal_alignment = 2
+vertical_alignment = 1

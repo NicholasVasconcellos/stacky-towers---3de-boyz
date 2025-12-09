@@ -75,6 +75,13 @@ public partial class TowerHeightContainer : CenterContainer
                 marker.Modulate = playerConfig.PlayerColor;
             }
         }
+
+        // Move all the way to the right if single player
+        if (gameManager.PlayerConfigs.Count == 1)
+        {
+            AnchorLeft = 0.5f;
+            AnchorRight = 1.5f;
+        }
     }
 
     public override void _Process(double delta)
