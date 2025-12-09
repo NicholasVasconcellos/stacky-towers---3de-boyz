@@ -43,12 +43,6 @@ public partial class GameManager : Node
         GD.Print("GameManager ready running");
         // Initialize the list
         PlayerConfigs = new List<PlayerConfig>();
-
-        // Player 0: Keyboard/Mouse (ID -1)
-        PlayerConfigs.Add(new PlayerConfig(-1, Colors.Red));
-
-        // Player 1: First Connected Controller (ID 0)
-        PlayerConfigs.Add(new PlayerConfig(0, Colors.Blue));
     }
 
     public override void _Process(double delta) { }
@@ -81,6 +75,7 @@ public partial class GameManager : Node
         PlayerConfigs.Clear();
         CurrentState = GameState.MainMenu;
         GetTree().ChangeSceneToFile("res://UI/Scenes/main_menu.tscn");
+        Input.MouseMode = Input.MouseModeEnum.Visible;
     }
 
     public void GoToWinScreen(string winnerName)
@@ -88,6 +83,7 @@ public partial class GameManager : Node
         WinnerText = winnerName;
         CurrentState = GameState.WinScreen;
         GetTree().ChangeSceneToFile("res://UI/Scenes/WinScreen.tscn");
+        Input.MouseMode = Input.MouseModeEnum.Visible;
     }
 
     public void StartGame()
@@ -95,6 +91,11 @@ public partial class GameManager : Node
         CurrentState = GameState.InGame;
         GetTree().Paused = false;
         GetTree().ChangeSceneToFile("res://Scenes/Level.tscn");
+    }
+    
+    public void ResetPlayers()
+    {
+        PlayerConfigs.Clear();
     }
 
     //consider moving pause to gamemanger

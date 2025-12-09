@@ -1,15 +1,13 @@
-[gd_scene load_steps=14 format=3 uid="uid://pkinvscjucx"]
+[gd_scene load_steps=12 format=3 uid="uid://pkinvscjucx"]
 
 [ext_resource type="PackedScene" uid="uid://bmv5nwfpl1s4u" path="res://Scenes/Floor.tscn" id="1_bexhn"]
 [ext_resource type="Script" uid="uid://dv51a2fm88hi6" path="res://Scripts/Level.cs" id="1_wkftn"]
 [ext_resource type="PackedScene" uid="uid://ddfeug7d5du1f" path="res://Scenes/Player.tscn" id="2_t7iv1"]
 [ext_resource type="PackedScene" uid="uid://bgcxuru7egs0k" path="res://Scenes/Block.tscn" id="4_m3clv"]
 [ext_resource type="PackedScene" uid="uid://cla2u363q8sq5" path="res://UI/Scenes/UIManager.tscn" id="4_wkftn"]
-[ext_resource type="PackedScene" uid="uid://bytjcy6crd47k" path="res://Scenes/Block_L.tscn" id="6_133si"]
+[ext_resource type="PackedScene" uid="uid://djl7l8xsrg10u" path="res://Scenes/Block_L.tscn" id="6_133si"]
 [ext_resource type="Script" uid="uid://nhvtsuc3c0jt" path="res://Scripts/BlockSpawner.cs" id="6_tj5wv"]
 [ext_resource type="PackedScene" uid="uid://diry42au7qyke" path="res://Scenes/GoalZone.tscn" id="7_ienac"]
-[ext_resource type="Script" uid="uid://ldk4a8wloc62" path="res://Scenes/PlayerZones.cs" id="8_or7tv"]
-[ext_resource type="PackedScene" uid="uid://rp7c8smiamrq" path="res://Scenes/PlayerZoneDecal.tscn" id="9_or7tv"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_2nifc"]
 sky_horizon_color = Color(0.66224277, 0.6717428, 0.6867428, 1)
@@ -73,24 +71,4 @@ grow_vertical = 2
 [node name="UIManager" parent="." instance=ExtResource("4_wkftn")]
 
 [node name="GoalZone" parent="." instance=ExtResource("7_ienac")]
-transform = Transform3D(50, 0, 0, 0, 50, 0, 0, 0, 50, 0, 24.989, 0)
-visible = false
-
-[node name="PlayerZones" type="Node3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -34.07595, 0.15041125, 35.98443)
-script = ExtResource("8_or7tv")
-
-[node name="Player1Zone" parent="PlayerZones" instance=ExtResource("9_or7tv")]
-size = Vector3(18.735, 0.1, 20.101)
-
-[node name="Player2Zone" parent="PlayerZones" instance=ExtResource("9_or7tv")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 71.56619, 0, -0.066581726)
-size = Vector3(18.735, 0.1, 20.101)
-
-[node name="Player3Zone" parent="PlayerZones" instance=ExtResource("9_or7tv")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.128521, 0, -71.495544)
-size = Vector3(18.735, 0.1, 20.101)
-
-[node name="Player4Zone" parent="PlayerZones" instance=ExtResource("9_or7tv")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 70.43856, 0, -70.17098)
-size = Vector3(18.735, 0.1, 20.101)
+transform = Transform3D(50, 0, 0, 0, 50, 0, 0, 0, 50, -0.0021703243, 114.39432, 0)

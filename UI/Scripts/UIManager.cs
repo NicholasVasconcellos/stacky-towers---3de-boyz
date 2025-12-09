@@ -57,7 +57,6 @@ public partial class UIManager : CanvasLayer
 	private void _OnTimerTimeUp()
 	{
 		// [TODO] Connect win logic (highest tower wins) to here
-		Input.MouseMode = Input.MouseModeEnum.Visible;
 		RunWinSequence("Time's Up!");
 	}
 
@@ -96,6 +95,7 @@ public partial class UIManager : CanvasLayer
 		GD.Print("Sequence finished. Showing Win Screen.");
 		_winScreen.SetWinnerText(resultText);
 		_winScreen.Show();
+		Input.MouseMode = Input.MouseModeEnum.Visible;
 		
 		GetTree().Paused = true;
 	}

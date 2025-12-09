@@ -184,34 +184,12 @@ public partial class Player : CharacterBody3D
             GD.PrintErr("Animation Player not found in PlayerSkin");
         }
         Camera = GetNode<Node3D>(CameraPath);
-        //get the animation tree shindig
-        AnimationTree AnimTree = GetNode<AnimationTree>("BodyPivot/PlayerSkin/AnimationTree");
-        if (AnimTree != null)
-        {
-            //_playback = (AnimationNodeStateMachinePlayback)AnimTree.Get("parameters/playback");
-        }
-        else
-        {
-            GD.PrintErr(
-                "Path not found. Check if the node is actually named 'AnimationTree' inside PlayerSkin."
-            );
-        }
         // Init Pivot Node
         bodyPivot = GetNode<Node3D>("BodyPivot");
         // Initialize grab Features
         grabFeatures = GetNode<Node3D>("BodyPivot/GrabFeatures");
         // Initialize the grab area
         grabRange = GetNode<Area3D>("BodyPivot/GrabFeatures/GrabRange");
-
-        // Initialize the reference to the Character Model
-        if (AnimTree != null)
-        {
-            //_playback = (AnimationNodeStateMachinePlayback)AnimTree.Get("parameters/playback");
-        }
-        else
-        {
-            GD.PrintErr("Make sure to assign Animation Tree to Player in inspector");
-        }
 
         // Signals for Grab Range
         grabRange.BodyEntered += OnBlockEntered;
@@ -347,14 +325,9 @@ public partial class Player : CharacterBody3D
 
     public override void _UnhandledInput(InputEvent @event)
     {
-        if (!_canMove)
-            return;
-
-        bool isKeyboardEvent = (
-            @event is InputEventKey
-            || @event is InputEventMouseButton
-            || @event is InputEventMouseMotion
-        );
+        if (!_canMove) return;
+        
+        bool isKeyboardEvent = (@event is InputEventKey || @event is InputEventMouseButton || @event is InputEventMouseMotion);
         bool isJoypadEvent = (@event is InputEventJoypadButton || @event is InputEventJoypadMotion);
 
         if (PlayerDeviceId == -1)
@@ -401,6 +374,11 @@ public partial class Player : CharacterBody3D
             }
 
             _jetpackInputHeld = false;
+        }
+        
+        if (Input.IsActionJustPressed(_actionGrab)) 
+        {
+            TryGrab();
         }
         Velocity = velocity;
         // falling, use fall animation, if rising, use jump animation

@@ -1,63 +1,114 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Godot;
 
 public partial class TowerHeightContainer : CenterContainer
 {
     private GameManager gameManager;
+    private Control axisZone;
+    private GoalZone goalZone;
+    private float goalHeight = 20;
 
-    [Export]
-    private float GoalHeight = 25; // Default goal height
     private List<TextureRect> playerHeadIcons = new List<TextureRect>();
+    private Control goalTick;
 
-    //https://docs.godotengine.org/en/stable/tutorials/scripting/c_sharp/c_sharp_signals.html
-    [Signal]
-    public delegate void GoalUpdatedEventHandler(int newScore);
-
-    //make it so it spawns the appropriate number of head icon things based on number of players
     public override void _Ready()
     {
         gameManager = GameManager.Instance;
-        gameManager.PlayerConfigs.ForEach(playerConfig =>
-        {
-            GD.Print($"Player Device ID: {playerConfig.DeviceId}");
-            //get head icon for each player
-        });
+        axisZone = GetNode<Control>("AxisZone");
 
-        //will make work later
-        //var goalZone = GetNode<GoalZone>("GoalZone");
-        // collect all Player{n}Marker TextureRect nodes and store them
+        goalZone = GetNodeOrNull<GoalZone>("../../GoalZone");
+
+        if (goalZone != null)
+        {
+            goalHeight = goalZone.GoalHeight;
+
+            // Adjust for collision shape bottom to show the actual entry height
+            var colShape = goalZone.GetNodeOrNull<CollisionShape3D>("CollisionShape3D");
+            if (colShape != null && colShape.Shape is BoxShape3D boxShape)
+            {
+                float zoneScaleY = goalZone.Scale.Y;
+                float colScaleY = colShape.Scale.Y;
+                float colPosY = colShape.Position.Y;
+                float boxHeight = boxShape.Size.Y;
+
+                float worldBoxHeight = boxHeight * colScaleY * zoneScaleY;
+                float worldBoxCenterOffset = colPosY * zoneScaleY;
+                float worldBoxCenter = goalZone.GoalHeight + worldBoxCenterOffset;
+                float worldBoxBottom = worldBoxCenter - (worldBoxHeight / 2.0f);
+
+                goalHeight = worldBoxBottom - 1;
+                GD.Print(
+                    $"TowerHeightContainer: Adjusted goal height to {goalHeight} (Center: {goalZone.GoalHeight})"
+                );
+            }
+        }
+        else
+        {
+            GD.Print("TowerHeightContainer: GoalZone not found, using default height.");
+        }
+
+        // Get goal tick
+        goalTick = axisZone.GetNodeOrNull<Control>("HeightTick_50m");
+        if (goalTick != null && goalTick is HeightTick tick)
+        {
+            tick.UpdateTickText("Goal");
+        }
+        else
+        {
+            GD.Print("TowerHeightContainer: GoalTick not found or not a HeightTick.");
+        }
+
+        // Get player head icons
+        playerHeadIcons.Clear();
         for (int i = 0; i < gameManager.PlayerConfigs.Count; i++)
         {
-            string nodeName = $"Player{i + 1}Marker";
-            var found = GetNode<TextureRect>($"AxisZone/{nodeName}");
-            if (found != null)
-                playerHeadIcons.Add(found);
-            else
-                GD.PrintErr($"Could not find TextureRect node named '{nodeName}'.");
+            var playerConfig = gameManager.PlayerConfigs[i];
+            var markerName = $"Player{i + 1}Marker";
+            var marker = axisZone.GetNodeOrNull<TextureRect>(markerName);
+
+            if (marker != null)
+            {
+                playerHeadIcons.Add(marker);
+                marker.Visible = true;
+                marker.Modulate = playerConfig.PlayerColor;
+            }
         }
     }
 
     public override void _Process(double delta)
     {
-        //update player markers based on their heights
-        gameManager.PlayerConfigs.ForEach(playerConfig =>
+        if (axisZone == null)
+            return;
+
+        float axisHeight = axisZone.Size.Y;
+        float pixelsPerMeter = (axisHeight * 0.9f) / Math.Max(goalHeight, 1);
+
+        if (goalTick != null)
         {
-            //get player height
-            if (playerConfig.PlayerInstance != null)
+            float goalY = axisHeight - (goalHeight * pixelsPerMeter);
+            goalTick.Position = new Vector2(50, goalY);
+        }
+
+        for (int i = 0; i < gameManager.PlayerConfigs.Count; i++)
+        {
+            var playerConfig = gameManager.PlayerConfigs[i];
+            if (i >= playerHeadIcons.Count)
+                continue;
+
+            var marker = playerHeadIcons[i];
+
+            float playerHeight = 0;
+            if (playerConfig.PlayerInstance != null && IsInstanceValid(playerConfig.PlayerInstance))
             {
-                float playerHeight = playerConfig.PlayerInstance.GlobalPosition.Y;
-                float heightProportion = playerHeight / GoalHeight;
-                float actualHeight = heightProportion * GetNode<Control>("AxisZone").Size.Y;
-                int playerIndex = gameManager.PlayerConfigs.IndexOf(playerConfig);
-                var headIcon = playerHeadIcons[playerIndex];
-                headIcon.Position = new Vector2(
-                    headIcon.Position.X,
-                    GetNode<Control>("AxisZone").Size.Y - actualHeight
-                );
-                //GD.Print($"Player {playerConfig.DeviceId} Height: {playerHeight}m, Proportion: {heightProportion}, Actual Y Position: {actualHeight}");
-                //update head icon element position based on height proportionaal to goal height
+                playerHeight = playerConfig.PlayerInstance.GlobalPosition.Y;
             }
-        });
+
+            float markerY = axisHeight - (playerHeight * pixelsPerMeter);
+            float xPos = 5 + (i * 25);
+
+            marker.Position = new Vector2(xPos, markerY - (marker.Size.Y / 2));
+        }
     }
 }

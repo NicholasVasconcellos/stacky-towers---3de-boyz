@@ -4,15 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="c2f424eb-9508-4bf4-9216-96c278956c76" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/.idea.Stacky Towers - 3DE Boyz/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Stacky Towers - 3DE Boyz/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Animations/Run.res" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Animations/Run.res" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Scripts/CameraController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Scripts/CameraController.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Scripts/GameManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Scripts/GameManager.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Scripts/Level.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Scripts/Level.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Scripts/Player.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Scripts/Player.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/project.godot" beforeDir="false" afterPath="$PROJECT_DIR$/project.godot" afterDir="false" />
-    </list>
+    <list default="true" id="c2f424eb-9508-4bf4-9216-96c278956c76" name="Changes" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -126,7 +118,7 @@
       <workItem from="1763130308177" duration="296000" />
       <workItem from="1763527925282" duration="3219000" />
       <workItem from="1764834816704" duration="7359000" />
-      <workItem from="1765201277363" duration="2734000" />
+      <workItem from="1765201277363" duration="7839000" />
     </task>
     <servers />
   </component>

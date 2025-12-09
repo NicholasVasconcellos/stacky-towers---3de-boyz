@@ -1,8 +1,8 @@
-[gd_scene load_steps=6 format=3 uid="uid://bytjcy6crd47k"]
+[gd_scene load_steps=6 format=3 uid="uid://djl7l8xsrg10u"]
 
 [ext_resource type="Script" uid="uid://dkc4131b2naiw" path="res://Scripts/BlockL.cs" id="1_nukmy"]
-[ext_resource type="BoxMesh" uid="uid://dcttnlwl5lsq0" path="res://Scenes/previewMesh.tres" id="2_1uhua"]
-[ext_resource type="ArrayMesh" uid="uid://cerx043bbrck2" path="res://Assets/Models/blockbench_export_mesh.res" id="2_onay1"]
+[ext_resource type="BoxMesh" uid="uid://duebd4yluqhxc" path="res://Scenes/previewMesh.tres" id="2_1uhua"]
+[ext_resource type="ArrayMesh" uid="uid://3lghbdik4dab" path="res://Assets/Models/BasicBlueBlockMesh.res" id="3_1uhua"]
 [ext_resource type="BoxMesh" uid="uid://cq0yle60t63hv" path="res://Scenes/highlightMesh.tres" id="4_tg6dm"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_ab6iy"]
@@ -56,21 +56,21 @@ skeleton = NodePath("../Cube1")
 
 [node name="Cube0" type="MeshInstance3D" parent="Meshes/DefaultMeshes"]
 transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, 0, -1, 0)
-mesh = ExtResource("2_onay1")
+mesh = ExtResource("3_1uhua")
 skeleton = NodePath("../..")
 
 [node name="Cube1" type="MeshInstance3D" parent="Meshes/DefaultMeshes"]
 transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, 0, 1, 0)
-mesh = ExtResource("2_onay1")
+mesh = ExtResource("3_1uhua")
 
 [node name="Cube2" type="MeshInstance3D" parent="Meshes/DefaultMeshes"]
 transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, 0, 3, 0)
-mesh = ExtResource("2_onay1")
+mesh = ExtResource("3_1uhua")
 skeleton = NodePath("../Cube1")
 
 [node name="Cube3" type="MeshInstance3D" parent="Meshes/DefaultMeshes"]
 transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, 2, -1, 0)
-mesh = ExtResource("2_onay1")
+mesh = ExtResource("3_1uhua")
 skeleton = NodePath("../Cube1")
 
 [node name="HighlightMeshes" type="Node3D" parent="Meshes"]
