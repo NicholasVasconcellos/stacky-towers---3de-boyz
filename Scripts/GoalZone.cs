@@ -33,7 +33,7 @@ public partial class GoalZone : Area3D
             // Notify UIManager of win condition
             if (LevelUIManager != null)
             {
-                LevelUIManager.TriggerWinSequence($"Player {playerNode.PlayerDeviceId + 1} Wins!");
+                LevelUIManager.TriggerWinSequence($"Player {playerNode.PlayerDeviceId + 2} Wins!");
             }
             else
             {

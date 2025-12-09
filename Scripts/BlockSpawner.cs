@@ -63,15 +63,25 @@ public partial class BlockSpawner : Node3D
             return;
         }
 
-        var block = (Block)selectedScene.Instantiate();
+        // Instantiate as a generic Node first
+        Node instance = selectedScene.Instantiate();
 
-        var randPosition = new Vector3(
-            (float)(random.NextDouble() * SpawnRange.X - SpawnRange.X / 2),
-            (float)(random.NextDouble() * SpawnRange.Y - SpawnRange.Y / 2),
-            (float)(random.NextDouble() * SpawnRange.Z - SpawnRange.Z / 2)
-        );
+        // Check if it is actually a Block script
+        if (instance is Block block)
+        {
+            var randPosition = new Vector3(
+                (float)(random.NextDouble() * SpawnRange.X - SpawnRange.X / 2),
+                (float)(random.NextDouble() * SpawnRange.Y - SpawnRange.Y / 2),
+                (float)(random.NextDouble() * SpawnRange.Z - SpawnRange.Z / 2)
+            );
 
-        block.Position = SpawnCenter + randPosition;
-        AddChild(block);
+            block.Position = SpawnCenter + randPosition;
+            AddChild(block);
+        }
+        else
+        {
+            GD.PrintErr($"[BlockSpawner] Error: The scene '{selectedScene.ResourcePath}' root node does not have a 'Block' script attached!");
+            instance.QueueFree(); // Delete the broken object
+        }
     }
 }

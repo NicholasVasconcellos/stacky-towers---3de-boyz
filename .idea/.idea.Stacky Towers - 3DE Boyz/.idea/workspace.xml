@@ -6,7 +6,13 @@
   <component name="ChangeListManager">
     <list default="true" id="c2f424eb-9508-4bf4-9216-96c278956c76" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.Stacky Towers - 3DE Boyz/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Stacky Towers - 3DE Boyz/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Scenes/Jetpack.tscn" beforeDir="false" afterPath="$PROJECT_DIR$/Scenes/Jetpack.tscn" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Scripts/GoalZone.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Scripts/GoalZone.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Scripts/Jetpack.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Scripts/Jetpack.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Scripts/Level.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Scripts/Level.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Scripts/Player.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Scripts/Player.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Stacky Towers - 3DE Boyz - Windows.exe" beforeDir="false" afterPath="$PROJECT_DIR$/Stacky Towers - 3DE Boyz - Windows.exe" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/UI/Scripts/PlayerSetupScreen.cs" beforeDir="false" afterPath="$PROJECT_DIR$/UI/Scripts/PlayerSetupScreen.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/project.godot" beforeDir="false" afterPath="$PROJECT_DIR$/project.godot" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -122,6 +128,7 @@
       <workItem from="1763527925282" duration="3219000" />
       <workItem from="1764834816704" duration="7359000" />
       <workItem from="1765201277363" duration="7839000" />
+      <workItem from="1765321796383" duration="944000" />
     </task>
     <servers />
   </component>

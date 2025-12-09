@@ -107,7 +107,6 @@ public partial class Level : Node3D
             
             if (config.DeviceId == -1)
             {
-                // Make sure your Camera in the Player scene is actually named "CameraController"
                 _player0Camera = playerInstance.GetNodeOrNull<CameraController>("CameraController");
                 if (_player0Camera == null) GD.PrintErr("Level could not find CameraController on Player 0!");
             }

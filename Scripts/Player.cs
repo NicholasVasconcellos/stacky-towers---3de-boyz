@@ -104,8 +104,6 @@ public partial class Player : CharacterBody3D
 
     private Node3D prevParent;
 
-    // Define this near your other constants/exports
-
     [Export]
     private float placeCollisionScale = 0.9f;
 
@@ -146,6 +144,8 @@ public partial class Player : CharacterBody3D
     private string _actionMoveBack;
     private string _actionJump;
     private string _actionGrab;
+    private string _actionRotate;
+    private Basis _currentBlockOrientation = Godot.Basis.Identity;
 
     private AudioStreamPlayer3D _jumpSound;
     private AudioStreamPlayer3D _landSound;
@@ -184,6 +184,7 @@ public partial class Player : CharacterBody3D
             _actionMoveBack = "kb_move_back";
             _actionJump = "kb_jump";
             _actionGrab = "kb_grab";
+            _actionRotate = "kb_rotate";
         }
         else // Controller Player
         {
@@ -193,6 +194,7 @@ public partial class Player : CharacterBody3D
             _actionMoveBack = "joy_move_back";
             _actionJump = "joy_jump";
             _actionGrab = "joy_grab";
+            _actionRotate = "joy_rotate";
         }
 
         _jumpSound = GetNode<AudioStreamPlayer3D>("JumpSound");
@@ -426,6 +428,18 @@ public partial class Player : CharacterBody3D
 
             _jetpackInputHeld = false;
         }
+        
+        if (Input.IsActionJustPressed(_actionRotate) && grabbedBlock != null)
+        {
+            // Rotate 90 degrees around the Local X axis (Pitch Forward)
+            _currentBlockOrientation = _currentBlockOrientation.Rotated(Vector3.Right, Mathf.Pi / 2);
+        
+            // Clean up math errors (keep it perfectly 90 degrees)
+            _currentBlockOrientation = _currentBlockOrientation.Orthonormalized();
+        
+            // Force update the preview immediately so it feels responsive
+            updatePlacePreview();
+        }
 
         if (Input.IsActionJustPressed(_actionGrab))
         {
@@ -469,6 +483,8 @@ public partial class Player : CharacterBody3D
             return;
         }
 
+        _currentBlockOrientation = Basis.Identity;
+        
         canPlace = true;
 
         // Lock Click Interactions while grab is in process
@@ -749,6 +765,7 @@ public partial class Player : CharacterBody3D
 
             // Rotate to match existing block
             placePreview.GlobalRotation = targetBlock.GlobalRotation;
+            placePreview.GlobalBasis = targetBlock.GlobalTransform.Basis * _currentBlockOrientation;
 
             // Collision Point Snapped to nearest cube within block
             Vector3 nearestCube = GetNearestCubeCenter(collisionPoint, targetBlock);
@@ -774,7 +791,8 @@ public partial class Player : CharacterBody3D
             // No Target Block, Place Preview still based on offset Position
             placePreview.Position = PlacementOffset;
             // Reset Relative rotation of the mesh (same as it was when picked up)
-            placePreview.Rotation = Vector3.Zero;
+            // placePreview.Rotation = Vector3.Zero;
+            placePreview.Basis = _currentBlockOrientation;
         }
 
         // Check if Placing at position with rotation will clip any blocks

@@ -37,7 +37,6 @@ public partial class PlayerSetupScreen : Control
         if (@event is InputEventJoypadButton joyBtn && joyBtn.Pressed)
         {
             // Check for "A" button (Xbox) or "Cross" (PS)
-            // Usually Index 0. You can also use Input.IsJoyButtonPressed check.
             if (joyBtn.ButtonIndex == JoyButton.A)
             {
                 AttemptJoin(joyBtn.Device);
@@ -107,7 +106,7 @@ public partial class PlayerSetupScreen : Control
 
     private void UpdateStartButton()
     {
-        // Only allow start if we have at least 2 players? (Or 1 if you support solo)
+        // Only allow start if we have at least 2 players? (Or 1 if we support solo)
         bool canStart = _gameManager.PlayerConfigs.Count >= 1; 
         _startButton.Disabled = !canStart;
         
