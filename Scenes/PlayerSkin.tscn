@@ -1,72 +1,12 @@
-[gd_scene load_steps=18 format=3 uid="uid://c73j5w6l53cjs"]
+[gd_scene load_steps=2 format=3 uid="uid://c73j5w6l53cjs"]
 
 [ext_resource type="PackedScene" uid="uid://eh2eolwhs5pc" path="res://Assets/Models/PlayerCharacter.gltf" id="1_gds7e"]
-
-[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_gds7e"]
-animation = &"Fall"
-
-[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_juo7v"]
-animation = &"idle"
-
-[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_3ncdi"]
-animation = &"Jump"
-
-[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_4d4eu"]
-animation = &"Pick Up"
-
-[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_jjeue"]
-animation = &"Run"
-
-[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_hj2h2"]
-advance_mode = 2
-
-[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_adb12"]
-
-[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_emnmi"]
-advance_mode = 2
-
-[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_7s224"]
-advance_mode = 2
-
-[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_wdg57"]
-
-[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_mvpnb"]
-advance_mode = 2
-
-[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_kbcmh"]
-
-[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_uwnw2"]
-advance_mode = 2
-
-[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_ex8s5"]
-advance_mode = 2
-
-[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_l0ak4"]
-
-[sub_resource type="AnimationNodeStateMachine" id="AnimationNodeStateMachine_af6xm"]
-states/Fall/node = SubResource("AnimationNodeAnimation_gds7e")
-states/Fall/position = Vector2(690, 316)
-states/Idle/node = SubResource("AnimationNodeAnimation_juo7v")
-states/Idle/position = Vector2(484, 99.953125)
-states/Jump/node = SubResource("AnimationNodeAnimation_3ncdi")
-states/Jump/position = Vector2(169, 262)
-"states/Pick Up/node" = SubResource("AnimationNodeAnimation_4d4eu")
-"states/Pick Up/position" = Vector2(477.5, -30)
-states/Run/node = SubResource("AnimationNodeAnimation_jjeue")
-states/Run/position = Vector2(494, 230.5)
-states/Start/position = Vector2(200, 100.015625)
-transitions = ["Start", "Idle", SubResource("AnimationNodeStateMachineTransition_hj2h2"), "Idle", "Pick Up", SubResource("AnimationNodeStateMachineTransition_adb12"), "Idle", "Jump", SubResource("AnimationNodeStateMachineTransition_emnmi"), "Jump", "Fall", SubResource("AnimationNodeStateMachineTransition_7s224"), "Fall", "Idle", SubResource("AnimationNodeStateMachineTransition_wdg57"), "Idle", "Run", SubResource("AnimationNodeStateMachineTransition_mvpnb"), "Run", "Jump", SubResource("AnimationNodeStateMachineTransition_kbcmh"), "Idle", "End", SubResource("AnimationNodeStateMachineTransition_uwnw2"), "Run", "Fall", SubResource("AnimationNodeStateMachineTransition_ex8s5"), "Run", "Idle", SubResource("AnimationNodeStateMachineTransition_l0ak4")]
-graph_offset = Vector2(-78.07502, -63.607548)
 
 [node name="PlayerSkin" instance=ExtResource("1_gds7e")]
 transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 0, 0, 0)
 
 [node name="Hand" parent="Root" index="0"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+transform = Transform3D(0.059555467, -0.81740934, -0.5729705, -0.05598543, 0.57035077, -0.8194911, 0.9966538, 0.08088317, -0.011795504, -0.8125, 0.5625, -0.875)
 
 [node name="Hand2" parent="Root" index="1"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
-
-[node name="AnimationTree" type="AnimationTree" parent="." index="2"]
-tree_root = SubResource("AnimationNodeStateMachine_af6xm")
-anim_player = NodePath("../AnimationPlayer")
+transform = Transform3D(0.4935942, 0.71984625, -0.48804304, -0.79186434, 0.60402274, 0.09004101, 0.35960478, 0.34202015, 0.86816275, 0.875, 0.375, 0.5)

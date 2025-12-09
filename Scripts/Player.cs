@@ -119,7 +119,7 @@ public partial class Player : CharacterBody3D
     [Export]
     private float distSquareTreshold = 1.0f;
 
-    private AnimationNodeStateMachinePlayback _playback;
+    //private AnimationNodeStateMachinePlayback _playback;
 
     // Container for all elements that rotate on charcter movement
     private Node3D bodyPivot;
@@ -128,7 +128,7 @@ public partial class Player : CharacterBody3D
 
     // Store the current input direction for this player
     private Vector2 inputDirection = Vector2.Zero;
-    
+
     private string _actionMoveLeft;
     private string _actionMoveRight;
     private string _actionMoveForward;
@@ -142,7 +142,7 @@ public partial class Player : CharacterBody3D
         PlayerDeviceId = deviceId;
         PlayerColor = color;
         Position = new Vector3(Position.X + xOffset, 0, Position.Z + zOffset);
-        
+
         if (PlayerDeviceId == -1) // Keyboard Player
         {
             _actionMoveLeft = "kb_move_left";
@@ -164,16 +164,22 @@ public partial class Player : CharacterBody3D
         return this;
     }
 
+    private AnimationPlayer animationPlayer;
+
     public override void _Ready()
     {
         AddToGroup("Players");
-
+        animationPlayer = GetNode<AnimationPlayer>("BodyPivot/PlayerSkin/AnimationPlayer");
+        if (animationPlayer == null)
+        {
+            GD.PrintErr("Animation Player not found in PlayerSkin");
+        }
         Camera = GetNode<Node3D>(CameraPath);
         //get the animation tree shindig
         AnimationTree AnimTree = GetNode<AnimationTree>("BodyPivot/PlayerSkin/AnimationTree");
         if (AnimTree != null)
         {
-            _playback = (AnimationNodeStateMachinePlayback)AnimTree.Get("parameters/playback");
+            //_playback = (AnimationNodeStateMachinePlayback)AnimTree.Get("parameters/playback");
         }
         else
         {
@@ -191,7 +197,7 @@ public partial class Player : CharacterBody3D
         // Initialize the reference to the Character Model
         if (AnimTree != null)
         {
-            _playback = (AnimationNodeStateMachinePlayback)AnimTree.Get("parameters/playback");
+            //_playback = (AnimationNodeStateMachinePlayback)AnimTree.Get("parameters/playback");
         }
         else
         {
@@ -278,7 +284,7 @@ public partial class Player : CharacterBody3D
 
             // Play Run Animation
             //characterModel?.Run();
-            _playback.Travel("Run");
+            animationPlayer.Play("Run");
 
             // Rotate
             // calc rotation angle
@@ -301,7 +307,11 @@ public partial class Player : CharacterBody3D
             velocity.Z = Mathf.MoveToward(Velocity.Z, 0, Speed);
             // Play Idle Animation
             //characterModel?.Idle();
-            _playback.Travel("idle");
+            //if no other animation playing, play idle
+            if (!animationPlayer.IsPlaying())
+            {
+                animationPlayer.Play("idle");
+            }
         }
 
         if (_timeSinceLastJetpack > RegenDelay && _currentFuel < MaxJetpackFuel)
@@ -327,24 +337,36 @@ public partial class Player : CharacterBody3D
     {
         if (!_canMove)
             return;
-        
-        bool isKeyboardEvent = (@event is InputEventKey || @event is InputEventMouseButton || @event is InputEventMouseMotion);
+
+        bool isKeyboardEvent = (
+            @event is InputEventKey
+            || @event is InputEventMouseButton
+            || @event is InputEventMouseMotion
+        );
         bool isJoypadEvent = (@event is InputEventJoypadButton || @event is InputEventJoypadMotion);
 
         if (PlayerDeviceId == -1)
         {
-            if (!isKeyboardEvent) return; // KBM Player ignores controller inputs
+            if (!isKeyboardEvent)
+                return; // KBM Player ignores controller inputs
         }
         else
         {
-            if (!isJoypadEvent) return; // Controller Player ignores keyboard inputs
-            if (@event.Device != PlayerDeviceId) return; // Controller Player ignores other controllers
+            if (!isJoypadEvent)
+                return; // Controller Player ignores keyboard inputs
+            if (@event.Device != PlayerDeviceId)
+                return; // Controller Player ignores other controllers
         }
-        
+
         Vector3 velocity = Velocity;
 
         // Update movement direction based on this player's input
-        inputDirection = Input.GetVector(_actionMoveLeft, _actionMoveRight, _actionMoveForward, _actionMoveBack);
+        inputDirection = Input.GetVector(
+            _actionMoveLeft,
+            _actionMoveRight,
+            _actionMoveForward,
+            _actionMoveBack
+        );
 
         // Handle jump button
         if (Input.IsActionJustPressed(_actionJump))
@@ -369,23 +391,33 @@ public partial class Player : CharacterBody3D
             _jetpackInputHeld = false;
         }
         Velocity = velocity;
+        // falling, use fall animation, if rising, use jump animation
+        if (!IsOnFloor())
+        {
+            if (Velocity.Y > 0)
+            {
+                animationPlayer.Stop();
+                animationPlayer.Play("Jump");
+            }
+            else
+            {
+                animationPlayer.Stop();
+                animationPlayer.Play("Fall");
+            }
+        }
     }
 
     public void TryGrab()
     {
         if (grabbedBlock == null)
         {
+            animationPlayer.Play("Pick Up");
             Grab();
         }
         else
         {
             Place();
         }
-    }
-
-    public override void _Process(double delta)
-    {
-        // Movement and grab are now in _UnhandledInput for per-player input
     }
 
     private void Grab()
