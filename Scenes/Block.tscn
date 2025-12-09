@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=3 uid="uid://bgcxuru7egs0k"]
+[gd_scene load_steps=7 format=3 uid="uid://bgcxuru7egs0k"]
 
 [ext_resource type="Script" uid="uid://cccemn41y18rm" path="res://Scripts/Block.cs" id="1_ovn4m"]
 [ext_resource type="ArrayMesh" uid="uid://cerx043bbrck2" path="res://Assets/Models/blockbench_export_mesh.res" id="2_x55lh"]
@@ -15,9 +15,6 @@ albedo_color = Color(0.39607844, 0.56078434, 1, 0.34901962)
 material = SubResource("StandardMaterial3D_ovn4m")
 size = Vector3(2, 2, 2)
 
-[sub_resource type="BoxMesh" id="BoxMesh_ujcp4"]
-size = Vector3(2, 2, 2)
-
 [node name="Block" type="RigidBody3D" groups=["Block"]]
 collision_layer = 2
 collision_mask = 6
@@ -26,24 +23,25 @@ script = ExtResource("1_ovn4m")
 [node name="BlockCollider" type="CollisionShape3D" parent="."]
 shape = SubResource("BoxShape3D_ab6iy")
 
-[node name="SnapPoints" type="Node3D" parent="."]
-
 [node name="Meshes" type="Node3D" parent="."]
 
-[node name="PreviewMesh" type="MeshInstance3D" parent="Meshes"]
-visible = false
-mesh = SubResource("BoxMesh_x55lh")
-skeleton = NodePath("../..")
+[node name="DefaultMeshes" type="Node3D" parent="Meshes"]
 
-[node name="DefaultMesh" type="MeshInstance3D" parent="Meshes"]
+[node name="DefaultMesh" type="MeshInstance3D" parent="Meshes/DefaultMeshes"]
 transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, 0, -1, 0)
 mesh = ExtResource("2_x55lh")
-skeleton = NodePath("../..")
+skeleton = NodePath("../../..")
 
-[node name="HighlightMesh" type="MeshInstance3D" parent="Meshes"]
+[node name="PreviewMeshes" type="Node3D" parent="Meshes"]
 visible = false
+
+[node name="PreviewMesh" type="MeshInstance3D" parent="Meshes/PreviewMeshes"]
+mesh = SubResource("BoxMesh_x55lh")
+skeleton = NodePath("../../..")
+
+[node name="HighlightMeshes" type="Node3D" parent="Meshes"]
+visible = false
+
+[node name="HighlightMesh" type="MeshInstance3D" parent="Meshes/HighlightMeshes"]
 mesh = ExtResource("3_ujcp4")
-
-[node name="DebugMesh" type="MeshInstance3D" parent="Meshes"]
-visible = false
-mesh = SubResource("BoxMesh_ujcp4")
+skeleton = NodePath("../..")
