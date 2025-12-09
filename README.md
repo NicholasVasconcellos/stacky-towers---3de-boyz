@@ -14,7 +14,7 @@ This project aims to help invigorate the local multiplayer, party games, genre a
 https://github.com/NicholasVasconcellos/stacky-towers---3de-boyz
 
 **Link to Installation Package (Windows or Linux):**
-https://drive.google.com/file/d/1qXXiMRfMqaontCTjuHkhj1LAk3BYo4dV/view?usp=sharing
+https://drive.google.com/file/d/1vMD-HQurPgsufTzfFHecBCBXO9iVP3-T/view?usp=drive_link
 
 **Run Executable Command (for the package above):**
 1.  Unzip the zip file from the installation package file.
@@ -23,6 +23,7 @@ https://drive.google.com/file/d/1qXXiMRfMqaontCTjuHkhj1LAk3BYo4dV/view?usp=shari
     If Linux, run `Stacky Towers - 3DE Boyz - Linux.x86_64`
 
 **One-line Build Command (from source):**
+First clone the repository, then inside the folder, enter this command.
 *This command requires the Godot 4.x editor to be installed and in your system's PATH.*
 ```bash
 godot --headless --export-release "Windows Desktop" ./Stacky Towers - 3DE Boyz - Windows.exe
