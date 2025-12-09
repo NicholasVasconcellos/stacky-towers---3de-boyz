@@ -77,3 +77,4 @@ grow_vertical = 2
 
 [node name="GoalZone" parent="." instance=ExtResource("7_ienac")]
 transform = Transform3D(50, 0, 0, 0, 50, 0, 0, 0, 50, -0.0021703243, 114.39432, 0)
+GoalHeight = 35
