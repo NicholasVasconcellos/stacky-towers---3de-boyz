@@ -3,19 +3,10 @@ using Godot;
 
 public partial class BlockL : Block
 {
-    private Node3D defaultMeshes;
-    private Node3D highlightMeshes;
-
-    private Node3D previewMeshes;
     private Godot.Collections.Array<CollisionShape3D> colliders;
 
     [Export]
     private int cubeLenght = 2;
-
-    public override void _Ready()
-    {
-        base._Ready();
-    }
 
     protected override void initColliderReferences()
     {
@@ -30,12 +21,21 @@ public partial class BlockL : Block
         }
     }
 
-    protected override void initMeshes()
+    protected override void initCubeCenters()
     {
-        // Get Mesh Container References
-        defaultMeshes = GetNode<Node3D>("Meshes/DefaultMeshes");
-        highlightMeshes = GetNode<Node3D>("Meshes/HighlightMeshes");
-        previewMeshes = GetNode<Node3D>("Meshes/PreviewMeshes");
+        cubeCenters = new Vector3[]
+        {
+            new Vector3(0, 0, 0),
+            new Vector3(1, 0, 0),
+            new Vector3(0, 1, 0),
+            new Vector3(0, 2, 0),
+        };
+
+        // Scale by current cube lenght
+        for (int i = 0; i < cubeCenters.Length; i++)
+        {
+            cubeCenters[i] *= cubeLenght;
+        }
     }
 
     public override void Highlight()
@@ -47,19 +47,13 @@ public partial class BlockL : Block
 
     public override void removeHighlight()
     {
-        GD.Print("I have been Called");
         // Change Skin to default
         defaultMeshes.Visible = true;
         highlightMeshes.Visible = false;
     }
 
-    // public override CollisionShape3D getCollider()
-    // {
-    //     return blockCollider;
-    // }
-
-    // public override MeshInstance3D getPreviewMesh()
-    // {
-    //     return previewMeshes;
-    // }
+    public override Node3D getPreviewMeshes()
+    {
+        return previewMeshes;
+    }
 }

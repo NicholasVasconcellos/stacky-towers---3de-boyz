@@ -1,5 +1,6 @@
 using System;
 using Godot;
+using Godot.Collections;
 using Godot.NativeInterop;
 
 public partial class Player : CharacterBody3D
@@ -65,6 +66,8 @@ public partial class Player : CharacterBody3D
     // Become Click Locked while in the middle of Placing or Grabbing
     private bool clickLocked = false;
 
+    private float blockLength;
+
     [Export]
     private float grabTime = 0.2f;
 
@@ -81,12 +84,16 @@ public partial class Player : CharacterBody3D
     // Ref to Grabbed Block Object
     private Block grabbedBlock;
 
-    private Shape3D grabbedBlockColliderShape;
+    private Vector3[] cubePositions;
+
+    // private Shape3D grabbedBlockColliderShape;
 
     private PhysicsShapeQueryParameters3D query;
 
     // Placement Preview mesh
-    private MeshInstance3D placePreview = null;
+    private Node3D placePreview = null;
+
+    private Array<MeshInstance3D> placePreviewMeshes;
 
     private StandardMaterial3D snapPreviewMaterial;
     private StandardMaterial3D invalidPreviewMaterial;
@@ -113,6 +120,8 @@ public partial class Player : CharacterBody3D
     private CollisionShape3D tempCollider;
 
     /* Block Placement Features*/
+
+    private BoxShape3D unitCubeShape;
 
     private ShapeCast3D placeShapeCast;
 
@@ -215,6 +224,12 @@ public partial class Player : CharacterBody3D
         query = new PhysicsShapeQueryParameters3D();
         query.CollideWithBodies = true;
         query.CollisionMask = 0b10; // Check's only for blocks
+        // Init basic cube shape (TODO GET THE BLOCK SHAPE FROM BLOCK CLASS STATIC VAR)
+        float cubeSize = 2 * placeCollisionScale; // Shrinked to remove tangential checks
+        unitCubeShape = new BoxShape3D { Size = Vector3.One * cubeSize };
+
+        // Init Placement Preview Meshses Array
+        placePreviewMeshes = new Array<MeshInstance3D>();
     }
 
     public override void _PhysicsProcess(double delta)
@@ -409,27 +424,24 @@ public partial class Player : CharacterBody3D
         // Set internal variable grabbedBlock to the highlighted block
         grabbedBlock = highlightedBlock;
 
-        // Set the Internal Preview Mesh Variable (Duplicate from the block's)
-        placePreview = grabbedBlock.getPreviewMesh().Duplicate() as MeshInstance3D;
+        // Update Block Lenght Variable
+        blockLength = grabbedBlock.getblockLength();
+
+        // Set the Internal Preview Mesh Variable (Duplicate from the block's preview meshes)
+        placePreview = (Node3D)grabbedBlock.getPreviewMeshes().Duplicate();
+        // Pushes Individual Meshes to array
+        loadPlacePreviewMeshes();
 
         // Add as child of grab features
         grabFeatures.AddChild(placePreview);
 
+        // TODO: MAKE PLACE OFFSET A FUNCTION OF BLOCK'S LENGHT ON Z
         // Set starting position of place preview based on place Offset
         placePreview.Position = PlacementOffset;
         placePreview.Visible = true; // Make it visible
 
-        // Set the grabbed Block Collision shape (Duplicate original)
-        grabbedBlockColliderShape = (Shape3D)grabbedBlock.getCollider().Shape.Duplicate();
-
-        // Shrink to remove tangential checks
-        if (grabbedBlockColliderShape is BoxShape3D cube)
-        {
-            cube.Size *= placeCollisionScale;
-        }
-
-        // Set the Query Parameters based on block collider
-        query.Shape = grabbedBlockColliderShape;
+        // get the cube positions for this block
+        cubePositions = grabbedBlock.getCubeCenters();
 
         // Unhighlight the block, Free the Array, remove reference
         highlightedBlock.removeHighlight();
@@ -472,6 +484,25 @@ public partial class Player : CharacterBody3D
         );
     }
 
+    private void loadPlacePreviewMeshes()
+    {
+        if (placePreview == null)
+        {
+            GD.PrintErr("Can't possibly load the meshes if there is no placePreview node");
+            return;
+        }
+
+        // Add all the Children meshes to an array so they can be updated
+        foreach (Node child in placePreview.GetChildren())
+        {
+            // If it's a mesh add it to array
+            if (child is MeshInstance3D mesh)
+            {
+                placePreviewMeshes.Add(mesh);
+            }
+        }
+    }
+
     private void Place()
     {
         // Double Check not already Placed
@@ -495,7 +526,7 @@ public partial class Player : CharacterBody3D
         // Clear Grabbed Block Variables
         grabbedBlock = null; // Block Ref
 
-        grabbedBlockColliderShape = null; // Block Shape
+        cubePositions = null;
 
         if (placePreview == null)
         {
@@ -513,6 +544,7 @@ public partial class Player : CharacterBody3D
         placePreview.Visible = false;
         placePreview.QueueFree();
         placePreview = null;
+        placePreviewMeshes.Clear(); // Clear the Array as well
 
         // Gradually Move Block to Target Position
         Tween tween = CreateTween();
@@ -664,7 +696,7 @@ public partial class Player : CharacterBody3D
             {
                 // Up Place
                 placePreview.GlobalPosition =
-                    targetBlock.GlobalPosition + Vector3.Up * targetBlock.getBlockLenght();
+                    targetBlock.GlobalPosition + Vector3.Up * targetBlock.getblockLength();
             }
             else
             {
@@ -672,7 +704,7 @@ public partial class Player : CharacterBody3D
 
                 // Place position is in the normal direction offset by half a lenght
                 placePreview.GlobalPosition =
-                    targetBlock.GlobalPosition + normal * targetBlock.getBlockLenght();
+                    targetBlock.GlobalPosition + normal * targetBlock.getblockLength();
             }
         }
         else
@@ -697,7 +729,7 @@ public partial class Player : CharacterBody3D
                 GD.Print("Unable to Find Place Preview Mesh");
             }
 
-            placePreview.MaterialOverride = invalidPreviewMaterial;
+            setPlacePreviewMaterial(invalidPreviewMaterial);
         }
         else
         {
@@ -711,16 +743,24 @@ public partial class Player : CharacterBody3D
             if (isSnapping)
             {
                 // Adjust the Color
-                placePreview.MaterialOverride = snapPreviewMaterial;
+                setPlacePreviewMaterial(snapPreviewMaterial);
             }
             else
             {
                 // Adjust the Color
-                placePreview.MaterialOverride = defaultPreviewMaterial;
+                setPlacePreviewMaterial(defaultPreviewMaterial);
             }
         }
 
         // Collision preview
+    }
+
+    private void setPlacePreviewMaterial(StandardMaterial3D material)
+    {
+        foreach (var mesh in placePreviewMeshes)
+        {
+            mesh.MaterialOverride = material;
+        }
     }
 
     public void SetInputEnabled(bool enabled)
@@ -764,26 +804,52 @@ public partial class Player : CharacterBody3D
 
     private bool CheckBlockCollision(Vector3 position, Vector3 rotation)
     {
-        if (grabbedBlockColliderShape == null)
+        // if (grabbedBlockColliderShape == null)
+        // {
+        //     GD.PrintErr("Checking Block Collision without valid block shape");
+        //     return true;
+        // }
+
+        if (grabbedBlock == null)
         {
-            GD.PrintErr("Checking Block Collision without valid block shape");
+            GD.PrintErr("Checking Block collision without grabbed block");
             return true;
         }
 
-        var spaceState = GetWorld3D().DirectSpaceState;
-
-        // Apply Positiona and Rotation to query shape
-        query.Transform = new Transform3D(Basis.FromEuler(rotation), position);
-
-        // Check for collision
-        var results = spaceState.IntersectShape(query);
-
-        // Consider collisions with block objects that aren't the targetBlock
-        foreach (var result in results)
+        if (cubePositions.IsEmpty())
         {
-            if (result["collider"].Obj is Block block)
+            GD.PrintErr("Checking Block collision but Cube Positions array is empty");
+            return true;
+        }
+
+        // Basic cube shape with the current lenght
+
+        // Set the Query Parameters based on block collider
+        // How do I create a cube with the blockLength * placementOffset Scale here?
+        query.Shape = unitCubeShape;
+        var spaceState = GetWorld3D().DirectSpaceState;
+        var basis = Basis.FromEuler(rotation);
+
+        // Query for each of the cubes
+
+        for (int i = 0; i < cubePositions.Length; i++)
+        {
+            // Get Cube Position accounting for rotation
+            var cubePosition = position + (basis * cubePositions[i]);
+
+            // Apply Final Position and Rotation to query shape
+            query.Transform = new Transform3D(basis, cubePosition);
+
+            // Check for collision
+            var results = spaceState.IntersectShape(query);
+
+            // Consider collisions with block objects that aren't the targetBlock
+            foreach (var result in results)
             {
-                return true; // Would collide with another block
+                if (result["collider"].Obj is Block block)
+                {
+                    return true; // Would collide with another block
+                }
             }
         }
 

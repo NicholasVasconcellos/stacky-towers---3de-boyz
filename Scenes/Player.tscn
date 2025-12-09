@@ -58,6 +58,7 @@ collision_mask = 3
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="BodyPivot/GrabFeatures/GrabRange"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.23675537)
+visible = false
 shape = SubResource("BoxShape3D_kne1u")
 
 [node name="PlacementPreview" type="MeshInstance3D" parent="BodyPivot/GrabFeatures"]
