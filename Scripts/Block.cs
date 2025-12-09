@@ -112,7 +112,7 @@ public partial class Block : RigidBody3D
     //     }
     // }
 
-    public void Highlight()
+    public virtual void Highlight()
     {
         // Change Skin to be Highlighted Skin
         defaultMesh.Visible = false;

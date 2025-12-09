@@ -3,12 +3,10 @@ using Godot;
 
 public partial class BlockL : Block
 {
-    private Node3D snapPoints;
-    private MeshInstance3D defaultMesh;
-    private MeshInstance3D highlightMesh;
+    private Node3D defaultMeshes;
+    private Node3D highlightMeshes;
 
-    private MeshInstance3D previewMesh;
-    private MeshInstance3D debugMesh;
+    private Node3D previewMeshes;
     private Godot.Collections.Array<CollisionShape3D> colliders;
 
     [Export]
@@ -31,4 +29,37 @@ public partial class BlockL : Block
             }
         }
     }
+
+    protected override void initMeshes()
+    {
+        // Get Mesh Container References
+        defaultMeshes = GetNode<Node3D>("Meshes/DefaultMeshes");
+        highlightMeshes = GetNode<Node3D>("Meshes/HighlightMeshes");
+        previewMeshes = GetNode<Node3D>("Meshes/PreviewMeshes");
+    }
+
+    public override void Highlight()
+    {
+        // Change Skin to be Highlighted Skin
+        defaultMeshes.Visible = false;
+        highlightMeshes.Visible = true;
+    }
+
+    public override void removeHighlight()
+    {
+        GD.Print("I have been Called");
+        // Change Skin to default
+        defaultMeshes.Visible = true;
+        highlightMeshes.Visible = false;
+    }
+
+    // public override CollisionShape3D getCollider()
+    // {
+    //     return blockCollider;
+    // }
+
+    // public override MeshInstance3D getPreviewMesh()
+    // {
+    //     return previewMeshes;
+    // }
 }
