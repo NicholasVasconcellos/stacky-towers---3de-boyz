@@ -89,6 +89,9 @@ shape = SubResource("CapsuleShape3D_kpjcp")
 [node name="CameraController" parent="." instance=ExtResource("2_kpjcp")]
 visible = false
 
+[node name="AudioListener3D" type="AudioListener3D" parent="CameraController"]
+current = true
+
 [node name="Node" type="Node" parent="."]
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]

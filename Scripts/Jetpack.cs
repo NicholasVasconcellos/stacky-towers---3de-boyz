@@ -26,6 +26,7 @@ public partial class Jetpack : Node3D
 
 		if (!_sound.IsPlaying())
 		{
+			GD.Print("Playing Sound!");
 			_sound.Play();
 		}
 	}
