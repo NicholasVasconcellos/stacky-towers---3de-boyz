@@ -1,23 +1,27 @@
-[gd_scene load_steps=6 format=3 uid="uid://djl7l8xsrg10u"]
+[gd_scene load_steps=6 format=3 uid="uid://cutubnle5d8jc"]
 
-[ext_resource type="Script" uid="uid://dkc4131b2naiw" path="res://Scripts/BlockL.cs" id="1_nukmy"]
-[ext_resource type="BoxMesh" uid="uid://duebd4yluqhxc" path="res://Scenes/previewMesh.tres" id="2_1uhua"]
-[ext_resource type="ArrayMesh" uid="uid://bsd4mdixfl76o" path="res://Assets/Models/BasicBlueBlockMesh.res" id="3_1uhua"]
-[ext_resource type="BoxMesh" uid="uid://cq0yle60t63hv" path="res://Scenes/highlightMesh.tres" id="4_tg6dm"]
+[ext_resource type="Script" uid="uid://3dbbngjfk4a7" path="res://Scenes/BlockT.cs" id="1_3crhn"]
+[ext_resource type="BoxMesh" uid="uid://duebd4yluqhxc" path="res://Scenes/previewMesh.tres" id="2_ql8mh"]
+[ext_resource type="BoxMesh" uid="uid://cq0yle60t63hv" path="res://Scenes/highlightMesh.tres" id="4_kp85r"]
+[ext_resource type="ArrayMesh" uid="uid://c8yyred41l3hm" path="res://Assets/Models/BasicBlockGreen.res" id="4_ql8mh"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_ab6iy"]
 size = Vector3(2, 2, 2)
 
-[node name="Block_L2" type="RigidBody3D" groups=["Block"]]
+[node name="Block_T" type="RigidBody3D" groups=["Block"]]
 collision_layer = 2
 collision_mask = 6
-script = ExtResource("1_nukmy")
+script = ExtResource("1_3crhn")
 
 [node name="BlockCollider2" type="CollisionShape3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4, 0)
 shape = SubResource("BoxShape3D_ab6iy")
 
 [node name="BlockCollider" type="CollisionShape3D" parent="."]
+shape = SubResource("BoxShape3D_ab6iy")
+
+[node name="BlockCollider5" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2, 0, 0)
 shape = SubResource("BoxShape3D_ab6iy")
 
 [node name="BlockCollider3" type="CollisionShape3D" parent="."]
@@ -34,63 +38,78 @@ shape = SubResource("BoxShape3D_ab6iy")
 visible = false
 
 [node name="Cube0" type="MeshInstance3D" parent="Meshes/PreviewMeshes"]
-mesh = ExtResource("2_1uhua")
+mesh = ExtResource("2_ql8mh")
+skeleton = NodePath("../../Meshes")
+
+[node name="Cube4" type="MeshInstance3D" parent="Meshes/PreviewMeshes"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2, 0, 0)
+mesh = ExtResource("2_ql8mh")
 skeleton = NodePath("../../Meshes")
 
 [node name="Cube1" type="MeshInstance3D" parent="Meshes/PreviewMeshes"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, 0)
-mesh = ExtResource("2_1uhua")
+mesh = ExtResource("2_ql8mh")
 skeleton = NodePath("../..")
 
 [node name="Cube2" type="MeshInstance3D" parent="Meshes/PreviewMeshes"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4, 0)
-mesh = ExtResource("2_1uhua")
+mesh = ExtResource("2_ql8mh")
 skeleton = NodePath("../Cube1")
 
 [node name="Cube3" type="MeshInstance3D" parent="Meshes/PreviewMeshes"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 0, 0)
-mesh = ExtResource("2_1uhua")
+mesh = ExtResource("2_ql8mh")
 skeleton = NodePath("../Cube1")
 
 [node name="DefaultMeshes" type="Node3D" parent="Meshes"]
 
 [node name="Cube0" type="MeshInstance3D" parent="Meshes/DefaultMeshes"]
 transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, 0, -1, 0)
-mesh = ExtResource("3_1uhua")
+mesh = ExtResource("4_ql8mh")
 skeleton = NodePath("../..")
 
 [node name="Cube1" type="MeshInstance3D" parent="Meshes/DefaultMeshes"]
 transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, 0, 1, 0)
-mesh = ExtResource("3_1uhua")
+mesh = ExtResource("4_ql8mh")
 
 [node name="Cube2" type="MeshInstance3D" parent="Meshes/DefaultMeshes"]
 transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, 0, 3, 0)
-mesh = ExtResource("3_1uhua")
+mesh = ExtResource("4_ql8mh")
 skeleton = NodePath("../Cube1")
 
 [node name="Cube3" type="MeshInstance3D" parent="Meshes/DefaultMeshes"]
 transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, 2, -1, 0)
-mesh = ExtResource("3_1uhua")
+mesh = ExtResource("4_ql8mh")
 skeleton = NodePath("../Cube1")
+
+[node name="Cube4" type="MeshInstance3D" parent="Meshes/DefaultMeshes"]
+transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, -2, -1, 0)
+mesh = ExtResource("4_ql8mh")
+skeleton = NodePath("../Cube3")
 
 [node name="HighlightMeshes" type="Node3D" parent="Meshes"]
 visible = false
 
 [node name="Cube0" type="MeshInstance3D" parent="Meshes/HighlightMeshes"]
-mesh = ExtResource("4_tg6dm")
+mesh = ExtResource("4_kp85r")
+skeleton = NodePath("../..")
+
+[node name="Cube4" type="MeshInstance3D" parent="Meshes/HighlightMeshes"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2, 0, 0)
+mesh = ExtResource("4_kp85r")
 skeleton = NodePath("../..")
 
 [node name="Cube1" type="MeshInstance3D" parent="Meshes/HighlightMeshes"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, 0)
-mesh = ExtResource("4_tg6dm")
+mesh = ExtResource("4_kp85r")
 skeleton = NodePath("../../..")
 
 [node name="Cube2" type="MeshInstance3D" parent="Meshes/HighlightMeshes"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4, 0)
-mesh = ExtResource("4_tg6dm")
+mesh = ExtResource("4_kp85r")
 skeleton = NodePath("../Cube1")
 
 [node name="Cube3" type="MeshInstance3D" parent="Meshes/HighlightMeshes"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 0, 0)
-mesh = ExtResource("4_tg6dm")
+mesh = ExtResource("4_kp85r")
 skeleton = NodePath("../Cube1")
