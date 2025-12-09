@@ -686,7 +686,7 @@ public partial class Player : CharacterBody3D
             {
                 // Up Place
                 placePreview.GlobalPosition =
-                    targetBlock.GlobalPosition + Vector3.Up * targetBlock.getLenght();
+                    targetBlock.GlobalPosition + Vector3.Up * targetBlock.getBlockLenght();
             }
             else
             {
@@ -694,7 +694,7 @@ public partial class Player : CharacterBody3D
 
                 // Place position is in the normal direction offset by half a lenght
                 placePreview.GlobalPosition =
-                    targetBlock.GlobalPosition + normal * targetBlock.getLenght();
+                    targetBlock.GlobalPosition + normal * targetBlock.getBlockLenght();
             }
         }
         else

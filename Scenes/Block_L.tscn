@@ -1,32 +1,17 @@
-[gd_scene load_steps=8 format=3 uid="uid://bytjcy6crd47k"]
+[gd_scene load_steps=6 format=3 uid="uid://bytjcy6crd47k"]
 
-[ext_resource type="Script" uid="uid://cccemn41y18rm" path="res://Scripts/Block.cs" id="1_rspcg"]
+[ext_resource type="Script" uid="uid://dkc4131b2naiw" path="res://Scripts/BlockL.cs" id="1_nukmy"]
+[ext_resource type="BoxMesh" uid="uid://dcttnlwl5lsq0" path="res://Scenes/previewMesh.tres" id="2_1uhua"]
+[ext_resource type="ArrayMesh" uid="uid://cerx043bbrck2" path="res://Assets/Models/blockbench_export_mesh.res" id="2_onay1"]
+[ext_resource type="BoxMesh" uid="uid://cq0yle60t63hv" path="res://Scenes/highlightMesh.tres" id="4_tg6dm"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_ab6iy"]
 size = Vector3(2, 2, 2)
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ovn4m"]
-transparency = 1
-albedo_color = Color(0.39607844, 0.56078434, 1, 0.34901962)
-
-[sub_resource type="BoxMesh" id="BoxMesh_x55lh"]
-material = SubResource("StandardMaterial3D_ovn4m")
-size = Vector3(2, 2, 2)
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ujcp4"]
-albedo_color = Color(0.77254903, 0.6862745, 0.039215688, 1)
-
-[sub_resource type="BoxMesh" id="BoxMesh_rjsgv"]
-material = SubResource("StandardMaterial3D_ujcp4")
-size = Vector3(2, 2, 2)
-
-[sub_resource type="BoxMesh" id="BoxMesh_ujcp4"]
-size = Vector3(2, 2, 2)
-
-[node name="Block" type="RigidBody3D" groups=["Block"]]
+[node name="Block_L" type="RigidBody3D" groups=["Block"]]
 collision_layer = 2
 collision_mask = 6
-script = ExtResource("1_rspcg")
+script = ExtResource("1_nukmy")
 
 [node name="BlockCollider2" type="CollisionShape3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4, 0)
@@ -45,37 +30,67 @@ shape = SubResource("BoxShape3D_ab6iy")
 
 [node name="Meshes" type="Node3D" parent="."]
 
-[node name="SnapPoints" type="Node3D" parent="Meshes"]
-
-[node name="Node3D" type="Node3D" parent="Meshes"]
-
-[node name="PreviewMesh" type="MeshInstance3D" parent="Meshes"]
+[node name="PreviewMeshes" type="Node3D" parent="Meshes"]
 visible = false
-mesh = SubResource("BoxMesh_x55lh")
-skeleton = NodePath("../..")
 
-[node name="HighlightMesh" type="MeshInstance3D" parent="Meshes"]
-visible = false
-mesh = SubResource("BoxMesh_rjsgv")
+[node name="Cube0" type="MeshInstance3D" parent="Meshes/PreviewMeshes"]
+mesh = ExtResource("2_1uhua")
+skeleton = NodePath("../../Meshes")
 
-[node name="DebugMesh" type="MeshInstance3D" parent="Meshes"]
-visible = false
-mesh = SubResource("BoxMesh_ujcp4")
-
-[node name="Cube0" type="MeshInstance3D" parent="Meshes"]
-mesh = SubResource("BoxMesh_rjsgv")
-
-[node name="Cube1" type="MeshInstance3D" parent="Meshes"]
+[node name="Cube1" type="MeshInstance3D" parent="Meshes/PreviewMeshes"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, 0)
-mesh = SubResource("BoxMesh_rjsgv")
+mesh = ExtResource("2_1uhua")
 skeleton = NodePath("../..")
 
-[node name="Cube2" type="MeshInstance3D" parent="Meshes"]
+[node name="Cube2" type="MeshInstance3D" parent="Meshes/PreviewMeshes"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4, 0)
-mesh = SubResource("BoxMesh_rjsgv")
+mesh = ExtResource("2_1uhua")
 skeleton = NodePath("../Cube1")
 
-[node name="Cube3" type="MeshInstance3D" parent="Meshes"]
+[node name="Cube3" type="MeshInstance3D" parent="Meshes/PreviewMeshes"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 0, 0)
-mesh = SubResource("BoxMesh_rjsgv")
+mesh = ExtResource("2_1uhua")
+skeleton = NodePath("../Cube1")
+
+[node name="DefaultMeshes" type="Node3D" parent="Meshes"]
+
+[node name="Cube0" type="MeshInstance3D" parent="Meshes/DefaultMeshes"]
+transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, 0, -1, 0)
+mesh = ExtResource("2_onay1")
+skeleton = NodePath("../..")
+
+[node name="Cube1" type="MeshInstance3D" parent="Meshes/DefaultMeshes"]
+transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, 0, 1, 0)
+mesh = ExtResource("2_onay1")
+
+[node name="Cube2" type="MeshInstance3D" parent="Meshes/DefaultMeshes"]
+transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, 0, 3, 0)
+mesh = ExtResource("2_onay1")
+skeleton = NodePath("../Cube1")
+
+[node name="Cube3" type="MeshInstance3D" parent="Meshes/DefaultMeshes"]
+transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, 2, -1, 0)
+mesh = ExtResource("2_onay1")
+skeleton = NodePath("../Cube1")
+
+[node name="HighlightMeshes" type="Node3D" parent="Meshes"]
+visible = false
+
+[node name="Cube0" type="MeshInstance3D" parent="Meshes/HighlightMeshes"]
+mesh = ExtResource("4_tg6dm")
+skeleton = NodePath("../..")
+
+[node name="Cube1" type="MeshInstance3D" parent="Meshes/HighlightMeshes"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, 0)
+mesh = ExtResource("4_tg6dm")
+skeleton = NodePath("../../..")
+
+[node name="Cube2" type="MeshInstance3D" parent="Meshes/HighlightMeshes"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4, 0)
+mesh = ExtResource("4_tg6dm")
+skeleton = NodePath("../Cube1")
+
+[node name="Cube3" type="MeshInstance3D" parent="Meshes/HighlightMeshes"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 0, 0)
+mesh = ExtResource("4_tg6dm")
 skeleton = NodePath("../Cube1")
