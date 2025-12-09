@@ -332,14 +332,9 @@ public partial class Player : CharacterBody3D
 
     public override void _UnhandledInput(InputEvent @event)
     {
-        if (!_canMove)
-            return;
-
-        bool isKeyboardEvent = (
-            @event is InputEventKey
-            || @event is InputEventMouseButton
-            || @event is InputEventMouseMotion
-        );
+        if (!_canMove) return;
+        
+        bool isKeyboardEvent = (@event is InputEventKey || @event is InputEventMouseButton || @event is InputEventMouseMotion);
         bool isJoypadEvent = (@event is InputEventJoypadButton || @event is InputEventJoypadMotion);
 
         if (PlayerDeviceId == -1)
@@ -386,6 +381,11 @@ public partial class Player : CharacterBody3D
             }
 
             _jetpackInputHeld = false;
+        }
+        
+        if (Input.IsActionJustPressed(_actionGrab)) 
+        {
+            TryGrab();
         }
         Velocity = velocity;
         // falling, use fall animation, if rising, use jump animation
