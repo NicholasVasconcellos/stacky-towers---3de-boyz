@@ -151,12 +151,30 @@ public partial class Player : CharacterBody3D
     private AudioStreamPlayer3D _landSound;
     private bool _wasOnFloor = true;
 
+    // Fall/Respawn Settings
+    [ExportGroup("Fall Detection")]
+    [Export]
+    public float FallThreshold { get; set; } = -50.0f;
+
+    [Export]
+    public float RespawnHeight { get; set; } = 5.0f;
+
+    // [Export]
+    // public float ObjectFallThreshold { get; set; } = -100.0f;
+
+    // [Export]
+    // public float ObjectCheckInterval { get; set; } = 1.0f;
+
+    // private double _objectCheckTimer = 0.0;
+    private Vector3 spawnPosition;
+
     //for use with game manager
     public Player Initialize(int deviceId, Color color, int xOffset, int zOffset)
     {
         PlayerDeviceId = deviceId;
         PlayerColor = color;
         Position = new Vector3(Position.X + xOffset, 0, Position.Z + zOffset);
+        spawnPosition = Position;
 
         if (PlayerDeviceId == -1) // Keyboard Player
         {
@@ -244,6 +262,13 @@ public partial class Player : CharacterBody3D
     public override void _PhysicsProcess(double delta)
     {
         Vector3 velocity = Velocity;
+
+        // Check for player fall and respawn
+        if (Position.Y < FallThreshold)
+        {
+            RespawnPlayer();
+            return;
+        }
 
         // Add the gravity.
         if (!IsOnFloor())
@@ -917,5 +942,14 @@ public partial class Player : CharacterBody3D
         }
 
         return false; // Safe to place
+    }
+
+    private void RespawnPlayer()
+    {
+        Position = new Vector3(spawnPosition.X, RespawnHeight, spawnPosition.Z);
+        Velocity = Vector3.Zero;
+        _jetpackInputHeld = false;
+        _jetpack?.StopEffects();
+        _currentFuel = MaxJetpackFuel;
     }
 }
