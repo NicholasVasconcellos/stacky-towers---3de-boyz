@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" uid="uid://dkc4131b2naiw" path="res://Scripts/BlockL.cs" id="1_nukmy"]
 [ext_resource type="BoxMesh" uid="uid://duebd4yluqhxc" path="res://Scenes/previewMesh.tres" id="2_1uhua"]
-[ext_resource type="ArrayMesh" uid="uid://3lghbdik4dab" path="res://Assets/Models/BasicBlueBlockMesh.res" id="3_1uhua"]
+[ext_resource type="ArrayMesh" uid="uid://bsd4mdixfl76o" path="res://Assets/Models/BasicBlueBlockMesh.res" id="3_1uhua"]
 [ext_resource type="BoxMesh" uid="uid://cq0yle60t63hv" path="res://Scenes/highlightMesh.tres" id="4_tg6dm"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_ab6iy"]
