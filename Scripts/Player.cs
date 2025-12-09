@@ -146,10 +146,27 @@ public partial class Player : CharacterBody3D
     private string _actionMoveBack;
     private string _actionJump;
     private string _actionGrab;
-    
+
     private AudioStreamPlayer3D _jumpSound;
     private AudioStreamPlayer3D _landSound;
     private bool _wasOnFloor = true;
+
+    // Fall/Respawn Settings
+    [ExportGroup("Fall Detection")]
+    [Export]
+    public float FallThreshold { get; set; } = -50.0f;
+
+    [Export]
+    public float RespawnHeight { get; set; } = 5.0f;
+
+    // [Export]
+    // public float ObjectFallThreshold { get; set; } = -100.0f;
+
+    // [Export]
+    // public float ObjectCheckInterval { get; set; } = 1.0f;
+
+    // private double _objectCheckTimer = 0.0;
+    private Vector3 spawnPosition;
 
     //for use with game manager
     public Player Initialize(int deviceId, Color color, int xOffset, int zOffset)
@@ -157,6 +174,7 @@ public partial class Player : CharacterBody3D
         PlayerDeviceId = deviceId;
         PlayerColor = color;
         Position = new Vector3(Position.X + xOffset, 0, Position.Z + zOffset);
+        spawnPosition = Position;
 
         if (PlayerDeviceId == -1) // Keyboard Player
         {
@@ -176,7 +194,7 @@ public partial class Player : CharacterBody3D
             _actionJump = "joy_jump";
             _actionGrab = "joy_grab";
         }
-        
+
         _jumpSound = GetNode<AudioStreamPlayer3D>("JumpSound");
         _landSound = GetNode<AudioStreamPlayer3D>("LandSound");
         return this;
@@ -245,21 +263,28 @@ public partial class Player : CharacterBody3D
     {
         Vector3 velocity = Velocity;
 
+        // Check for player fall and respawn
+        if (Position.Y < FallThreshold)
+        {
+            RespawnPlayer();
+            return;
+        }
+
         // Add the gravity.
         if (!IsOnFloor())
         {
             // Decrement Velocity by a * dT
             velocity += GetGravity() * (float)delta;
         }
-        
+
         if (!_wasOnFloor && IsOnFloor())
         {
             // Optional: Only play if we were falling fast enough (prevents sounds on tiny bumps)
-            // if (_lastVelocityY < -1.0f) 
+            // if (_lastVelocityY < -1.0f)
             _landSound.PitchScale = (float)GD.RandRange(0.9, 1.1);
             _landSound.Play();
         }
-        
+
         _wasOnFloor = IsOnFloor();
 
         bool isJetpacking = _canMove && _jetpackInputHeld && _currentFuel > 0;
@@ -917,5 +942,14 @@ public partial class Player : CharacterBody3D
         }
 
         return false; // Safe to place
+    }
+
+    private void RespawnPlayer()
+    {
+        Position = new Vector3(spawnPosition.X, RespawnHeight, spawnPosition.Z);
+        Velocity = Vector3.Zero;
+        _jetpackInputHeld = false;
+        _jetpack?.StopEffects();
+        _currentFuel = MaxJetpackFuel;
     }
 }
