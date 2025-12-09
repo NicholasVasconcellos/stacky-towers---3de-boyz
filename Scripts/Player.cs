@@ -144,7 +144,7 @@ public partial class Player : CharacterBody3D
     private string _actionMoveBack;
     private string _actionJump;
     private string _actionGrab;
-    
+
     private AudioStreamPlayer3D _jumpSound;
     private AudioStreamPlayer3D _landSound;
     private bool _wasOnFloor = true;
@@ -174,7 +174,7 @@ public partial class Player : CharacterBody3D
             _actionJump = "joy_jump";
             _actionGrab = "joy_grab";
         }
-        
+
         _jumpSound = GetNode<AudioStreamPlayer3D>("JumpSound");
         _landSound = GetNode<AudioStreamPlayer3D>("LandSound");
         return this;
@@ -249,15 +249,15 @@ public partial class Player : CharacterBody3D
             // Decrement Velocity by a * dT
             velocity += GetGravity() * (float)delta;
         }
-        
+
         if (!_wasOnFloor && IsOnFloor())
         {
             // Optional: Only play if we were falling fast enough (prevents sounds on tiny bumps)
-            // if (_lastVelocityY < -1.0f) 
+            // if (_lastVelocityY < -1.0f)
             _landSound.PitchScale = (float)GD.RandRange(0.9, 1.1);
             _landSound.Play();
         }
-        
+
         _wasOnFloor = IsOnFloor();
 
         bool isJetpacking = _canMove && _jetpackInputHeld && _currentFuel > 0;

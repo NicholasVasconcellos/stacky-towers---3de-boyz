@@ -3,7 +3,7 @@
 [ext_resource type="Script" uid="uid://3dbbngjfk4a7" path="res://Scenes/BlockT.cs" id="1_3crhn"]
 [ext_resource type="BoxMesh" uid="uid://duebd4yluqhxc" path="res://Scenes/previewMesh.tres" id="2_ql8mh"]
 [ext_resource type="BoxMesh" uid="uid://cq0yle60t63hv" path="res://Scenes/highlightMesh.tres" id="4_kp85r"]
-[ext_resource type="ArrayMesh" uid="uid://c8yyred41l3hm" path="res://Assets/Models/BasicBlockGreen.res" id="4_ql8mh"]
+[ext_resource type="ArrayMesh" uid="uid://bes0qusgngwmj" path="res://Assets/Models/BasicBlockGreen.res" id="4_ql8mh"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_ab6iy"]
 size = Vector3(2, 2, 2)

@@ -38,7 +38,7 @@ public partial class TowerHeightContainer : CenterContainer
                 float worldBoxCenter = goalZone.GoalHeight + worldBoxCenterOffset;
                 float worldBoxBottom = worldBoxCenter - (worldBoxHeight / 2.0f);
 
-                goalHeight = worldBoxBottom - 1;
+                goalHeight = worldBoxBottom - 0.5f;
                 GD.Print(
                     $"TowerHeightContainer: Adjusted goal height to {goalHeight} (Center: {goalZone.GoalHeight})"
                 );
