@@ -81,6 +81,7 @@ public partial class GameManager : Node
         PlayerConfigs.Clear();
         CurrentState = GameState.MainMenu;
         GetTree().ChangeSceneToFile("res://UI/Scenes/main_menu.tscn");
+        Input.MouseMode = Input.MouseModeEnum.Visible;
     }
 
     public void GoToWinScreen(string winnerName)
@@ -88,6 +89,7 @@ public partial class GameManager : Node
         WinnerText = winnerName;
         CurrentState = GameState.WinScreen;
         GetTree().ChangeSceneToFile("res://UI/Scenes/WinScreen.tscn");
+        Input.MouseMode = Input.MouseModeEnum.Visible;
     }
 
     public void StartGame()
