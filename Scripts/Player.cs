@@ -76,6 +76,8 @@ public partial class Player : CharacterBody3D
     private float placeTime = 0.2f;
     private Node3D placementSnapPoint = null;
 
+    private bool canPlace = false;
+
     // Valid Grab Area (volume)
     private Area3D grabRange;
 
@@ -442,6 +444,8 @@ public partial class Player : CharacterBody3D
             return;
         }
 
+        canPlace = true;
+
         // Lock Click Interactions while grab is in process
         clickLocked = true;
 
@@ -531,6 +535,11 @@ public partial class Player : CharacterBody3D
     {
         // Double Check not already Placed
         if (grabbedBlock == null)
+        {
+            return;
+        }
+
+        if (!canPlace)
         {
             return;
         }
@@ -748,6 +757,8 @@ public partial class Player : CharacterBody3D
             placePreview.GlobalPosition,
             placePreview.GlobalRotation
         );
+
+        canPlace = !wouldCollide;
 
         if (wouldCollide)
         {
