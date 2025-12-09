@@ -8,7 +8,7 @@
 [ext_resource type="PackedScene" uid="uid://djl7l8xsrg10u" path="res://Scenes/Block_L.tscn" id="6_133si"]
 [ext_resource type="Script" uid="uid://nhvtsuc3c0jt" path="res://Scripts/BlockSpawner.cs" id="6_tj5wv"]
 [ext_resource type="PackedScene" uid="uid://diry42au7qyke" path="res://Scenes/GoalZone.tscn" id="7_ienac"]
-[ext_resource type="PackedScene" uid="uid://cutubnle5d8jc" path="res://Scenes/Block_T.tscn" id="9_or7tv"]
+[ext_resource type="PackedScene" path="res://Scenes/Block_T.tscn" id="9_or7tv"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_2nifc"]
 sky_horizon_color = Color(0.66224277, 0.6717428, 0.6867428, 1)
@@ -60,6 +60,9 @@ SpawnCenter = Vector3(0, 100, 0)
 [node name="Block_L" parent="Entities" instance=ExtResource("6_133si")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 10.300117, 0)
 
+[node name="Block_T" parent="Entities" instance=ExtResource("9_or7tv")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -11.330726, 1.16, -8.579178)
+
 [node name="SplitScreenViews" type="CanvasLayer" parent="."]
 
 [node name="GridContainer" type="GridContainer" parent="SplitScreenViews"]
@@ -73,6 +76,3 @@ grow_vertical = 2
 
 [node name="GoalZone" parent="." instance=ExtResource("7_ienac")]
 transform = Transform3D(50, 0, 0, 0, 50, 0, 0, 0, 50, -0.0021703243, 114.39432, 0)
-
-[node name="Block_T" parent="." instance=ExtResource("9_or7tv")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -11.330726, 1.16, -8.579178)
