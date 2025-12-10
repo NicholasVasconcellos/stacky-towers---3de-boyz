@@ -478,6 +478,7 @@ public partial class Player : CharacterBody3D
 
     public void TryGrab()
     {
+        if (clickLocked) return;
         if (grabbedBlock == null)
         {
             animationPlayer.Play("Pick Up");
