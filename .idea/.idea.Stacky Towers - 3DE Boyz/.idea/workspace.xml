@@ -5,8 +5,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="c2f424eb-9508-4bf4-9216-96c278956c76" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/Scenes/Block_I.tscn" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Scripts/Player.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Scripts/Player.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.Stacky Towers - 3DE Boyz/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Stacky Towers - 3DE Boyz/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Stacky Towers - 3DE Boyz - Linux.x86_64" beforeDir="false" afterPath="$PROJECT_DIR$/Stacky Towers - 3DE Boyz - Linux.x86_64" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Stacky Towers - 3DE Boyz - Windows.exe" beforeDir="false" afterPath="$PROJECT_DIR$/Stacky Towers - 3DE Boyz - Windows.exe" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Stacky Towers Executables.zip" beforeDir="false" afterPath="$PROJECT_DIR$/Stacky Towers Executables.zip" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
