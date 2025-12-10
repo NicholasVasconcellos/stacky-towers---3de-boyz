@@ -397,12 +397,26 @@ public partial class Player : CharacterBody3D
         Vector3 velocity = Velocity;
 
         // Update movement direction based on this player's input
-        inputDirection = Input.GetVector(
-            _actionMoveLeft,
-            _actionMoveRight,
-            _actionMoveForward,
-            _actionMoveBack
-        );
+        if (PlayerDeviceId == -1)
+        {
+            // Keyboard: Safe to use Input.GetVector because there is only one keyboard
+            inputDirection = Input.GetVector(
+                _actionMoveLeft, _actionMoveRight, 
+                _actionMoveForward, _actionMoveBack
+            );
+        }
+        else
+        {
+            // Controller: MUST read specific device ID to avoid merging inputs
+            float x = Input.GetJoyAxis(PlayerDeviceId, JoyAxis.LeftX);
+            float y = Input.GetJoyAxis(PlayerDeviceId, JoyAxis.LeftY);
+
+            // Manual Deadzone (Godot's GetJoyAxis is raw)
+            if (Mathf.Abs(x) < 0.2f) x = 0;
+            if (Mathf.Abs(y) < 0.2f) y = 0;
+
+            inputDirection = new Vector2(x, y);
+        }
 
         // Handle jump button
         if (Input.IsActionJustPressed(_actionJump))

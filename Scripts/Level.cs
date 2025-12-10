@@ -24,6 +24,7 @@ public partial class Level : Node3D
         GD.Print("Level _Ready() called.");
         // Set "Process Mode" to "Always" so it can still function when GetTree().Paused is true.
 
+        Input.MouseMode = Input.MouseModeEnum.Captured;
         //get an instance of the game manager
         gameManager = GetNode<GameManager>("/root/GameManager");
         mainWorld = GetWorld3D();

@@ -46,10 +46,13 @@ public partial class CameraController : Node3D
         if (player.PlayerDeviceId == -1)
             return;
 
-        Vector2 lookDir = Input.GetVector("look_left", "look_right", "look_up", "look_down");
+        float x = Input.GetJoyAxis(player.PlayerDeviceId, JoyAxis.RightX);
+        float y = Input.GetJoyAxis(player.PlayerDeviceId, JoyAxis.RightY);
 
-        // 3. Optional: Filter by specific device if you have multiple controllers
-        // (Input.GetVector merges all devices, but usually P1 is the only one touching the stick)
+        if (Mathf.Abs(x) < 0.2f) x = 0;
+        if (Mathf.Abs(y) < 0.2f) y = 0;
+
+        Vector2 lookDir = new Vector2(x, y);
 
         if (lookDir.Length() > 0)
         {
