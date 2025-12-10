@@ -6,6 +6,9 @@ using Godot.Collections;
 [GlobalClass]
 public partial class Block : RigidBody3D
 {
+    // Max Speed
+    [Export]
+    protected float maxSpeed = 20f;
     protected Vector3[] cubeCenters;
     protected Node3D defaultMeshes;
     protected Node3D highlightMeshes;
@@ -42,6 +45,19 @@ public partial class Block : RigidBody3D
 
         // Set Collider Reference
         initColliderReferences();
+    }
+
+    public override void _PhysicsProcess(double delta)
+    {
+        ClampVelocity();
+    }
+
+    protected void ClampVelocity()
+    {
+        if (LinearVelocity.Length() > maxSpeed)
+        {
+            LinearVelocity = LinearVelocity.Normalized() * maxSpeed;
+        }
     }
 
     protected virtual void initCubeCenters()
