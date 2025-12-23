@@ -1,29 +1,35 @@
-# Block O'Clock 3D
+# Block O'Clock
 
-## Description of the Project
+A physics-based 3D multiplayer stacking game built in Godot 4.x with C#.
 
-Our project is a unique take on local multiplayer games that combines falling block puzzles with action platforming in a shared 3D arena. Players rush to collect "Tetris-like" blocks raining from above and race to construct the tallest tower before time runs out, or be the first one to reach the goal. Physics-based forces apply to the blocks, introducing puzzle and strategy elements. Furthermore, action platformer mechanics emerge through two key challenges: racing opponents to collect blocks and traversing towers to find ideal placements.
+## About
 
-This project aims to help invigorate the local multiplayer, party games, genre and bring people together. Many modern multiplayer games are now online-only, while this allows for connecting with those who are far away, it also doesn't encourage face-to-face interaction, which serves to build deeper connections and cannot simply be replaced with online interactions. Additionally, the game's physics-based stacking system offers educational value alongside entertainment. Players intuitively engage with STEM concepts such as equilibrium and structural stability as they place blocks, explore geometric properties through varied 3D shapes, and gain practical exposure to physics engine mechanics that govern the gameplay.
+Block O'Clock is a local multiplayer party game combining falling block puzzles with action platforming in a shared 3D arena. Players race to collect falling blocks and construct the tallest tower before time runs out—or be the first to reach the goal.
 
----
+**Key Features:**
+- Real-time physics-based block stacking with equilibrium and structural stability mechanics
+- Local multiplayer support for competitive play
+- 3D platforming with block collection and tower traversal
+- Custom grab/place system with placement previews
 
-## Required Commands & Links
+## Installation
 
-**Link to the Repository (GitHub):**
-https://github.com/NicholasVasconcellos/stacky-towers---3de-boyz
+**Download (Windows/Linux):**  
+[Google Drive](https://drive.google.com/file/d/1vMD-HQurPgsufTzfFHecBCBXO9iVP3-T/view?usp=drive_link)
 
-**Link to Installation Package (Windows or Linux):**
-https://drive.google.com/file/d/1vMD-HQurPgsufTzfFHecBCBXO9iVP3-T/view?usp=drive_link
+1. Unzip the downloaded file
+2. Run `Block O'Clock - Windows.exe` (Windows) or `Block O'Clock - Linux.x86_64` (Linux)
 
-**Run Executable Command (for the package above):**
-1.  Unzip the zip file from the installation package file.
-2.  Open the new folder.
-3.  If Windows, run `Stacky Towers - 3DE Boyz - Windows.exe`
-    If Linux, run `Stacky Towers - 3DE Boyz - Linux.x86_64`
+## Build from Source
 
-**One-line Build Command (from source):**
-First clone the repository, then inside the folder, enter this command.
-*This command requires the Godot 4.x editor to be installed and in your system's PATH.*
+Requires Godot 4.x in your system PATH.
+
 ```bash
-godot --headless --export-release "Windows Desktop" ./Stacky Towers - 3DE Boyz - Windows.exe
+git clone https://github.com/NicholasVasconcellos/stacky-towers---3de-boyz
+cd stacky-towers---3de-boyz
+godot --headless --export-release "Windows Desktop" "./Block O'Clock - Windows.exe"
+```
+
+## Repository
+
+[GitHub](https://github.com/NicholasVasconcellos/stacky-towers---3de-boyz)
